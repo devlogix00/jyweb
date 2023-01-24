@@ -1,0 +1,34 @@
+{
+  "name": "express-sendfile",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "node && npm run static && npm run prerender",
+    "start": "node server.js",
+    "build": "node",
+    "static": "cp static/* dist",
+    "prerender": "ts-node prerender.ts"
+  },
+  "directories": {
+    "serve": "server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/firestore": "^5.0.2",
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "date-fns": "^2.28.0",
+    "express": "^4.17.2",
+    "firebase": "^9.6.11",
+    "firebase-admin": "^10.2.0",
+    "mui": "^0.0.1",
+    "multer": "^1.4.5-lts.1",
+    "spack": "^1.0.0",
+    "stripe": "^8.219.0"
+  },
+  "description": ""
+}

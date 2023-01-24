@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>
+          BookMe
+        </title>
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <!--     Fonts and icons     -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <!-- CSS Files -->
+        <link href="./css/material-kit.css"  rel="stylesheet" />
+        <script src="./js/core/jquery.min.js" type="text/javascript"></script>
+        <script src="./js/core/popper.min.js" type="text/javascript"></script>
+        <script src="./js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+        <script src="./js/plugins/moment.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script> 
+        <script src="FirebaseAuth.js"></script>
+      </head>
+
+      <body class="signup-page sidebar-collapse">
+        <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+          <div class="container">
+            <div class="navbar-translate">
+              <a class="navbar-brand" href="index.html">
+                BookMe </a>        
+            </div>
+          </div>
+        </nav>
+        <div class="page-header header-filter"  style="background-image: url('./img/28e615a5-4cef-4df9-87db-bb46fd206a30.jpg'); background-size: cover; background-position: top center;">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-10 ml-auto mr-auto">
+                <div class="card card-signup">
+                  <h2 class="card-title text-center">Register</h2>
+                 <div>
+                 </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-5 mr-auto">
+                        <form class="form" method="" action="" > 
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="material-icons">face</i>
+                                </span>
+                              </div>
+                              <input id='formname' onblur="getName()" type="text" class="form-control" placeholder="Name...">
+                              <small id="userFullNameError" class="form-text text-danger" style="display: none;">This Field must be filled.</small>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="material-icons">mail</i>
+                                </span>
+                              </div>
+                              <input id='formemail' onblur="getEmail()" type="text" class="form-control" placeholder="Email..." >
+                              <small id="userEmailError" class="form-text text-danger" style="display: none;">Please check your email address.</small>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <i class="material-icons">lock_outline</i>
+                                </span>
+                              </div>
+                              <input id='formpassword' onblur="getPassword()" type="password" placeholder="Password..." class="form-control" />
+                              <small id="userPasswordError" class="form-text text-danger" style="display: none;">Your password must be uppercase, lowercase and more than 10 characters.</small>
+                            </div>
+                          </div>
+                          <div class="form-check">
+                            <label class="form-check-label">
+                              <input class="form-check-input" type="checkbox" value="" checked>
+                              <span class="form-check-sign">
+                                <span class="check"></span>
+                              </span>
+                              I agree to the <a href="#something">terms and conditions</a>.
+                            </label>
+                          </div>
+                          <div class="text-center">
+                            <a id='signup' onclick="signUp()" class="btn btn-primary btn-round">Get Started</a>
+                          </div>
+                          </form>
+                        </div>
+                        <div>
+                          <img src="./img/undraw_forms_re_pkrt.svg"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer >
+            <!-- <div class="container">
+              <div class=" float-right">
+                &copy;
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i class="material-icons" style="color: red; background-color: white;">favorite</i> by
+                <a href="https://www.creative-tim.com" target="_blank">Maame Nyarko</a> 
+              </div>
+            </div> -->
+          </footer>
+        </div>
+        <!--   Core JS Files   -->
+        
+        
+        <script src="./js/core/jquery.min.js" type="text/javascript"></script>
+        <script src="./js/core/popper.min.js" type="text/javascript"></script>
+        <script src="./js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+        <script src="./js/plugins/moment.min.js"></script>
+        <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+        <script src="./js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+        <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+        <script src="./js/plugins/nouislider.min.js" type="text/javascript"></script>
+        <!--  Google Maps Plugin    -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+        <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+        <script src="./js/plugins/bootstrap-tagsinput.js"></script>
+        <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+        <script src="./js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+        <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+        <script src="./js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
+        <!--	Plugin for Small Gallery in Product Page -->
+        <script src="./js/plugins/jquery.flexisel.js" type="text/javascript"></script>
+        <!-- Plugins for presentation and navigation  -->
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+        <script src="./js/material-kit.js?v=2.2.0" type="text/javascript"></script>
+      
+        <script type="module">
+          // Import the functions you need from the SDKs you need
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+          import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+          import { initializeAuth, getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+          import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+          // TODO: Add SDKs for Firebase products that you want to use
+          // https://firebase.google.com/docs/web/setup#available-libraries
+        
+          // Your web app's Firebase configuration
+          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+          const firebaseConfig = {
+            apiKey: "AIzaSyDAE5KMMaSWI8wYkSqmyBMlT9VDIUl2604",
+            authDomain: "booking-3cb4c.firebaseapp.com",
+            databaseURL: "https://booking-3cb4c-default-rtdb.firebaseio.com",
+            projectId: "booking-3cb4c",
+            storageBucket: "booking-3cb4c.appspot.com",
+            messagingSenderId: "740465077120",
+            appId: "1:740465077120:web:52f179c4875eae75072f65",
+            measurementId: "G-B9BPZBWH0B"
+          };
+        
+          // Initialize Firebase
+          const app = initializeApp(firebaseConfig);
+          const auth = getAuth();
+          const analytics = getAnalytics(app);
+           
+          console.log(auth); 
+               
+          let user = JSON.parse(localStorage.getItem('user'));
+          console.log(user);
+          let userName = user.name;
+          console.log(user.email);
+          console.log(user.password);
+          let email = document.getElementById('formemail').value;
+          let storedPackage = JSON.parse(localStorage.getItem('Package'));
+          console.log(storedPackage);
+          
+          createUserWithEmailAndPassword(auth, user.email, user.password).then(
+            (userCredential) => {
+            //signed in
+            var user = userCredential.user; 
+            user.displayName = userName;
+            console.log(user);
+            let userId = user.uid;
+            console.log(userId, userName, storedPackage);
+            localStorage.setItem('uid', userId);
+            function writeUserData(userId, userName, storedPackage){
+              const db = getDatabase();
+              console.log(db);
+                set(ref(db, 'userAccount/'+userId), {
+                username: userName,
+                package: JSON.stringify(storedPackage),
+                uid: userId,
+                dates: ''              
+              });
+            }
+            writeUserData(userId, userName, storedPackage);
+
+            window.location.reload;
+            
+
+          }).catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+          });
+          
+          
+        </script>
+       
+     
+      </body>
+</html>

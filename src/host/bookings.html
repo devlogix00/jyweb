@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>
+          BookMe
+        </title>
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <!--     Fonts and icons     -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <!-- CSS Files -->
+        <link href="./css/material-kit.css"  rel="stylesheet" />
+        <script src="./js/core/jquery.min.js" type="text/javascript"></script>
+        <script src="./js/core/popper.min.js" type="text/javascript"></script>
+        <script src="./js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+        <script src="./js/plugins/moment.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script> 
+        
+      </head>
+
+      <body class="sidebar-collapse">        
+        <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+          <div class="container">
+            <div class="navbar-translate" ></div>          
+          </div>
+        </nav> -->
+        <div style="margin: 1em;">
+        <div style="display:flex; margin: 1em; justify-content: space-between;">
+            <div>
+                <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+                    <div class="container navbar-translate" style="display: flex; justify-content: space-between;">
+                          <a style="color: black;" class="navbar-brand" href="home.html">
+                            BookMe</a>
+                             
+                    </div>
+                  </nav>
+              </div>
+             
+        </div>
+        <div id="packages">
+          <div class="row">
+           
+          </div>
+        </div>
+        <div>
+          <h2>Your Recent Bookings</h2>
+          <div id="bookings" style="display: flex; flex-direction: row; flex-wrap: wrap;"></div>
+        </div>
+   </div>
+        <!-- <div>
+            <footer >
+                <div class="container">
+                  <div class=" float-right">
+                    &copy;
+                    <script>
+                      document.write(new Date().getFullYear())
+                    </script>, made with <i class="material-icons" style="color: red; background-color: white;">favorite</i> by
+                    <a href="https://www.creative-tim.com" target="_blank">Maame Nyarko</a> 
+                  </div>
+                </div>
+              </footer>
+        </div> -->
+        <!--   Core JS Files   -->
+        
+        
+        <script src="./js/core/jquery.min.js" type="text/javascript"></script>
+        <script src="./js/core/popper.min.js" type="text/javascript"></script>
+        <script src="./js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+        <script src="./js/plugins/moment.min.js"></script>
+        <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+        <script src="./js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+        <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+        <script src="./js/plugins/nouislider.min.js" type="text/javascript"></script>
+        <!--  Google Maps Plugin    -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+        <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+        <script src="./js/plugins/bootstrap-tagsinput.js"></script>
+        <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+        <script src="./js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+        <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+        <script src="./js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
+        <!--	Plugin for Small Gallery in Product Page -->
+        <script src="./js/plugins/jquery.flexisel.js" type="text/javascript"></script>
+        <!-- Plugins for presentation and navigation  -->
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+        <script src="./js/material-kit.js?v=2.2.0" type="text/javascript"></script>
+        <!-- <script src="./init.js"></script> -->
+        <script>
+          let userId;
+          let userName;       
+        </script>
+        <script type="module">
+          // Import the functions you need from the SDKs you need
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+          import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+          import { initializeAuth,getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+          import { getDatabase, ref, set, onValue, push, child, orderByChild, update} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+          import {getFirestore, collection, addDoc, doc, getDoc, enableIndexedDbPersistence} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
+          // TODO: Add SDKs for Firebase products that you want to use
+          // https://firebase.google.com/docs/web/setup#available-libraries
+          // Your web app's Firebase configuration
+          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+          const firebaseConfig = {
+            apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
+            authDomain: "booking-app-6750f.firebaseapp.com",
+            databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
+            projectId: "booking-app-6750f",
+            storageBucket: "booking-app-6750f.appspot.com",
+            messagingSenderId: "687482685582",
+            appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
+            measurementId: "G-0WDDDKD9ZL"
+          };
+        
+          // Initialize Firebase
+          const app = initializeApp(firebaseConfig);
+          const analytics = getAnalytics(app);
+          const auth = getAuth(); 
+          const db = getDatabase(); 
+          const database = getFirestore(app);
+
+          console.log(auth);
+          console.log(db);
+          console.log(database);
+
+          var today = new Date();
+          var dd = String(today.getDate()).padStart(2, '0');
+          var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+          var yyyy = today.getFullYear();
+
+          today = mm + '-' + dd + '-' + yyyy;
+          console.log(mm);
+          
+          let status;
+
+          const updates = {};
+
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in 
+              console.log(user);  
+              userName = user.displayName;
+              userId = user.uid;
+              document.cookie = 'uid='+userId;
+              console.log(userName);
+  
+              const listingRef = ref(db, 'listings/listings/');
+              onValue(listingRef, (snapshot) => {
+                  const data = snapshot.val();
+                  console.log(data);
+                 for(let i = 0; i < data.length; i++){
+                  let img = data[i].listingImg;
+                  const roombookingRef = ref(db, 'rooms/'+data[i].listingName);
+                  onValue(roombookingRef, (snapshot) => {
+                    const data = snapshot.val();
+                    console.log(data);
+                    if(data != null && data.host == userId && data.currentUser != null){
+                    let listingimg = data.listingImg.slice(12,data.listingImg.length);
+                    let cardOuter = document.createElement('div');
+                    cardOuter.setAttribute('class', 'col-md-4');
+                    cardOuter.setAttribute('id', data.listingName);
+                    let cardOuterInner = document.createElement('div');
+                    cardOuterInner.setAttribute('class', "card card-blog");
+                    let cardInnerInner = document.createElement('div');
+                    cardInnerInner.setAttribute('class', 'card-header card-header-image');
+                    let cardImg = document.createElement('img');
+                    cardImg.setAttribute('src', '../'+img);
+                    let cardBody = document.createElement('div');
+                    cardBody.setAttribute('class', 'card-body');
+                    let cardHeader = document.createElement('h6');
+                    cardHeader.setAttribute('class', "card-category text-info");
+                    cardHeader.innerText = data.listingName;
+                    let cardTitle = document.createElement('h4');
+                    cardTitle.setAttribute('class', 'card-title');
+                    cardTitle.style.paddingBottom = '3em';
+                    if(data.roomDates.length == 1){
+                      cardTitle.innerText = data.userName;
+                    } else {
+                      cardTitle.innerText = data.userName;
+                    }
+                    
+                    cardBody.appendChild(cardHeader);
+                    cardHeader.appendChild(cardTitle);
+                    cardInnerInner.appendChild(cardImg);
+                    cardInnerInner.appendChild(cardBody);
+                    cardOuterInner.appendChild(cardInnerInner);
+                    cardOuter.appendChild(cardOuterInner);
+                    document.getElementById('bookings').appendChild(cardOuter);
+
+                    cardOuter.addEventListener('click', function(){
+                      let bookingRef = ref(db, 'rooms/'+data.listingName);
+                      onValue(bookingRef, (snapshot) => {
+                        const data = snapshot.val();
+                        let url = data.bookingUrl;
+                        window.location = url+'.html';
+                        console.log(url);
+                      })
+                    });
+                  }
+                  });
+                  const carbookingRef = ref(db, 'cars/'+data[i].listingName);
+                  onValue(carbookingRef, (snapshot) => {
+                    const data = snapshot.val();
+                    console.log(data);
+                    if(data != null && data.host == userId && data.currentUser != null){
+                    let listingimg = data.listingImg.slice(12,data.listingImg.length);
+                    let cardOuter = document.createElement('div');
+                    cardOuter.setAttribute('class', 'col-md-4');
+                    cardOuter.setAttribute('id', data.listingName);
+                    let cardOuterInner = document.createElement('div');
+                    cardOuterInner.setAttribute('class', "card card-blog");
+                    let cardInnerInner = document.createElement('div');
+                    cardInnerInner.setAttribute('class', 'card-header card-header-image');
+                    let cardImg = document.createElement('img');
+                    cardImg.setAttribute('src', '../'+img);
+                    let cardBody = document.createElement('div');
+                    cardBody.setAttribute('class', 'card-body');
+                    let cardHeader = document.createElement('h6');
+                    cardHeader.setAttribute('class', "card-category text-info");
+                    cardHeader.innerText = data.listingName;
+                    let cardTitle = document.createElement('h4');
+                    cardTitle.setAttribute('class', 'card-title');
+                    cardTitle.style.paddingBottom = '3em';
+                    if(data.carDates.length == 1){
+                      cardTitle.innerText = data.userName;
+                    } else {
+                      cardTitle.innerText = data.userName;
+                    }
+                    
+                    cardBody.appendChild(cardHeader);
+                    cardHeader.appendChild(cardTitle);
+                    cardInnerInner.appendChild(cardImg);
+                    cardInnerInner.appendChild(cardBody);
+                    cardOuterInner.appendChild(cardInnerInner);
+                    cardOuter.appendChild(cardOuterInner);
+                    document.getElementById('bookings').appendChild(cardOuter);
+
+                    cardOuter.addEventListener('click', function(){
+                      let bookingRef = ref(db, 'cars/'+data.listingName);
+                      onValue(bookingRef, (snapshot) => {
+                        const data = snapshot.val();
+                        let url = data.bookingUrl;
+                        window.location = url+'.html';
+                      })
+                    });
+                  }
+                  });
+                  
+               
+                  const tourbookingRef = ref(db, 'tours/'+data[i].listingName);
+                  onValue(tourbookingRef, (snapshot) => {
+                    const data = snapshot.val();
+                    console.log(data);
+                    if(data != null && data.host == userId && data.currentUser != null){
+                  
+                    let cardOuter = document.createElement('div');
+                    cardOuter.setAttribute('class', 'col-md-4');
+                    cardOuter.setAttribute('id', data.listingName);
+                    let cardOuterInner = document.createElement('div');
+                    cardOuterInner.setAttribute('class', "card card-blog");
+                    let cardInnerInner = document.createElement('div');
+                    cardInnerInner.setAttribute('class', 'card-header card-header-image');
+                    let cardBody = document.createElement('div');
+                    cardBody.setAttribute('class', 'card-body');
+                    let cardHeader = document.createElement('h6');
+                    cardHeader.setAttribute('class', "card-category text-info");
+                    cardHeader.innerText = data.listingName;
+                    let cardTitle = document.createElement('h4');
+                    let cardImg = document.createElement('img');
+                    cardImg.setAttribute('src', '../'+img);
+                    cardTitle.setAttribute('class', 'card-title');
+                    cardTitle.style.paddingBottom = '3em';
+                    if(data.tourDates.length == 1){
+                      cardTitle.innerText = data.userName;
+                    } else {
+                      cardTitle.innerText = data.userName;
+                    }
+                  
+
+                    cardBody.appendChild(cardHeader);
+                    cardHeader.appendChild(cardTitle);
+                    cardInnerInner.appendChild(cardImg);
+                    cardInnerInner.appendChild(cardBody);
+                    cardOuterInner.appendChild(cardInnerInner);
+                    cardOuter.appendChild(cardOuterInner);
+                    document.getElementById('bookings').appendChild(cardOuter);
+
+                    cardOuter.addEventListener('click', function(){
+                      let bookingRef = ref(db, 'tours/'+data.listingName);
+                      onValue(bookingRef, (snapshot) => {
+                        const data = snapshot.val();
+                        let url = data.bookingUrl;
+                        window.location = url+'.html';
+                      })
+                    });
+                  }
+                  });
+                 }
+                  
+                  // for(let i = 0; i < 30; i++){
+                    
+                  // }
+              });
+             
+            
+               
+            } else {
+              // User is signed out
+              console.log('Not signed in');
+            }
+
+          });
+
+          
+
+          // const roomData = {
+          //   room: '',
+          //   dates: ''
+          // }
+
+          // const carData = {
+          //   car: '',
+          //   dates: ''
+          // }
+
+          // const tourData = {
+          //   tourStop: '',
+          //   dates: ''
+          // }
+
+          // const roomPostKey = push(child(ref(db), 'users/userAccount/'+userId+'/'+today+'/roomData')).key;
+          // const carPostKey = push(child(ref(db), 'users/userAccount/'+userId+'/'+today+'/carData')).key;
+          // const tourPostKey = push(child(ref(db), 'users/userAccount/'+userId+'/'+today+'/tourData')).key;
+
+          // const updates = {};
+
+          // const roomLink = document.querySelector('#roomdata');
+          // roomLink.addEventListener('click', e => {
+            
+          // })
+
+
+          // function writeUserData(userId){
+          //   set(ref(db, '/users/'+'userAccount/'+userId+'/'+today), {
+              
+          //   });
+          // }
+      
+          // writeUserData(userId);
+
+          // const urlParams = new URLSearchParams(window.location.search);  
+
+
+          
+          
+
+        </script> 
+        <!-- <script src="https://js.stripe.com/v3/">
+            let clientSecret = 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC';
+            var stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd');
+            stripe.confirmCardPayment(clientSecret).then(function(response){
+                if(response.error){
+                    console.error(response.error);
+                } else if(response.paymentIntent && response.paymentIntent.status === 'succeeded'){
+                    console.log(response.paymentIntent);
+                }
+            });
+        </script> -->
+        
+      </body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "booking-app-6750f",
+  "private_key_id": "4b6124a7337e9eb63902ccbf1aebb69cc141debe",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0MjGK8MV9t82P\n2VmqrTVCN8cmjuujZEaerFh1Q60Ybl1hZMKMwPHTx/lMHkPAzjg7+ISpExKqolVF\nA0DparymYowbyz3LGIOWuEZ330UUO+1+QISaqLzpCBMAu+3dFxE4WGr7Y33KK5V+\nhVrn9bpDopXRH/cjBiQ4RRVCHQRvGOCohnb1aNgtQHaEgn2kiIuE5Wva2Z2u3ZTM\nNhwGcktVbvLjAW/0w46wuguT6NaEd9uJ+8oJbkFfJ1rcsTkkbOpZ2WuG9aqUSkR1\n8JDyrCV9zrjDEQX8yQHfI0xO7EkkePM5dDIl87J4cCv1go+02oBtrBSSaExckeVW\nbc9jKN5lAgMBAAECggEABKBHQlRlFZGq7tb7JNUWiXEqJTTFGug/oeI10SjgIEDx\nF8eA8SEg9DltjoU2YxRIQE3khfyt3YCWZNOtDnEFj9X2193TY8vo0O1BLeGnAdp6\nAeRBI0FSvD7PUhUBCcyGTiaC9Jo8x/xvdZSR3WOjGQprAzfpXdZSBrnLTmu1Se7T\n5UFM7u1IRLXpBMYBtgl1TzrvC6NIjxtg10ddMWY1RDy0YmlhytjBOAnELGPZBXAO\nmtK/dnUO8PfKJ9DdYkknzQfOPf8ftAD6NfdyckPCdL5NcrjXylCxMAWSDga6s+nj\nL7QUfFanwpvsyv9J0yxSb1mqOywFWYzy44GN+wawbwKBgQD8nzQv4NdiKuQtrvep\ndp4iiJW3IjRTCopKU3RIs6n5JIrNZwT7lon5qxJYUBJOIOhkPeHRmVrLDtxlc64T\nRGlCH6XzOMRGyy8njFj+G0Kkyrhoky6HvxTnbwTK/1J2sr9f+GFTCdjwB7fHsvup\nqXlrWf/OhMJE5hjbsIyxmar40wKBgQC2mw48ZRnp87n6EPRtKgKMyhA3LtHXyCrT\nYws+jWCGxMovgkKRFyleIDVS7Wk5Jid2QBqJGwS39t3rzvPm764iEyg+vrtJmHcO\nxUd6PHzK81VGrHR7yFGoq38JGBjpjMtwKzLyhZoshyKIye6edita9zRwh3xpXQR/\nHj4CPB1I5wKBgHDPX2yqCUSrRq4n3izs7X0aZVEckyUqJcs/LURyBstdSCalhJId\nDYxSmqSZTTNaeqyY/citpN/cyQr895VfDWob2+2bQfsjLPGKOQtwfPg+Fs+MOlEg\nQWOALjHAhsC+3bsrnbqJQTkfGTCyerOvHKuVyygcHOzLm/ovAwUkTDdFAoGACkxU\nUTOicn88Tc4G+uETo70BjRsm2nR/dcxwJebzOqZ+gI9oEaasvpIyb6rT9FUihJi4\n5mKPsZBKk7HoL2309BcAfgljppLipAKcNViT8R4oAQRYzWJOuKRzVZ/2R7WZA4ps\nJSFDwJ8eY3h/7I/dghPO8Umyyn5kcobSGG4reKECgYAfj59NQrRfnV3tTqOhJ1Qc\nIi++GNDMPb3KP9flvEUBBen9sP4dOx93aY2JK0/NqP8Ok3qQxF+9WqKOtYCQej9I\nrl/uiLsyAMcO75R0J6T+cStwa7UsU5iyhqiMzAfx6jFgixkxT6CN38noWkRHxSD/\nOAzmiCINzUIx8CavWmRazA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-h0nzw@booking-app-6750f.iam.gserviceaccount.com",
+  "client_id": "101803458508735087193",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-h0nzw%40booking-app-6750f.iam.gserviceaccount.com"
+}
