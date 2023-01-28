@@ -10,7 +10,6 @@ const { addDoc, collection, getFirestore, Timestamp, fromDate, orderBy, limit, o
 const app = express();
 const port = process.env.PORT || 8080;
 const stripe = require('stripe')('sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC');
-const fetch = require("node-fetch");
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
 const upload = multer({dest: "uploads/"});
