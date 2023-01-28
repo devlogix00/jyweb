@@ -129,7 +129,7 @@ function uploadFiles(req, res){
     
     res.json({ message: "Successfully uploaded file" });
 
-    let uploads = './uploads/';
+    let uploads = './src/uploads/';
     let filepath = path.join(uploads, req.file.filename);
     console.log(filepath);
     app.get('/', (req, res) => {
@@ -165,7 +165,7 @@ function uploadFiles(req, res){
     
     res.json({ message: "Successfully uploaded file" });
 
-    let uploads = './uploads/';
+    let uploads = './src/uploads/';
     let filepath = path.join(uploads, req.file.filename);
     console.log(filepath);
     app.get('/', (req, res) => {
@@ -1279,7 +1279,7 @@ app.post("/upload_files", upload.single('file'),
                     
         res.json({ message: "Successfully uploaded file" });
 
-        let uploads = './uploads/';
+        let uploads = './src/uploads/';
         let filepath = path.join(uploads, req.file.filename);
         console.log(filepath);
         app.get('/', (req, res) => {
