@@ -109,7 +109,7 @@
                   updates['rooms/'+dbRead.item+'/roomDates'] = roomRead.roomDates;
                   updates['rooms/'+dbRead.item+'/userName'] = userName;
                   updates['rooms/'+dbRead.item+'/checkedIn'] = null;
-                  updates['rooms/'+dbRead.item+'/bookingUrl'] = 'http://localhost:8080/'+generateId(16);
+                  updates['rooms/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                   update(ref(db), updates);
                  window.location = "UserAccount.html";
                 });
@@ -140,7 +140,7 @@
                     updates['cars/'+dbRead.item+'/carDates'] = carRead.carDates;
                     updates['cars/'+dbRead.item+'/userName'] = userName;
                     updates['cars/'+dbRead.item+'/pickedUp'] = null;
-                    updates['cars/'+dbRead.item+'/bookingUrl'] = 'http://localhost:8080/'+generateId(16);
+                    updates['cars/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                    update(ref(db), updates);
                    window.location = "UserAccount.html";
                  });
@@ -171,7 +171,7 @@
                     updates['tours/'+dbRead.item+'/tourDates'] = tourRead.tourDates;
                     updates['tours/'+dbRead.item+'/userName'] = userName;
                     updates['tours/'+dbRead.item+'/tourStarted'] = null;
-                    updates['tours/'+dbRead.item+'/bookingUrl'] = 'http://localhost:8080/'+generateId(16);
+                    updates['tours/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                     update(ref(db), updates);
                     window.location = "UserAccount.html";
                   });
@@ -196,7 +196,7 @@
                     updates['bookedDrivers/'+dbRead.item+'/userName'] = userName;
                     updates['bookedDrivers/'+dbRead.item+'/driverName'] = data.item;
                     updates['bookedDrivers/'+dbRead.item+'/driverPresent'] = null;
-                    updates['bookedDrivers/'+dbRead.item+'/bookingUrl'] = 'http://localhost:8080/'+generateId(16);
+                    updates['bookedDrivers/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                     update(ref(db), updates);
                     window.location = "UserAccount.html";
                   });

@@ -490,7 +490,7 @@ onValue(regList, (snapshot) => {
                                 </form>
                                 </div>
                                 <div>
-                                    <a href="http://localhost:8080/host/index.html">Close Chat</a>
+                                    <a href="https://polar-scrubland-06961.herokuapp.com/host/index.html">Close Chat</a>
                                 </div>
                             </div>
 
@@ -663,7 +663,7 @@ onValue(regList, (snapshot) => {
                                         </form>
                                         </div>
                                         <div>
-                                            <a href="http://localhost:8080/host/index.html">Close Chat</a>
+                                            <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
                                         </div>
                                     </div>
 
@@ -837,7 +837,7 @@ onValue(regList, (snapshot) => {
                                                         </form>
                                                         </div>
                                                         <div>
-                                                            <a href="http://localhost:8080/host/index.html">Close Chat</a>
+                                                            <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
                                                         </div>
                                                     </div>
                 
@@ -1136,7 +1136,7 @@ onValue(drvProfileRef, (snapshot) => {
                                 </form>
                                 </div>
                                 <div>
-                                    <a href="http://localhost:8080/host/index.html">Close Chat</a>
+                                    <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
                                 </div>
                             </div>
 
