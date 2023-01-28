@@ -1236,36 +1236,36 @@ onValue(drvProfileRef, (snapshot) => {
 })
 
 app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname, '/index.html'));
-    res.sendFile(path.join(__dirname, '/signup.html'));
-    res.sendFile(path.join(__dirname, '/login.html'));
-    res.sendFile(path.join(__dirname, '/UserAccount.html'));
-    res.sendFile(path.join(__dirname, '/css/material-kit.css'));
+    res.sendFile(path.join(__dirname, '/src/index.html'));
+    res.sendFile(path.join(__dirname, '/src/host/signup.html'));
+    res.sendFile(path.join(__dirname, '/src/host/login.html'));
+    res.sendFile(path.join(__dirname, '/src/UserAccount.html'));
+    res.sendFile(path.join(__dirname, '/src/css/material-kit.css'));
     res.sendFile(path.join(__dirname, '/checkout.html'));
-    res.sendFile(path.join(__dirname, '/drvlogin.html'));
-    res.sendFile(path.join(__dirname, '/drive.html'));
-    res.sendFile(path.join(__dirname,'/img/e3420969-2cfb-4cf8-8946-5083af5a915b.jpg'));
-    res.sendFile(path.join(__dirname,'/img/f73312aa-cf2b-4e47-896d-d727e6d70ec5.jpg'));
-    res.sendFile(path.join(__dirname,'/img/f73312aa-cf2b-4e47-896d-d727e6d70ec5.jpg'));
-    res.sendFile(path.join(__dirname,'/img/e3420969-2cfb-4cf8-8946-5083af5a915b.jpg'));
-    res.sendFile(path.join(__dirname,'/img/2b14229b-02f3-4dd3-8923-21e28975e600.jpg'));
-    res.sendFile(path.join(__dirname,'/img/28e615a5-4cef-4df9-87db-bb46fd206a30.jpg'));
-    res.sendFile(path.join(__dirname,'/img/93eb5c84-7d64-442d-bfdc-2d7495b308c5.jpg'));
-    res.sendFile(path.join(__dirname,'/img/204a45e9-24d9-4701-b4f3-cf109b168637.jpg'));
-    res.sendFile(path.join(__dirname,'/img/a0289f1a-b448-4ec7-b8d5-ebbc4b25492d.jpg'));
-    res.sendFile(path.join(__dirname,'/img/a506bc65-344d-456d-95ab-d95e8f2ecddc.jpg'));
-    res.sendFile(path.join(__dirname,'/img/2e335617-544a-49b6-b856-f251e5615ac9.jpg'));
-    res.sendFile(path.join(__dirname,'/img/bd6f6723-2ee9-4845-9b9a-e87d1345b345.jpg'));
-    res.sendFile(path.join(__dirname,'/img/fa7aef72-6466-461a-b47c-a44960394cf7.jpg'));
-    res.sendFile(path.join(__dirname,'/img/a48e12a0-c932-4bae-bc50-cd52a6948b58.jpg'));
-    res.sendFile(path.join(__dirname,'/img/89184f79-a27a-418d-9635-95418bb73b4a.jpg'));
-    res.sendFile(path.join(__dirname,'/img/574d9408-6a61-46c9-aeef-175417bd6cee.jpg'));
-    res.sendFile(path.join(__dirname,'/img/da032bb6-db3f-4823-a297-95bf9750fbed.jpg'));
-    res.sendFile(path.join(__dirname,'/img/06b1ebbf-f49e-4701-8444-bc8db0f4a638.jpg'));
-    res.sendFile(path.join(__dirname,'/img/fc56fd06-37dd-49d8-ba9f-79b69bd8a61b.jpg'));
-    res.sendFile(path.join(__dirname,'/img/2b3ca510-a22d-436f-914b-66930527aaf4.jpg'));
-    res.sendFile(path.join(__dirname,'/img/a506bc65-344d-456d-95ab-d95e8f2ecddc.jpg'));
-    res.sendFile(path.join(__dirname,'/server/booking-app-6750f-firebase-adminsdk-h0nzw-3227c0e12b.json'));
+    res.sendFile(path.join(__dirname, '/src/host/drvlogin.html'));
+    res.sendFile(path.join(__dirname, '/src/host/drive.html'));
+    res.sendFile(path.join(__dirname,'/src/img/e3420969-2cfb-4cf8-8946-5083af5a915b.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/f73312aa-cf2b-4e47-896d-d727e6d70ec5.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/f73312aa-cf2b-4e47-896d-d727e6d70ec5.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/e3420969-2cfb-4cf8-8946-5083af5a915b.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/2b14229b-02f3-4dd3-8923-21e28975e600.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/28e615a5-4cef-4df9-87db-bb46fd206a30.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/93eb5c84-7d64-442d-bfdc-2d7495b308c5.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/204a45e9-24d9-4701-b4f3-cf109b168637.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/a0289f1a-b448-4ec7-b8d5-ebbc4b25492d.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/a506bc65-344d-456d-95ab-d95e8f2ecddc.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/2e335617-544a-49b6-b856-f251e5615ac9.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/bd6f6723-2ee9-4845-9b9a-e87d1345b345.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/fa7aef72-6466-461a-b47c-a44960394cf7.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/a48e12a0-c932-4bae-bc50-cd52a6948b58.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/89184f79-a27a-418d-9635-95418bb73b4a.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/574d9408-6a61-46c9-aeef-175417bd6cee.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/da032bb6-db3f-4823-a297-95bf9750fbed.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/06b1ebbf-f49e-4701-8444-bc8db0f4a638.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/fc56fd06-37dd-49d8-ba9f-79b69bd8a61b.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/2b3ca510-a22d-436f-914b-66930527aaf4.jpg'));
+    res.sendFile(path.join(__dirname,'/src/img/a506bc65-344d-456d-95ab-d95e8f2ecddc.jpg'));
+    res.sendFile(path.join(__dirname,'/src/server/booking-app-6750f-firebase-adminsdk-h0nzw-3227c0e12b.json'));
 
     res.sendFile(path.join(__dirname, '/'+serveUrl+'.html'));
 
