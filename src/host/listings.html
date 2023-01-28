@@ -410,7 +410,7 @@
               const formData = new FormData();
               formData.append("file", file);
               console.log(formData);
-              fetch("http://localhost:8080/upload_files", {
+              fetch("https://polar-scrubland-06961.herokuapp.com/upload_files", {
                 method: 'POST',
                 body: formData
               })
@@ -582,7 +582,7 @@
                     document.getElementById('listing'+i).remove();
                     document.cookie = 'deletedId='+data[i].itemId;
                     remove(ref(db, 'listings/listings/'+i));
-                    fetch("http://localhost:8080/host/listings", {
+                    fetch("https://polar-scrubland-06961.herokuapp.com/src/host/listings", {
                     method: 'POST',
                     body: ''
                     

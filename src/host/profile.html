@@ -178,7 +178,7 @@
               const formData = new FormData();
               formData.append("file", file);
               console.log(formData);
-              fetch("http://localhost:8080/uploadimgfiles", {
+              fetch("https://polar-scrubland-06961.herokuapp.com/uploadimgfiles", {
                 method: 'POST',
                 body: formData
               })
