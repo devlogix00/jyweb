@@ -925,7 +925,7 @@ onValue(regList, (snapshot) => {
                                                     
                                                     }
                                                 }, {
-                                                    onlyOnce: true
+                                                    onlyOnce: false
                                                 });
                                         
                                             } 
