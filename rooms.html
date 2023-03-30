@@ -10,6 +10,7 @@
         <!--     Fonts and icons     -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link rel="stylesheet" href="cardcss.css"/>
         <!-- CSS Files -->
         <link href="./css/material-kit.css"  rel="stylesheet" />
         <script src="./js/core/jquery.min.js" type="text/javascript"></script>
@@ -89,7 +90,7 @@
           import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
           import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
           import { getDatabase, ref, set, push, child, update, onValue, get } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-          import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
+          import {getFirestore, collection, addDoc, getDocs, query, where} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
           // TODO: Add SDKs for Firebase products that you want to use
           // https://firebase.google.com/docs/web/setup#available-libraries
         
@@ -111,6 +112,7 @@
           const analytics = getAnalytics(app);
           const auth = getAuth();  
           const db = getDatabase(); 
+          const fs = getFirestore()
 
           console.log(auth);
 
@@ -125,6 +127,18 @@
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
+
+              console.log(fs);
+
+              const q = query(collection(fs, "listings"), where("listingType", "==", 'room'));
+
+              const querySnapshot = getDocs(q);
+              console.log(querySnapshot);
+              // querySnapshot.forEach((doc) => {
+              //   // doc.data() is never undefined for query doc snapshots
+              //   console.log(doc.data());
+              // });
+
               var today = new Date();
               var dd = String(today.getDate()).padStart(2, '0');
               var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -146,10 +160,12 @@
                   //let listingimg = newdata.listingImg.slice(12,newdata.listingImg.length);
                   let cardOuter = document.createElement('div');
                   cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
+                  
                   cardOuter.style.margin = '1em';
 
                   let rcc = document.createElement('div');
                   rcc.setAttribute('class', "rotating-card-container");
+                  rcc.setAttribute('id', data[i].itemId);
                   rcc.style.marginBottom = '30px';
 
                   let cardInnerInner = document.createElement('div');
@@ -178,6 +194,7 @@
                   price.setAttribute('id', data[i].listingName+'-price');
                   price.innerText = '$'+data[i].listingPrice+'/night';
                   price.style.paddingTop = '3em';
+                  price.style.color = 'black';
                   
 
                   let cardTitle = document.createElement('h4');
@@ -254,27 +271,44 @@
             onValue(rmLocs, (snapshot) => {
               const locData = snapshot.val();
               if(locData != null){
+                console.log(locData);
                 for(let i = 0; i < locData.length; i++){
-                if(locData[i].locType == 'room'){
-                  coordList.push(locData[i]);
+                  if(locData[i] !== 'undefined' ){
+                    coordList.push(locData[i]);
+                  }
                 }
-              }
-              console.log(coordList);
-              for(let i = 0; i < coordList.length; i++){
-              let position = coordList[i].loc;
-              console.log(position);
-              const map = new google.maps.Map(document.getElementById("map"), {
-                  zoom: 2,
-                  center: {lat: 8.090440925828062, lng: -1.6977176080814078}
-            });
+                console.log(coordList);
+                for(let i = 0; i < coordList.length; i++){
+                  if(coordList[i].locType === "room"){
+                    let position = coordList[i].loc;
+                    console.log(position);
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 2,
+                        center: {lat: 8.090440925828062, lng: -1.6977176080814078}
+                    });
 
-              var marker = new google.maps.Marker({
-                map: map,
-                position: position
-              });
-              
-            }
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      position: position
+                    });
+
+                    marker.addListener('click', flipCard);
+
+                    function flipCard(){
+                      console.log("marker clickable");
+                      let itemCard = document.getElementById(coordList[i].itemId);
+                      console.log(itemCard.getBoundingClientRect());
+                      let itemPos = itemCard.getBoundingClientRect()
+                      let itemPosX = itemPos.x;
+                      let itemPosY = itemPos.y;
+                      window.scrollTo(itemPosX, itemPosY);
+                      itemCard.classList.toggle("rotating-card-container");
+                      document.getElementById('roomsContainer').scrollLeft = itemPos.left;
+                    }
+                }
+                
               }
+            }
               
             });
 
@@ -290,7 +324,8 @@
         </script> 
     <script>
         function addUID(){
-          let hrefOrig = "https://booking-calendar-lemon.vercel.app/RoomCalendar?uid=";
+          //let hrefOrig = "https://booking-calendar-lemon.vercel.app/RoomCalendar?uid=";
+          let hrefOrig = "http://localhost:3000/RoomCalendar?uid=";
           window.location = hrefOrig + userId;
         }
 

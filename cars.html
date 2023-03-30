@@ -88,6 +88,13 @@
           let newdata;
           let coordList = [];
           let profcoordList = [];
+          let innerProfDiv;
+          let profDiv;
+          let licenseImg;
+          let profileImg;
+          let price;
+          let rate;
+          let bkmBtn;
         </script>
         <script type="module">
           // Import the functions you need from the SDKs you need
@@ -150,6 +157,7 @@
 
                   let rcc = document.createElement('div');
                   rcc.setAttribute('class', "rotating-card-container");
+                  rcc.setAttribute('id', data[i].itemId);
                   rcc.style.marginBottom = '30px';
 
                   let cardInnerInner = document.createElement('div');
@@ -173,7 +181,7 @@
                   back.innerText = data[i].listingName;
                   back.style.paddingTop = '3em';
 
-                  let price = document.createElement('h5');
+                  price = document.createElement('h5');
                   price.setAttribute('class', "price");
                   price.setAttribute('id', data[i].listingName+'-price');
                   price.innerText = '$'+data[i].listingPrice+'/day';
@@ -258,17 +266,18 @@
               for(let i = 0; i < data.length; i++){
                 let name = document.createElement('h2');
                 name.innerText = data[i].Name;
-                let licenseImg = document.createElement('img');
+                licenseImg = document.createElement('img');
                 licenseImg.setAttribute('src', data[i].licenseImg);
                 licenseImg.style.width = '45%';
-                let profileImg = document.createElement('img');
+                profileImg = document.createElement('img');
                 profileImg.setAttribute('src', data[i].profileImg);
                 profileImg.style.width = '100px';
                 profileImg.style.height = '100px';
                 profileImg.style.borderRadius = '50%';
-                let profDiv = document.createElement('div');
+                profDiv = document.createElement('div');
+                profDiv.setAttribute('id', data[i].itemId);
                 let nameDiv = document.createElement('div');
-                let rate = document.createElement('h3');
+                rate = document.createElement('h3');
                 rate.innerText = '$'+data[i].price+'/day';
                 nameDiv.appendChild(profileImg);
                 nameDiv.appendChild(name);
@@ -276,10 +285,10 @@
                 nameDiv.style.flexDirection = 'row';
                 profDiv.appendChild(nameDiv);
                 document.getElementById('profiles').appendChild(profDiv);
-                let innerProfDiv = document.createElement('div');
+                innerProfDiv = document.createElement('div');
                 profDiv.appendChild(innerProfDiv);
                 innerProfDiv.style.display = 'none';
-                let bkmBtn = document.createElement('button');
+                bkmBtn = document.createElement('button');
                 bkmBtn.innerText = 'BookMe';
                 bkmBtn.style.width = '100px';
 
@@ -329,7 +338,7 @@
                     
 
                  
-                  })
+                  });
                 });
 
              
@@ -341,25 +350,42 @@
               const locData = snapshot.val();
               if(locData != null){
                 for(let i = 0; i < locData.length; i++){
-                  if(locData[i] != undefined && locData[i].locType == 'car'){
+                  if(locData[i] != undefined){
                     coordList.push(locData[i]);
                   }
-              }
-              console.log(coordList);
-              for(let i = 0; i < coordList.length; i++){
-              let position = coordList[i].loc;
-              console.log(position);
-              const map = new google.maps.Map(document.getElementById("map"), {
-                  zoom: 2,
-                  center: {lat: 8.090440925828062, lng: -1.6977176080814078}
-            });
+                }
+                console.log(coordList);
+                for(let i = 0; i < coordList.length; i++){
+                  if(coordList[i] === 'car'){
+                    let position = coordList[i].loc;
+                    console.log(position);
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 2,
+                        center: {lat: 8.090440925828062, lng: -1.6977176080814078}
+                    });
 
-              var marker = new google.maps.Marker({
-                map: map,
-                position: position
-              });
-              
-            }
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      position: position
+                    });
+
+                    marker.addListener('click', flipCard);
+
+                    function flipCard(){
+                      console.log("marker clickable");
+                      let itemCard = document.getElementById(coordList[i].itemId);
+                      console.log(itemCard.getBoundingClientRect());
+                      let itemPos = itemCard.getBoundingClientRect()
+                      let itemPosX = itemPos.x;
+                      let itemPosY = itemPos.y;
+                      window.scrollTo(itemPosX, itemPosY);
+                      itemCard.classList.toggle("rotating-card-container");
+                      document.getElementById('carsContainer').scrollLeft = itemPos.left;
+                    }
+                    
+                  }
+                
+                }
               }
               
             });
@@ -386,6 +412,58 @@
                 map: map,
                 position: position
               });
+
+              marker.addListener('click', flipCard);
+              function flipCard(){
+                console.log("marker clickable");
+                let itemCard = document.getElementById(profcoordList[i].itemId);
+                console.log(itemCard);
+                console.log(itemCard.getBoundingClientRect());
+                let itemPos = itemCard.getBoundingClientRect()
+                let itemPosX = itemPos.x;
+                let itemPosY = itemPos.y;
+                window.scrollTo(itemPosX, itemPosY);
+                itemCard.style.display = 'flex';
+                itemCard.style.flexDirection = 'column';
+                innerProfDiv.style.display = 'flex';
+                innerProfDiv.style.flexDirection = 'column';
+                innerProfDiv.appendChild(rate);
+                innerProfDiv.appendChild(licenseImg);
+                innerProfDiv.appendChild(bkmBtn);
+                document.getElementById('profiles').scrollLeft = itemPos.left;
+                bkmBtn.addEventListener('click', function(){
+                    const dbdriverDates = ref(db, 'users/userAccount/'+userId+'/cardata'+today);
+                    onValue(dbdriverDates, (snapshot) => {
+                      newdata = snapshot.val();
+                      console.log(newdata);
+                      
+                      if(newdata === null){
+                        alert('Please select your dates first.');
+                      } else {
+                        const updates = {};
+                        updates['users/userAccount/'+userId+'/driverdata/driver'] = data[i].Name;
+                        updates['users/userAccount/'+userId+'/driverdata/img'] = data[i].profileImg;
+                        updates['users/userAccount/'+userId+'/driverdata'+today+'/driver'] = data[i].Name;
+                        updates['users/userAccount/'+userId+'/driverdata'+today+'/img'] = data[i].profileImg;
+                        updates['users/userAccount/'+userId+'/bookingdata/item'] = data[i].Name;
+                        updates['users/userAccount/'+userId+'/bookingdata/img'] = data[i].profileImg;
+                        updates['users/userAccount/'+userId+'/bookingdata/bookingType'] = 'driver';
+                        updates['users/userAccount/'+userId+'/bookingdata'+today+'/item'] = data[i].Name;
+                        updates['users/userAccount/'+userId+'/bookingdata'+today+'/img'] = data[i].profileImg;
+                        updates['users/userAccount/'+userId+'/bookingdata'+today+'/bookingType'] = 'driver';
+                        updates['users/userAccount/'+userId+'/itemdata'+today+'/item'] = data[i].Name;
+                        updates['users/userAccount/'+userId+'/itemdata'+today+'/itemType'] = 'driver';
+                        updates['users/userAccount/'+userId+'/itemdata'+today+'/itemPrice'] = data[i].price;
+                        updates['users/userAccount/'+userId+'/itemdata'+today+'/itemId'] = data[i].itemId;
+                        updates['bookedDrivers/'+data[i].Name+'/img'] = data[i].profileImg;
+                        updates['bookedDrivers/'+data[i].Name+'/driverId'] = data[i].userId;
+                        update(ref(db), updates);
+                        window.location = './drivercheckout.html';
+                      }
+                     
+                    });
+                  });
+              }
               
             }
               }
@@ -417,7 +495,9 @@
           var marker = new google.maps.Marker({
           map: map,
           position: loc
-        });
+          });
+
+          
 
         }
 
@@ -439,7 +519,8 @@
         </script>
         <script>
           function addUID(){
-            let hrefOrig = "https://booking-calendar-lemon.vercel.app/CarCalendar?uid=";
+            //let hrefOrig = "https://booking-calendar-lemon.vercel.app/CarCalendar?uid=";
+            let hrefOrig = "http://localhost:3000/CarCalendar?uid=";
             window.location = hrefOrig + userId;
           }
           function initMap() {

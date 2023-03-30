@@ -83,6 +83,7 @@ let rmSearchUrl;
 let regList;
 let deletedId;
 
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
@@ -103,7 +104,7 @@ const usersDb = database.collection('allMessages');
 let timestamp = serverTimestamp();
 const databaseRef = ref(adminDB, 'messages/');
 
-console.log(serveUrl);
+//console.log(serveUrl);
 
 onValue(databaseRef, (snapshot) => {
     const data = snapshot.val();
@@ -125,16 +126,16 @@ onValue(databaseRef, (snapshot) => {
 app.post("/uploadfiles", upload.single('file'), 
 function uploadFiles(req, res){
     
-    console.log(req.body);
+    //console.log(req.body);
     
     res.json({ message: "Successfully uploaded file" });
 
-    let uploads = './src/uploads/';
+    let uploads = './uploads';
     let filepath = path.join(uploads, req.file.filename);
-    console.log(filepath);
-    app.get('/', (req, res) => {
-        res.sendFile(filepath, { root: __dirname });
-    });
+    //console.log(filepath);
+    // app.get('/', (req, res) => {
+    //     res.sendFile(filepath, { root: __dirname });
+    // });
     
     onValue(databaseRef, (snapshot) => {
         const data = snapshot.val();
@@ -161,20 +162,19 @@ function uploadFiles(req, res){
 app.post("/uploadimgfiles", upload.single('file'), 
 function uploadFiles(req, res){
     
-    console.log(req.body);
+    //console.log(req.body);
     
     res.json({ message: "Successfully uploaded file" });
-
-    let uploads = './src/uploads/';
+    let uploads = './uploads/';
     let filepath = path.join(uploads, req.file.filename);
     console.log(filepath);
-    app.get('/', (req, res) => {
-        res.sendFile(filepath, { root: __dirname });
-    });
+    // app.get('/', (req, res) => {
+    //     res.sendFile(filepath, { root: __dirname });
+    // });
     
     let profileRef = ref(adminDB,'profile/');
     if(profileRef != null){
-        console.log(profileRef);
+      //  console.log(profileRef);
         onValue(profileRef, (snapshot) => {
             let data = snapshot.val();
             if(data != null ){
@@ -182,7 +182,7 @@ function uploadFiles(req, res){
                 updates['drivers/driverAccount/'+data.userId+'/profile/licenseImg'] = filepath;
                 updates['/profile/licenseImg'] = filepath;
                 update(ref(adminDB), updates);
-                console.log(data);
+        //        console.log(data);
                 // profileDb.doc(data.Name).set({
                 //     Name: data.Name,
                 //     licenseImg: filepath,
@@ -232,10 +232,10 @@ function uploadFiles(req, res){
 
 let profileRefdb = ref(adminDB,'profile/');
 if(profileRefdb != null){
-    console.log(profileRefdb);
+    //console.log(profileRefdb);
     onValue(profileRefdb, (snapshot) => {
         let data = snapshot.val();
-        console.log(data);
+       // console.log(data);
         if(data != null && data.location != null && data.profileImg != null){
             const profilesRef = profileDb.doc(data.Name);
             profilesRef.get().then((docSnapshot) => {
@@ -266,7 +266,7 @@ const recentMessageQuery = usersDb.get().then((QuerySnapshot) => {
             var message = doc.data();
             messages.push(message);
         });
-        console.log(messages);
+       // console.log(messages);
         // update firestore with allMessages+bookingId for each chat room
         updates['allMessages'] = messages;
         update(ref(adminDB), updates);
@@ -287,8 +287,8 @@ app.post('/host/listings', (req, res) => {
             for(let i = 0; i < regListData.length; i++){
                 listingDb.get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
-                        console.log('here!');
-                        console.log(req.headers.cookie);
+                       // console.log('here!');
+                      //  console.log(req.headers.cookie);
                         if(req.headers.cookie != 'undefined'){
                             //console.log(req.headers.cookie);
                             let storedC = req.headers.cookie+'';
@@ -305,7 +305,7 @@ app.post('/host/listings', (req, res) => {
                                     deletedId = result[i][1];
                                     if(doc.data().itemId == deletedId){
                                         listingDb.doc(doc.data().listingName).delete().then(() => {
-                                            console.log("Document successfully deleted");
+                                         //   console.log("Document successfully deleted");
                                             // restart server here.
                                         });
                                     }
@@ -326,8 +326,8 @@ app.post('/host/listings', (req, res) => {
             dltrf.remove();
             listingDb.get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    console.log('here!');
-                    console.log(req.headers.cookie);
+                   // console.log('here!');
+                   // console.log(req.headers.cookie);
                     if(req.headers.cookie != 'undefined'){
                         //console.log(req.headers.cookie);
                         let storedC = req.headers.cookie+'';
@@ -344,7 +344,7 @@ app.post('/host/listings', (req, res) => {
                                 deletedId = result[i][1];
                                 if(doc.data().itemId == deletedId){
                                     listingDb.doc(doc.data().listingName).delete().then(() => {
-                                        console.log("Document successfully deleted");
+                                      //  console.log("Document successfully deleted");
                                         // restart server here.
                                     });
                                 }
@@ -372,7 +372,7 @@ onValue(regList, (snapshot) => {
                 locList[i] = lstObj;
             } 
         }
-        console.log(locList);
+       // console.log(locList);
         set(ref(db, 'lstLocations/'), {
             locList
         });
@@ -392,7 +392,7 @@ onValue(profList, (snapshot) => {
             };  
             profLocList[i] = profLstObj; 
         }
-        console.log(profLocList);
+      //  console.log(profLocList);
         set(ref(db, 'profLocations/'), {
             profLocList
         });
@@ -937,12 +937,12 @@ onValue(regList, (snapshot) => {
                         app.post('/host/analytics', async (req, res) => {
                             let url = req.headers.referer;
                                 if(url.includes('?')){
-                                    console.log('parameterized url');
+                                   // console.log('parameterized url');
                                     let url1 = url.split('&');
                                     let url2 = url1[0].split('?');
                                     let url3 = url2[1].split('=');
                                     code = url3[1];
-                                    console.log(code);
+                                  //  console.log(code);
                             
                                     if(req.headers.cookie != 'undefined'){
                                     //console.log(req.headers.cookie);
@@ -958,7 +958,7 @@ onValue(regList, (snapshot) => {
                                     for(let i in result){
                                         if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
                                             userId = result[i][1];
-                                            console.log(userId);
+                                         //   console.log(userId);
                                             const rsponse = await stripe.oauth.token({
                                                 grant_type: 'authorization_code',
                                                 code: code,
@@ -966,11 +966,11 @@ onValue(regList, (snapshot) => {
                                             });
                                             
                                             var connected_account_id = await rsponse.stripe_user_id;
-                                            console.log(connected_account_id);
+                                        //    console.log(connected_account_id);
                             
                                             if(connected_account_id != 'undefined'){
                                                 const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                                console.log(link);
+                                            //    console.log(link);
                                                 let updates = {};
                                                 updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
                                                 updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
@@ -999,7 +999,7 @@ let drvProfileRef = ref(adminDB, 'profiles/profiles');
 onValue(drvProfileRef, (snapshot) => {
     const data = snapshot.val();
     if(data != null){
-        console.log('profiles',data);
+      //  console.log('profiles',data);
         for(let i = 0; i < data.length; i++){
             drName = data[i].Name;
             const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
@@ -1009,12 +1009,12 @@ onValue(drvProfileRef, (snapshot) => {
                     app.post('/host/drvanalytics', async (req, res) => {
                         let url = req.headers.referer;
                         if(url.includes('?')){
-                            console.log('parameterized url');
+                        //    console.log('parameterized url');
                             let url1 = url.split('&');
                             let url2 = url1[0].split('?');
                             let url3 = url2[1].split('=');
                             code = url3[1];
-                            console.log(code);
+                         //   console.log(code);
                     
                             if(req.headers.cookie != 'undefined'){
                             //console.log(req.headers.cookie);
@@ -1030,7 +1030,7 @@ onValue(drvProfileRef, (snapshot) => {
                             for(let i in result){
                                 if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
                                     userId = result[i][1];
-                                    console.log(userId);
+                                  //  console.log(userId);
                                     const rsponse = await stripe.oauth.token({
                                         grant_type: 'authorization_code',
                                         code: code,
@@ -1038,11 +1038,11 @@ onValue(drvProfileRef, (snapshot) => {
                                     });
                                     
                                     var connected_account_id = await rsponse.stripe_user_id;
-                                    console.log(connected_account_id);
+                                 //   console.log(connected_account_id);
                     
                                     if(connected_account_id != 'undefined'){
                                         const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                        console.log(link);
+                                     //   console.log(link);
                                         let updates = {};
                                         updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
                                         updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
@@ -1275,27 +1275,26 @@ app.get('/', function(req, res){
 
 app.post("/upload_files", upload.single('file'), 
     function uploadFiles(req, res){
-        console.log(req.body);
+      //  console.log(req.body);
                     
         res.json({ message: "Successfully uploaded file" });
-
-        let uploads = './src/uploads/';
+        let uploads = './uploads/';
         let filepath = path.join(uploads, req.file.filename);
-        console.log(filepath);
+       // console.log(filepath);
         app.get('/', (req, res) => {
             res.sendFile(filepath, { root: __dirname });
         });
 
         const listingRef = ref(adminDB,'listing/');
         if(listingRef != null){
-            console.log(listingRef);
+          //  console.log(listingRef);
             onValue(listingRef, (snapshot) => {
                 const data = snapshot.val();
                 if(data != null && data.listingType == 'tour'){
                     updates = {};
                     updates['tours/'+data.listingName+'/listingImg'] = filepath;
                     update(ref(adminDB), updates);
-                    console.log(data);
+                 //   console.log(data);
                     const listingsRef = listingDb.doc(data.listingName);
                     listingsRef.get().then((docSnapshot) => {
                         if(data != null && !docSnapshot.exists){
@@ -1314,10 +1313,11 @@ app.post("/upload_files", upload.single('file'),
                         } 
                     });
                 } else if(data != null && (data.listingType == 'room' || data.listingType == 'car')){
-                    console.log(data);
+                  //  console.log(data);
                     const listingsRef = listingDb.doc(data.listingName);
                     listingsRef.get().then((docSnapshot) => {
                         if(data != null && !docSnapshot.exists){
+                            console.log(filepath);
                         listingDb.doc(data.listingName).set({
                             host: data.host,
                             listingImg: filepath,
@@ -1339,32 +1339,39 @@ app.post("/upload_files", upload.single('file'),
     }
 );
 
-const storage = admin.storage();
-let bucket = storage.bucket('uploads');
-console.log(bucket);
+// const storage = admin.storage();
+// let bucket = storage.bucket('uploads');
+// console.log(bucket);
 
-let listings = [];
-listingDb.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        let listing = doc.data();
-        listings.push(listing);
-        console.log(listings.length);
 
-        set(ref(db, 'listings/'), {
-            listings
+listingDb.onSnapshot((doc) => {
+   // console.log(doc);
+    let listings = [];
+    listingDb.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            let listing = doc.data();
+            listings.push(listing);
+            //console.log(listings.length);
+
+            set(ref(db, 'listings/'), {
+                listings
+            });
         });
     });
 });
 
-let profiles = [];
-profileDb.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        let profile = doc.data();
-        profiles.push(profile);
-        console.log(profiles.length);
 
-        set(ref(db, 'profiles/'), {
-            profiles
+profileDb.onSnapshot((doc) => {
+    let profiles = [];
+    profileDb.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            let profile = doc.data();
+            profiles.push(profile);
+        // console.log(profiles.length);
+
+            set(ref(db, 'profiles/'), {
+                profiles
+            });
         });
     });
 });
@@ -1374,16 +1381,16 @@ profileDb.get().then((querySnapshot) => {
 
 app.post('/create-checkout-session', async (req, res) => {
     if(req.headers.cookie != 'undefined'){
-        console.log(req.headers.cookie);
+        //console.log(req.headers.cookie);
         let storedC = req.headers.cookie+'';
         storedC = storedC.split(';');
-        console.log(storedC);
+        //console.log(storedC);
         let result = [];
         for(let i in storedC){
-            console.log(storedC[i].split('='));
+           // console.log(storedC[i].split('='));
             result.push(storedC[i].split('='));
         }
-        console.log(result);
+       // console.log(result);
         for(let i in result){
             if(result[i][0] === 'uid' || result[i][0] === ' uid'){
                 userId = result[i][1];
@@ -1440,14 +1447,14 @@ app.post('/create-checkout-session', async (req, res) => {
         itemPrice = data.itemPrice*100;
         app_fee = 0.15*itemPrice;
 
-        console.log(itemName);
-        console.log(datesLength);
+       // console.log(itemName);
+      //  console.log(datesLength);
     }, {
         onlyOnce: true
     });
 
-    console.log(itemName);
-    console.log(datesLength);
+    //console.log(itemName);
+   // console.log(datesLength);
 
     if(itemName != null){
         const session = await stripe.checkout.sessions.create({
@@ -1476,9 +1483,9 @@ app.post('/create-checkout-session', async (req, res) => {
                 }
             }
         });
-        console.log(session);
+       // console.log(session);
         res.redirect(303, session.url);
-        console.log(res);
+       // console.log(res);
     }
    
 
@@ -1523,7 +1530,9 @@ app.post('/create-checkout-session', async (req, res) => {
 app.listen(port);
 console.log('Server started at http://localhost:'+port);
 
-// export function app(){
-//     const server = express();
-//     return server;
-// }
+// let server = app.listen(port);
+// server.on('connection', function(socket){
+//     console.log('A new connection was just made by server socket!');
+//     socket.setKeepAlive(true, 0)
+// })
+

@@ -35,7 +35,7 @@
           <div class="container">
             <div class="row">
                 <div class="widget-content">
-                    <form id="image-form" >
+                    <form id="image-form" action="/host" method="POST">
                         <input id="type" type="text" placeholder="room, car, tour" onblur="getType()"/>
                         <label>Listing Type:</label>
                         <div id="tourForm" style="display: none;">
@@ -387,10 +387,12 @@
             let mediaCaptureElement = document.getElementById('mediaCapture');
             let imageButtonElement = document.getElementById('submitImage');
             let imageFormElement = document.getElementById('image-form');
+
             imageButtonElement.addEventListener('click', function (e) {
               e.preventDefault();
               mediaCaptureElement.click();
             });
+
             mediaCaptureElement.addEventListener('change', onMediaFileSelected);
             function onMediaFileSelected(e){
               e.preventDefault();
@@ -410,7 +412,7 @@
               const formData = new FormData();
               formData.append("file", file);
               console.log(formData);
-              fetch("https://polar-scrubland-06961.herokuapp.com/upload_files", {
+              fetch("http://localhost:8080/upload_files", {
                 method: 'POST',
                 body: formData
               })
@@ -480,11 +482,47 @@
                   console.log(listing.listingImg);
                   listing.host = userId;
                   console.log(listing);
+
+                  // listing = {
+                  //   listingType: '',
+                  //   listingName: '',
+                  //   listingPrice: '',
+                  //   listingImg: ''
+                  // }
+
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
+                  // function writeHostData(type, name, price, img){
+                  //   let hostListRef = ref(db, 'hosts/hostAccount/'+userId+'/listing');
+                  //   let newHostRef = push(hostListRef);
+                  //   set(newHostRef, {
+                  //     listingType: listing.listingType,
+                  //     listingName: listing.listingName,
+                  //     listingPrice: listing.listingPrice,
+                  //     listingImg: listing.listingImg
+                  //   })
+                  // }
+
+                 // writeHostData(listing.listingType, listing.name, listing.listingPrice, listing.listingImg);
+
+
                   updates['listing/'] = listing;
+
+
                   updates['tours/'+listing.listingName] = listing;
+
+
                   updates['tours/listing'] = listing;
+
+
                   update(ref(db), updates);
+
+                  // fetch('/', {
+                  //   method: 'POST',
+                  //   headers: {
+                  //     'Accept': 'application/json',
+                  //     'Content-Type': 'application/json'
+                  //   }
+                  // }).then(response => response.json()).then(response => console.log(JSON.stringify(response)))
                  
                  } else {
                   document.getElementById('calcRC').addEventListener('click', function(){
@@ -543,7 +581,7 @@
                   cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
 
                   let cardImg = document.createElement('img');
-                  cardImg.setAttribute('src', '.../'+newdata.listingImg);
+                  cardImg.setAttribute('src', 'http://localhost:8080/'+newdata.listingImg);
                   cardImg.style.width = '300px';
 
                   let front = document.createElement('div');
@@ -582,7 +620,7 @@
                     document.getElementById('listing'+i).remove();
                     document.cookie = 'deletedId='+data[i].itemId;
                     remove(ref(db, 'listings/listings/'+i));
-                    fetch("https://polar-scrubland-06961.herokuapp.com/src/host/listings", {
+                    fetch("http://localhost:8080/src/host/listings", {
                     method: 'POST',
                     body: ''
                     
