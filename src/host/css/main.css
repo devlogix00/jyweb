@@ -1,0 +1,5 @@
+.undraw{
+    @media (min-width: 1024) {
+        border-width: 5em;
+    }
+}
