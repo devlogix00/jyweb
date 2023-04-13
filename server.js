@@ -414,7 +414,7 @@ onValue(regList, (snapshot) => {
                         let splitDt = rmsearchData.bookingUrl.split('/');
                         serveUrl = splitDt[3];
 
-            fs.writeFile(path.join('./uploads', '/'+serveUrl+'.html'), `
+            fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
             <!DOCTYPE html>
             <html>
             <head></head>
@@ -583,7 +583,7 @@ onValue(regList, (snapshot) => {
                         let splitDt = crsearchData.bookingUrl.split('/');
                         serveUrl = splitDt[3];
     
-                    fs.writeFile(path.join('./uploads', '/'+serveUrl+'.html'), `
+                    fs.writeFile(path.join('uploads', '/'+serveUrl+'.html'), `
                     <!DOCTYPE html>
                     <html>
                     <head></head>
@@ -753,7 +753,7 @@ onValue(regList, (snapshot) => {
                                         let splitDt = trsearchData.split('/');
                                         serveUrl = splitDt[3];
                     
-                                    fs.writeFile(path.join('./uploads', '/'+serveUrl+'.html'), `
+                                    fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
                                     <!DOCTYPE html>
                                     <html>
                                     <head></head>
@@ -1051,7 +1051,7 @@ onValue(drvProfileRef, (snapshot) => {
                 if(drsearchData != null ){
                     let splitDt = drsearchData.split('/');
                     serveUrl = splitDt[3];
-            fs.writeFile(path.join('./uploads', '/'+serveUrl+'.html'), `
+            fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
             <!DOCTYPE html>
             <html>
             <head></head>
