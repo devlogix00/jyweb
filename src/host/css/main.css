@@ -1,5 +1,3 @@
-
-
 @media (min-width: 1024) {
    #undraw1 {
        width: 40%;
@@ -11,3 +9,15 @@
        width: 20%;
    }
 }
+
+@media (max-width: 1024) {
+    #undraw1 {
+        width: 50%;
+    }
+    #undraw2 {
+        width: 50%;
+    }
+    #undraw3 {
+        width: 30%;
+    }
+ }
