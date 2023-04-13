@@ -407,13 +407,19 @@ onValue(regList, (snapshot) => {
     if(newData != null){
         for(let i = 0; i < newData.length; i++){
             if(newData[i] != null && newData[i].listingType === 'room'){
-                let rmSearchUrl = ref(adminDB, 'rooms/'+newData[i].listingName+'/bookingUrl');
+                let rmSearchUrl = ref(adminDB, 'rooms/'+newData[i].listingName);
                 onValue(rmSearchUrl, (snapshot) => {
                     let rmsearchData = snapshot.val();
                     if(rmsearchData != null ){
-                        let splitDt = rmsearchData.bookingUrl.split('/');
-                        serveUrl = splitDt[3];
-
+                       // console.log(rmsearchData.bookingUrl);
+                        if(rmsearchData.bookingUrl != null){
+                            //console.log(rmsearchData.bookingUrl);
+                            let splitDt = rmsearchData.bookingUrl.split('/');
+                            serveUrl = splitDt[3];
+                           // console.log(rmsearchData.roomDates);
+                           // console.log(rmsearchData.img);
+                           // console.log(rmsearchData.checkin);
+        
             fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
             <!DOCTYPE html>
             <html>
@@ -568,7 +574,7 @@ onValue(regList, (snapshot) => {
             });
                
 
-          
+                        }
                     
                     }
                 }, {
@@ -576,14 +582,18 @@ onValue(regList, (snapshot) => {
                 });
         
             } else if(newData[i] != null && newData[i].listingType === 'car'){
-                let crSearchUrl = ref(adminDB, 'cars/'+newData[i].listingName+'/bookingUrl');
+                let crSearchUrl = ref(adminDB, 'cars/'+newData[i].listingName);
                 onValue(crSearchUrl, (snapshot) => {
                     let crsearchData = snapshot.val();
                     if(crsearchData != null ){
-                        let splitDt = crsearchData.bookingUrl.split('/');
-                        serveUrl = splitDt[3];
+                        if(crsearchData.bookingUrl != null){
+                            let splitDt = crsearchData.bookingUrl.split('/');
+                            serveUrl = splitDt[3];
+                            // console.log(rmsearchData.roomDates);
+                            // console.log(rmsearchData.img);
+                            // console.log(rmsearchData.checkin);
     
-                    fs.writeFile(path.join('uploads', '/'+serveUrl+'.html'), `
+                    fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
                     <!DOCTYPE html>
                     <html>
                     <head></head>
@@ -738,7 +748,7 @@ onValue(regList, (snapshot) => {
                     });
                     
                 
-                       
+                                        }
                                     
                                     }
                                 }, {
@@ -746,12 +756,16 @@ onValue(regList, (snapshot) => {
                                 });
                         
                             }   else if(newData[i] != null && newData[i].listingType === 'tour'){
-                                let trSearchUrl = ref(adminDB, 'tours/'+newData[i].listingName+'/bookingUrl');
+                                let trSearchUrl = ref(adminDB, 'tours/'+newData[i].listingName);
                                 onValue(trSearchUrl, (snapshot) => {
                                     let trsearchData = snapshot.val();
                                     if(trsearchData != null ){
-                                        let splitDt = trsearchData.split('/');
-                                        serveUrl = splitDt[3];
+                                        if(trsearchData.bookingUrl != null){
+                                            let splitDt = trsearchData.bookingUrl.split('/');
+                                            serveUrl = splitDt[3];
+                                            // console.log(rmsearchData.roomDates);
+                                            // console.log(rmsearchData.img);
+                                            // console.log(rmsearchData.checkin);
                     
                                     fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
                                     <!DOCTYPE html>
@@ -907,7 +921,7 @@ onValue(regList, (snapshot) => {
                                     });
                                     
                                 
-                                           
+                                                        }
                                                     
                                                     }
                                                 }, {
@@ -1045,12 +1059,13 @@ onValue(drvProfileRef, (snapshot) => {
             }, {
                 onlyOnce: true
             });
-            let drSearchUrl = ref(adminDB, 'bookedDrivers/'+drName+'/bookingUrl');
+            let drSearchUrl = ref(adminDB, 'bookedDrivers/'+drName);
             onValue(drSearchUrl, (snapshot) => {
                 let drsearchData = snapshot.val();
                 if(drsearchData != null ){
-                    let splitDt = drsearchData.split('/');
-                    serveUrl = splitDt[3];
+                    if(drsearchData.bookingUrl != null){
+                        let splitDt = drsearchData.bookingUrl.split('/');
+                        serveUrl = splitDt[3];
             fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
             <!DOCTYPE html>
             <html>
@@ -1208,7 +1223,7 @@ onValue(drvProfileRef, (snapshot) => {
             });
     
 
-
+                        }
                     
                     }
                 }, {
