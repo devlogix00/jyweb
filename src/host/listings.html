@@ -180,7 +180,6 @@
             function getType(){
                 let type = document.getElementById('type').value;
                 listing.listingType = type;
-                console.log(listing.listingType);
                 let tForm = document.getElementById('tourForm');
                 let rcForm = document.getElementById('rcForm');
                 if(type == 'tour'){
@@ -198,25 +197,20 @@
             function getName(){
                 let name = document.getElementById('name').value;
                 listing.listingName = name;
-                console.log(listing.listingName);
             }
             function getPrice(){
                 let price = document.getElementById('price').value;
                 listing.listingPrice = price;
-                console.log(listing.listingPrice);
             }
             function getImage(){
                 let image = document.getElementById('mediaCapture').value;
                 listing.listingImg = image;
-                console.log(listing.listingImg);
             }
             function getDetails(){
                 let details = document.getElementById('checkin-input').value;
                 listing.checkin = details;
-                console.log(listing.checkin);
             }
             function postListing(){
-                console.log(listing);
                 localStorage.setItem('newListing', JSON.stringify(listing));
             }
   
@@ -264,35 +258,14 @@
                        lng: position.coords.longitude
                      };
                 
-                     console.log(pos);
                              
                      listing.location = pos;
-                     console.log(listing.location);
+
                  
                    }
                  );
                }
            });
-
-          //  function getLoc(){
-          //   if(navigator.geolocation){
-          //        navigator.geolocation.getCurrentPosition(
-          //          (position) => {
-          //            const pos = {
-          //              lat: position.coords.latitude,
-          //              lng: position.coords.longitude
-          //            };
-        
-          //            console.log(pos);
-                             
-          //            listing.location = pos;
-          //            console.log(listing.location);
-                 
-          //          }
-          //        );
-          //      }
-         
-          //  }
 
            function calcDist(){
             let orig;
@@ -314,7 +287,6 @@
                 geocoder = new google.maps.Geocoder();
                 geocoder.geocode({'address': address2}, function(results, status){
                   if(status == 'OK'){
-                    //map.setCenter(results[0].geometry.location);
                     var marker = new google.maps.Marker({
                       map: map,
                       position: results[0].geometry.location
@@ -322,8 +294,7 @@
                     dest = results[0].geometry.location;
                     let destStrng = results[0].geometry.location.toString();
                     listing.destinationCoord = destStrng;
-                   // document.getElementById('destination').value;
-                  console.log(listing);
+
                 
                   let directionsService = new google.maps.DirectionsService();
                   let directionsDisplay = new google.maps.DirectionsRenderer();
@@ -411,13 +382,13 @@
             async function saveImage(file){
               const formData = new FormData();
               formData.append("file", file);
-              console.log(formData);
+
               fetch("http://localhost:8080/upload_files", {
                 method: 'POST',
                 body: formData
               })
-              .then((res) => console.log(res))
-              .then((err) => ("Error occured", err));
+              .then((res) => ("Response ", res))
+              .then((err) => ("Error occured ", err));
             }
         </script>
         <script type="module">
@@ -451,10 +422,8 @@
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
-              console.log(user);  
               userName = user.displayName;
               userId = user.uid;
-              console.log(userName);
               let updates = {};
 
               document.getElementById('submitListing').addEventListener('click', e => {
@@ -462,67 +431,35 @@
                 //let newListing = JSON.parse(localStorage.getItem('newListing'));
                 let type = document.getElementById('type').value;
                 listing.listingType = type;
-                console.log(listing.listingType);
+
                  if(listing.listingType == 'tour'){
             
                   let origin = document.getElementById('origin').value;
                   listing.originName = origin;
-                  console.log(listing.origin);
+
                   let destination = document.getElementById('destination').value;
                   listing.destinationName = destination;
-                  console.log(listing.destination);
+
                   let name = document.getElementById('name').value;
                   listing.listingName = name;
-                  console.log(listing.listingName);
+
                   let price = document.getElementById('price').value;
                   listing.listingPrice = price;
-                  console.log(listing.listingPrice);
+
                   let image = document.getElementById('mediaCapture').value;
                   listing.listingImg = image;
-                  console.log(listing.listingImg);
+              
                   listing.host = userId;
-                  console.log(listing);
-
-                  // listing = {
-                  //   listingType: '',
-                  //   listingName: '',
-                  //   listingPrice: '',
-                  //   listingImg: ''
-                  // }
 
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
-                  // function writeHostData(type, name, price, img){
-                  //   let hostListRef = ref(db, 'hosts/hostAccount/'+userId+'/listing');
-                  //   let newHostRef = push(hostListRef);
-                  //   set(newHostRef, {
-                  //     listingType: listing.listingType,
-                  //     listingName: listing.listingName,
-                  //     listingPrice: listing.listingPrice,
-                  //     listingImg: listing.listingImg
-                  //   })
-                  // }
-
-                 // writeHostData(listing.listingType, listing.name, listing.listingPrice, listing.listingImg);
-
 
                   updates['listing/'] = listing;
 
-
                   updates['tours/'+listing.listingName] = listing;
-
 
                   updates['tours/listing'] = listing;
 
-
                   update(ref(db), updates);
-
-                  // fetch('/', {
-                  //   method: 'POST',
-                  //   headers: {
-                  //     'Accept': 'application/json',
-                  //     'Content-Type': 'application/json'
-                  //   }
-                  // }).then(response => response.json()).then(response => console.log(JSON.stringify(response)))
                  
                  } else {
                   document.getElementById('calcRC').addEventListener('click', function(){
@@ -534,15 +471,11 @@
                   });
                   let name = document.getElementById('name').value;
                   listing.listingName = name;
-                  console.log(listing.listingName);
                   let price = document.getElementById('price').value;
                   listing.listingPrice = price;
-                  console.log(listing.listingPrice);
                   let image = document.getElementById('mediaCapture').value;
                   listing.listingImg = image;
-                  console.log(listing.listingImg);
                   listing.host = userId;
-                  console.log(listing);
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
                   updates['listing/'] = listing;
                   update(ref(db), updates);
@@ -567,7 +500,6 @@
                   for(let i = 0; i < data.length; i++){
                 let newdata = data[i]; 
                 if(newdata != null && newdata.listingImg != 'undefined' && newdata.host === userId){
-                  console.log(newdata.listingImg);
                   let cardOuter = document.createElement('div');
                   cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
                   cardOuter.style.margin = '1em';
@@ -625,8 +557,8 @@
                     body: ''
                     
                 })
-                .then((res) => console.log(res))
-                .then((err) => console.error(err));
+                .then((res) => res)
+                .then((err) => err);
 
                   });
 
@@ -638,7 +570,6 @@
               //document.getElementById('welcome').innerHTML = 'Welcome '+ userName;            
             } else {
               // User is signed out
-              console.log('Not signed in');
             }
 
           });

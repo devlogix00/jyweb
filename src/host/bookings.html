@@ -196,8 +196,9 @@
                       onValue(bookingRef, (snapshot) => {
                         const data = snapshot.val();
                         let url = data.bookingUrl;
-                        window.location = url+'.html';
-                        console.log(url);
+                        let splitDt = url.split('/');
+                        let serveUrl = splitDt[3];
+                        window.location = '.../uploads/'+serveUrl+'.html';
                       })
                     });
                   }
@@ -244,7 +245,9 @@
                       onValue(bookingRef, (snapshot) => {
                         const data = snapshot.val();
                         let url = data.bookingUrl;
-                        window.location = url+'.html';
+                        let splitDt = url.split('/');
+                        let serveUrl = splitDt[3];
+                        window.location = '.../uploads/'+serveUrl+'.html';
                       })
                     });
                   }
@@ -294,16 +297,16 @@
                       onValue(bookingRef, (snapshot) => {
                         const data = snapshot.val();
                         let url = data.bookingUrl;
-                        window.location = url+'.html';
+                        let splitDt = url.split('/');
+                        let serveUrl = splitDt[3];
+                        window.location = '.../uploads/'+serveUrl+'.html';
                       })
                     });
                   }
                   });
                  }
                   
-                  // for(let i = 0; i < 30; i++){
-                    
-                  // }
+              
               });
              
             

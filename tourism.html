@@ -41,20 +41,6 @@
             </div> 
         </div>
         
-   
-        <!-- <div>
-            <footer >
-                <div class="container">
-                  <div class=" float-right">
-                    &copy;
-                    <script>
-                      document.write(new Date().getFullYear())
-                    </script>, made with <i class="material-icons" style="color: red; background-color: white;">favorite</i> by
-                    <a href="https://www.creative-tim.com" target="_blank">Maame Nyarko</a> 
-                  </div>
-                </div>
-              </footer>
-        </div> -->
         <!--   Core JS Files   --> 
         
         <script src="./js/core/jquery.min.js" type="text/javascript"></script>
@@ -114,7 +100,7 @@
           const auth = getAuth(); 
           const db = getDatabase(); 
 
-          console.log(auth);
+       
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -125,17 +111,17 @@
               var yyyy = today.getFullYear();
 
               today = mm + '-' + dd + '-' + yyyy;
-              console.log(today);
+        
 
-              console.log(user);  
+             
               userName = user.displayName;
               userId = user.uid;
-              console.log(userName);
+         
 
               const tourRef = ref(db, 'listings/listings/');
               onValue(tourRef, (snapshot) => {
                 const data = snapshot.val();
-                //console.log(data[5])
+              
                 for(let i = 0; i < data.length; i++){
                 let newdata = data[i]; 
                 if(newdata != null && newdata.listingImg != 'undefined' && newdata.listingType === 'tour'){
@@ -185,46 +171,30 @@
                   cardButton.setAttribute('id', data[i].listingName);
                   cardButton.innerText = 'BookMe';
 
-                 
-                  
-                  
-                  
-                  // back.appendChild(cardButton);
-                  //cardBody.appendChild(cardTitle);
                   cardTitle.appendChild(cardButton);
                   back.appendChild(cardTitle);
                   back.appendChild(price);
                   cardInnerInner.appendChild(back);
-                  //cardBody.appendChild(cardImg);
+      
                   front.appendChild(cardImg);
                   cardInnerInner.appendChild(front);
                   rcc.appendChild(cardInnerInner);
                   cardOuter.appendChild(rcc);
                   document.getElementById('tourContainer').appendChild(cardOuter);
 
-
-                  // const btn = document.querySelector('#'+data[i].listingName);
-                  // btn.addEventListener('click', e => {
-                  //   console.log(data[i].listingName);
-                  // });
-
                   document.getElementById(data[i].listingName+'-back').addEventListener('click', function(){
                     coord.destCoord = data[i].destinationCoord;
                     coord.origCoord = data[i].originCoord;
                     coord.destName = data[i].destinationName;
                     coord.origName = data[i].originName;
-                    console.log(coord);
                   });
-                 
 
-                  //console.log(document.getElementById(data[i].listingName));
                   document.getElementById(data[i].listingName).addEventListener('click', function(){
-                    // console.log(data[i].listingName);
                     const updates = {};
                     const dbtourDates = ref(db, 'users/userAccount/'+userId+'/tourdata'+today+'/tourDates');
                     onValue(dbtourDates, (snapshot) => {
                       const newdata = snapshot.val();
-                      console.log(newdata);
+
                       if(newdata === null){
                         alert('Please select your dates first.');
                       }
@@ -258,12 +228,10 @@
               });            
             } else {
               // User is signed out
-              console.log('Not signed in');
             }
 
           })
-          
-          // const urlParams = new URLSearchParams(window.location.search);          
+        
           
         </script> 
         <script>
@@ -283,8 +251,6 @@
               });
 
               if(coord.destCoord != null){
-                console.log(orig);
-                console.log(dest);
                 let frstCut = coord.destCoord.split('(');
               
                 let scndCut =  frstCut[1].split(',');
@@ -296,8 +262,6 @@
                 dest.lat = parseFloat(scndCut[0]);
                 dest.lng = parseFloat(scndCut[1]);
 
-                console.log(dest);
-
                 let frstCuto = coord.origCoord.split('(');
                 
                 let scndCuto =  frstCuto[1].split(',');
@@ -308,8 +272,6 @@
 
                 orig.lat = parseFloat(scndCuto[0]);
                 orig.lng = parseFloat(scndCuto[1]);
-
-                console.log(orig);
 
                 var marker = new google.maps.Marker({
                   map: map,
@@ -344,112 +306,30 @@
                       alert('Oops, something went wrong!');
                     }
                   });
-                  
-                 // const output = document.querySelector('#mapOutput');
-                  /**
-                   * Pass the created request to the route method
-                   */
+
                   directionsService.route(request, function (result, status) {
                     if (status == google.maps.DirectionsStatus.OK) {
-
-
-
-                      
                       document.getElementById('mapdata').innerHTML = "<p>From:" + coord.origName + "</br>" +"To: " + coord.destName +
                       "</br>"+"Driving distance <i class='fas fa-road'></i> : " +
                         result.routes[0].legs[0].distance.text +"</br>"+
                         " Duration <i class='fas fa-clock'></i> : " +
                         result.routes[0].legs[0].duration.text + ".</p>";
-                       
-                     
-                     
-      
+
                     directionsDisplay.setDirections(result);
                     } else {
               
                     directionsDisplay.setDirections({ routes: [] });
 
-              
-                    //map.setCenter(LatLng);
-
-                      
-                   // output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
                   }
                 });
               }
-          
-               
-        
            }
 
           let mapdata = document.getElementById('mapdata');
             document.getElementById('tourContainer').addEventListener('click', function(){
               calcDist();
               mapdata.style.display = 'block';
-              
-            //   console.log(orig);
-            //   console.log(dest);
-            //   let frstCut = coord.destCoord.split('(');
-             
-            //  let scndCut =  frstCut[1].split(',');
-        
-            //  let thrdCut = scndCut[1].split(')');
-             
-            //  scndCut[1] = thrdCut[0];
-            
-            //  dest.lat = parseFloat(scndCut[0]);
-            //  dest.lng = parseFloat(scndCut[1]);
-
-            //  console.log(dest);
-
-            //  let frstCuto = coord.origCoord.split('(');
-            
-            // let scndCuto =  frstCuto[1].split(',');
-       
-            // let thrdCuto = scndCuto[1].split(')');
-            
-            // scndCuto[1] = thrdCuto[0];
-
-            // orig.lat = parseFloat(scndCuto[0]);
-            // orig.lng = parseFloat(scndCuto[1]);
-
-            // console.log(orig);
-
             });
-              // const tourStops = [
-              // [{lat: 5.548268298423302, lng: -0.1924119904803741}, "Independence Square", "./img/independence-square.jpg"],
-              // [{lat: 5.083488724865659, lng: -1.3479666921772118}, "Elmina Castle", "./img/elmina.jpg"],
-              // [{lat: 4.746817442156072, lng: -2.0904493202534216}, "Cape Three Points", "./img/cape-three-points.jpg"],
-              // [{lat: 5.349066537002657, lng: -1.382347709558764}, "Kakum National Park", "./img/kakum.jpg"],
-              // [{lat: 5.852122642131382, lng: -0.17016394861231582}, "Aburi Botanical Gardens", "./img/aburi.jpg"],
-              // [{lat: 6.300070292043219, lng: 0.06162647773924868}, "Akosombo Dam", "./img/akosombo.jpg"],
-              // [{lat: 6.70453225301265, lng: -1.6148756368795454}, "Manhyia Palace Museum", "./img/manhyia.jpg"],
-              // [{lat: 8.090440925828062, lng: -1.6977176080814078}, "Kintampo Waterfalls", "./img/kintampo.jpg"],
-              // [{lat: 9.220441273507461, lng: -1.859357524976376}, "Larabanga Mosque", "./img/larabanga.jpg"],
-              // [{lat: 9.500253746274351, lng: -2.000042912861571}, "Mole National Park", "./img/mole.jpg"]       
-              // ];
-
-              // const infoWindow = new google.maps.InfoWindow();
-
-              // tourStops.forEach(([position, title, image], i) => {
-              //   const marker = new google.maps.Marker({
-              //   position,
-              //   map,
-              //   title: `${i+1}. ${title}`,
-              //   label: `${i+1}`,
-              //   image: `<img src=${image} style="width: 150px; height:150px;"></img>`,
-              //   optimized: false,
-              // });
-
-              // marker.addListener("click", () => {
-              //     infoWindow.close();
-              //     infoWindow.setContent(marker.getTitle());
-              //     infoWindow.open(marker.getMap(), marker);
-              // })
-              // });
-            
-              
-          
         </script>
       </body>
 </html>

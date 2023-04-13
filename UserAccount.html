@@ -162,10 +162,7 @@
           const auth = getAuth(); 
           const db = getDatabase(); 
           const database = getFirestore(app);
-
-          console.log(auth);
-          console.log(db);
-          console.log(database);
+      
 
           var today = new Date();
           var dd = String(today.getDate()).padStart(2, '0');
@@ -173,7 +170,7 @@
           var yyyy = today.getFullYear();
 
           today = mm + '-' + dd + '-' + yyyy;
-          console.log(mm);
+
           
           let status;
 
@@ -182,11 +179,11 @@
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
-              console.log(user);  
+         
               userName = user.displayName;
               userId = user.uid;
               document.cookie = 'uid='+userId;
-              console.log(userName);
+     
               document.getElementById('welcome').innerHTML = 'Welcome '+ userName;
               document.getElementById('bookings').style.display = 'flex';
               document.getElementById('bookings').style.flexWrap = 'wrap';
@@ -237,13 +234,14 @@
                       document.getElementById('bookings').appendChild(cardOuter);
 
                       cardOuter.addEventListener('click', function(){
-                        console.log(roomNm);
+          
                         let bookingRef = ref(db, 'rooms/'+roomNm);
                         onValue(bookingRef, (snapshot) => {
                           const data = snapshot.val();
                           let url = data.bookingUrl;
-                          window.location = url+'.html';
-
+                          let splitDt = url.split('/');
+                          let serveUrl = splitDt[3];
+                          window.location = './uploads/'+serveUrl+'.html';
                         })
                       });
                     }
@@ -290,13 +288,15 @@
                         document.getElementById('bookings').appendChild(cardOuter);
 
                         cardOuter.addEventListener('click', function(){
-                          console.log(data);
+                
                           let crName = data.car;
                           let bookingRef = ref(db, 'cars/'+crName);
                           onValue(bookingRef, (snapshot) => {
                             const data = snapshot.val();
                             let url = data.bookingUrl;
-                            window.location = url+'.html';
+                            let splitDt = url.split('/');
+                            let serveUrl = splitDt[3];
+                            window.location = './uploads/'+serveUrl+'.html';
                           })
                         });
                       }
@@ -346,13 +346,15 @@
                       document.getElementById('bookings').appendChild(cardOuter);
 
                       cardOuter.addEventListener('click', function(){
-                        console.log(data);
+                   
                         let trName = data.tour;
                         let bookingRef = ref(db, 'tours/'+trName);
                         onValue(bookingRef, (snapshot) => {
                           const data = snapshot.val();
                           let url = data.bookingUrl;
-                          window.location = url+'.html';
+                          let splitDt = url.split('/');
+                          let serveUrl = splitDt[3];
+                          window.location = './uploads/'+serveUrl+'.html';
                         })
                       });
 
@@ -368,7 +370,7 @@
                   onValue(driverdataref, (snapshot) => {
                   const data = snapshot.val();
                   if(data !== null){
-                    console.log(data);
+           
                     if(data.driverStatus !== null && data.driverStatus == 'paid'){
                        let cardOuter = document.createElement('div');
                        cardOuter.setAttribute('class', 'col-md-4');
@@ -407,7 +409,9 @@
                         onValue(bookingRef, (snapshot) => {
                           const data = snapshot.val();
                           let url = data.bookingUrl;
-                          window.location = url+'.html';
+                          let splitDt = url.split('/');
+                          let serveUrl = splitDt[3];
+                          window.location = './uploads/'+serveUrl+'.html';
                         })
                         
                       });
@@ -432,7 +436,7 @@
                
             } else {
               // User is signed out
-              console.log('Not signed in');
+  
             }
 
           });
@@ -492,17 +496,6 @@
 
 
         </script> 
-        <!-- <script src="https://js.stripe.com/v3/">
-            let clientSecret = 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC';
-            var stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd');
-            stripe.confirmCardPayment(clientSecret).then(function(response){
-                if(response.error){
-                    console.error(response.error);
-                } else if(response.paymentIntent && response.paymentIntent.status === 'succeeded'){
-                    console.log(response.paymentIntent);
-                }
-            });
-        </script> -->
         <script>
           function openChat(){
             window.location = "https://bookme-e703b.web.app/";

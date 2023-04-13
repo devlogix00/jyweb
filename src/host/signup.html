@@ -164,30 +164,28 @@
           const app = initializeApp(firebaseConfig);
           const auth = getAuth();
           const analytics = getAnalytics(app);
-           
-          console.log(auth); 
+            
                
           let user = JSON.parse(localStorage.getItem('user'));
-          console.log(user);
+
           let userName = user.name;
-          console.log(user.email);
-          console.log(user.password);
+
           let email = document.getElementById('formemail').value;
           let storedPackage = JSON.parse(localStorage.getItem('Package'));
-          console.log(storedPackage);
+
           
           createUserWithEmailAndPassword(auth, user.email, user.password).then(
             (userCredential) => {
             //signed in
             var user = userCredential.user; 
             user.displayName = userName;
-            console.log(user);
+
             let userId = user.uid;
-            console.log(userId, userName, storedPackage);
+
             localStorage.setItem('uid', userId);
             function writeUserData(userId, userName, storedPackage){
               const db = getDatabase();
-              console.log(db);
+
                 set(ref(db, 'userAccount/'+userId), {
                 username: userName,
                 package: JSON.stringify(storedPackage),

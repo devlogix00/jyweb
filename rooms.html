@@ -115,30 +115,13 @@
           const db = getDatabase(); 
           const fs = getFirestore()
 
-          console.log(auth);
-
-          //const roomUpdates = {};
-
-          // roomUpdates['rooms/Dreams/img'] = '06b1ebbf-f49e-4701-8444-bc8db0f4a638.jpg';
-          // roomUpdates['rooms/TheGoldenPalace/img'] = 'fc56fd06-37dd-49d8-ba9f-79b69bd8a61b.jpg';
-          // roomUpdates['rooms/FeelRoyal/img'] = '9dcf1122-37ef-4d84-879b-31a956b4ebb4.jpg';
-          // roomUpdates['rooms/info/img'] = 'a506bc65-344d-456d-95ab-d95e8f2ecddc.jpg';
-          // update(ref(db), roomUpdates);
-
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
 
-              console.log(fs);
-
               const q = query(collection(fs, "listings"), where("listingType", "==", 'room'));
 
               const querySnapshot = getDocs(q);
-              console.log(querySnapshot);
-              // querySnapshot.forEach((doc) => {
-              //   // doc.data() is never undefined for query doc snapshots
-              //   console.log(doc.data());
-              // });
 
               var today = new Date();
               var dd = String(today.getDate()).padStart(2, '0');
@@ -146,12 +129,9 @@
               var yyyy = today.getFullYear();
 
               today = mm + '-' + dd + '-' + yyyy;
-              console.log(today);
 
-              console.log(user);  
               userName = user.displayName;
               userId = user.uid;
-              console.log(userName);
               const roomRef = ref(db, 'listings/listings/');
               onValue(roomRef, (snapshot) => {
                 const data = snapshot.val();
@@ -208,40 +188,29 @@
                   cardButton.innerText = 'BookMe';
                   
                   allCoords.push(data[i].location);
-                  //console.log(allCoords);
-                  
-                  // back.appendChild(cardButton);
-                  //cardBody.appendChild(cardTitle);
+
                   cardTitle.appendChild(cardButton);
                   back.appendChild(cardTitle);
                   cardInnerInner.appendChild(back);
                   back.appendChild(price);
-                  //cardBody.appendChild(cardImg);
+
                   front.appendChild(cardImg);
                   cardInnerInner.appendChild(front);
                   rcc.appendChild(cardInnerInner);
                   cardOuter.appendChild(rcc);
                   document.getElementById('roomsContainer').appendChild(cardOuter);
-
-                  // const btn = document.querySelector('#'+data[i].listingName);
-                  // btn.addEventListener('click', e => {
-                  //   console.log(data[i].listingName);
-                  // });
-                 // console.log(document.getElementById(data[i].listingName));
                   
                   document.getElementById(data[i].listingName+'-back').addEventListener('click', function(){
                     coord.locCoord = data[i].location;
-                    console.log(coord);
                     createMarker();
                   });
 
                   document.getElementById(data[i].listingName).addEventListener('click', function(){
-                    // console.log(data[i].listingName);
+
                     const updates = {};
                     const dbroomDates = ref(db, 'users/userAccount/'+userId+'/roomdata'+today+'/roomDates');
                     onValue(dbroomDates, (snapshot) => {
                       const newdata = snapshot.val();
-                      console.log(newdata);
                       if(newdata === null){
                         alert('Please select your dates first.');
                       }
@@ -272,17 +241,14 @@
             onValue(rmLocs, (snapshot) => {
               const locData = snapshot.val();
               if(locData != null){
-                console.log(locData);
                 for(let i = 0; i < locData.length; i++){
                   if(locData[i] !== 'undefined' ){
                     coordList.push(locData[i]);
                   }
                 }
-                console.log(coordList);
                 for(let i = 0; i < coordList.length; i++){
                   if(coordList[i].locType === "room"){
                     let position = coordList[i].loc;
-                    console.log(position);
                     const map = new google.maps.Map(document.getElementById("map"), {
                         zoom: 2,
                         center: {lat: 8.090440925828062, lng: -1.6977176080814078}
@@ -296,9 +262,8 @@
                     marker.addListener('click', flipCard);
 
                     function flipCard(){
-                      console.log("marker clickable");
+
                       let itemCard = document.getElementById(coordList[i].itemId);
-                      console.log(itemCard.getBoundingClientRect());
                       let itemPos = itemCard.getBoundingClientRect()
                       let itemPosX = itemPos.x;
                       let itemPosY = itemPos.y;
@@ -315,7 +280,6 @@
 
               } else {
                 // User is signed out
-                console.log('Not signed in');
               }
 
             });
@@ -340,12 +304,8 @@
         let loc = {};
 
         function createMarker(){
-          console.log(coord);
-        
           loc.lat = coord.locCoord.lat;
           loc.lng = coord.locCoord.lng;
-
-          console.log(loc);
 
           const map = new google.maps.Map(document.getElementById("map"), {
                   zoom: 7,
@@ -358,35 +318,6 @@
         });
 
         }
-
-        // function createMarkers(){
-          
-        //   for(let i = 0; i < allCoords.length; i++){
-        //       let frstCut = allCoords[i].locCoord.split('(');
-              
-        //       let scndCut =  frstCut[1].split(',');
-            
-        //       let thrdCut = scndCut[1].split(')');
-                
-        //       scndCut[1] = thrdCut[0];
-            
-        //       loc.lat = parseFloat(scndCut[0]);
-        //       loc.lng = parseFloat(scndCut[1]);
-
-        //       console.log(loc);
-
-        //       const map = new google.maps.Map(document.getElementById("map"), {
-        //               zoom: 2,
-        //               center: {lat: 8.090440925828062, lng: -1.6977176080814078}
-        //       });
-
-        //       var marker = new google.maps.Marker({
-        //       map: map,
-        //       position: loc
-        //     });
-        //   }
-
-        // }
        
       </script>
        

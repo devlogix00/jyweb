@@ -128,8 +128,6 @@
           const auth = getAuth();  
           const db = getDatabase(); 
 
-          console.log(auth);
-
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
@@ -139,12 +137,9 @@
               var yyyy = today.getFullYear();
 
               today = mm + '-' + dd + '-' + yyyy;
-              console.log(today);
-
-              console.log(user);  
+ 
               userName = user.displayName;
               userId = user.uid;
-              console.log(userName);
               
               const carRef = ref(db, 'listings/listings/');
               onValue(carRef, (snapshot) => {
@@ -200,39 +195,26 @@
                   cardButton.setAttribute('id', data[i].listingName);
                   cardButton.innerText = 'BookMe';
                   
-                  
-                  // back.appendChild(cardButton);
-                  //cardBody.appendChild(cardTitle);
                   cardTitle.appendChild(cardButton);
                   back.appendChild(cardTitle);
                   back.appendChild(price);
                   cardInnerInner.appendChild(back);
-                  //cardBody.appendChild(cardImg);
                   front.appendChild(cardImg);
                   cardInnerInner.appendChild(front);
                   rcc.appendChild(cardInnerInner);
                   cardOuter.appendChild(rcc);
                   document.getElementById('carsContainer').appendChild(cardOuter);
-
-                  // const btn = document.querySelector('#'+data[i].listingName);
-                  // btn.addEventListener('click', e => {
-                  //   console.log(data[i].listingName);
-                  // });
-                  console.log(document.getElementById(data[i].listingName));
                   
                   document.getElementById(data[i].listingName+'-back').addEventListener('click', function(){
                     coord.locCoord = data[i].location;
-                    console.log(coord);
                     createMarker();
                   });
 
                   document.getElementById(data[i].listingName).addEventListener('click', function(){
-                    // console.log(data[i].listingName);
                     const updates = {};
                     const dbcarDates = ref(db, 'users/userAccount/'+userId+'/cardata'+today+'/carDates');
                     onValue(dbcarDates, (snapshot) => {
                       const newdata = snapshot.val();
-                      console.log(newdata);
                       if(newdata === null){
                         alert('Please select your dates first.');
                       }
@@ -265,7 +247,6 @@
             const profilesRef = ref(db, 'profiles/profiles/');
             onValue(profilesRef, (snapshot) => {
               const data = snapshot.val();
-              console.log(data.length);
               for(let i = 0; i < data.length; i++){
                 let name = document.createElement('h2');
                 name.innerText = data[i].Name;
@@ -297,7 +278,6 @@
 
                 profileImg.addEventListener('click', function popUp(){
                   coord.locCoord = data[i].location;
-                  console.log(coord);
                   createMarker();
                   innerProfDiv.style.display = 'flex';
                   innerProfDiv.style.flexDirection = 'column';
@@ -308,7 +288,6 @@
                     const dbdriverDates = ref(db, 'users/userAccount/'+userId+'/cardata'+today);
                     onValue(dbdriverDates, (snapshot) => {
                       newdata = snapshot.val();
-                      console.log(newdata);
                       
                       if(newdata === null){
                         alert('Please select your dates first.');
@@ -357,11 +336,9 @@
                     coordList.push(locData[i]);
                   }
                 }
-                console.log(coordList);
                 for(let i = 0; i < coordList.length; i++){
                   if(coordList[i] === 'car'){
                     let position = coordList[i].loc;
-                    console.log(position);
                     const map = new google.maps.Map(document.getElementById("map"), {
                         zoom: 2,
                         center: {lat: 8.090440925828062, lng: -1.6977176080814078}
@@ -375,9 +352,7 @@
                     marker.addListener('click', flipCard);
 
                     function flipCard(){
-                      console.log("marker clickable");
                       let itemCard = document.getElementById(coordList[i].itemId);
-                      console.log(itemCard.getBoundingClientRect());
                       let itemPos = itemCard.getBoundingClientRect()
                       let itemPosX = itemPos.x;
                       let itemPosY = itemPos.y;
@@ -402,10 +377,8 @@
                   profcoordList.push(proflocData[i]);
                 }
               }
-              console.log(profcoordList);
               for(let i = 0; i < profcoordList.length; i++){
               let position = profcoordList[i].loc;
-              console.log(position);
               const map = new google.maps.Map(document.getElementById("map"), {
                   zoom: 2,
                   center: {lat: 8.090440925828062, lng: -1.6977176080814078}
@@ -418,10 +391,7 @@
 
               marker.addListener('click', flipCard);
               function flipCard(){
-                console.log("marker clickable");
                 let itemCard = document.getElementById(profcoordList[i].itemId);
-                console.log(itemCard);
-                console.log(itemCard.getBoundingClientRect());
                 let itemPos = itemCard.getBoundingClientRect()
                 let itemPosX = itemPos.x;
                 let itemPosY = itemPos.y;
@@ -438,8 +408,6 @@
                     const dbdriverDates = ref(db, 'users/userAccount/'+userId+'/cardata'+today);
                     onValue(dbdriverDates, (snapshot) => {
                       newdata = snapshot.val();
-                      console.log(newdata);
-                      
                       if(newdata === null){
                         alert('Please select your dates first.');
                       } else {
@@ -475,7 +443,6 @@
 
             } else {
               // User is signed out
-              console.log('Not signed in');
             }
 
           });
@@ -483,13 +450,8 @@
           let loc = {};
 
         function createMarker(){
-          console.log(coord);
-        
           loc.lat = coord.locCoord.lat;
           loc.lng = coord.locCoord.lng;
-
-          console.log(loc);
-
           const map = new google.maps.Map(document.getElementById("map"), {
                   zoom: 7,
                   center: loc
@@ -500,25 +462,8 @@
           position: loc
           });
 
-          
-
         }
 
-        // function createMarkers(){
-        //   console.log(coordList);
-        //     for(let i = 0; i < coordList.length; i++){
-        //       let position = coordList[i].loc;
-        //       console.log(position);
-        //       const marker = new google.maps.Marker({
-        //         position: position,
-        //         map: map
-        //       });
-        //       // marker.addEventListener('click', () => {
-        //       //   marker.setAttribute('id', coordList[i].itemId);
-        //       //   console.log(marker);
-        //       // });
-        //     }
-        // }
         </script>
         <script>
           function addUID(){

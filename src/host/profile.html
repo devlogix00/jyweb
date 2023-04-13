@@ -142,11 +142,9 @@
                        lat: position.coords.latitude,
                        lng: position.coords.longitude
                      };
-                
-                     console.log(pos);
-                             
+   
                      profile.location = pos;
-                     console.log(profile.location);
+              
                  
                    }
                  );
@@ -177,41 +175,14 @@
             async function saveImage(file){
               const formData = new FormData();
               formData.append("file", file);
-              console.log(formData);
+    
               fetch("https://polar-scrubland-06961.herokuapp.com/uploadimgfiles", {
                 method: 'POST',
                 body: formData
               })
-              .then((res) => console.log(res))
-              .then((err) => ("Error occured", err));
+              .then((res) => ("Response ", res))
+              .then((err) => ("Error occured ", err));
             }
-
-            // mediaCaptureProfElement.addEventListener('change', onMediaFileSelectedProf);
-            // function onMediaFileSelectedProf(e){
-            //   e.preventDefault();
-            //   let file = e.target.files[0];
-            //   //imageFormElement.reset();
-            //   if(!file.type.match('image.*')){
-            //     let data = {
-            //       message: 'You can only share images',
-            //       timeout: 2000
-            //     };
-            //     return;
-            //   }
-            //   saveProfImage(file);
-            // }
-
-            // async function saveProfImage(file){
-            //   const newformData = new FormData();
-            //   newformData.append("file", file);
-            //   console.log(newformData);
-            //   fetch("http://localhost:8080/uploadprof", {
-            //     method: 'POST',
-            //     body: newformData
-            //   })
-            //   .then((res) => console.log(res))
-            //   .then((err) => ("Error occured", err));
-            // }
           
         </script>
         <script>
@@ -269,12 +240,10 @@
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
-              // User is signed in 
-              console.log(user);  
+              // User is signed in  
               userName = user.displayName;
               userId = user.uid;
               userImg = user.photoURL;
-              console.log(userName);
               let updates = {};
               let image = document.getElementById('mediaCapture').value;
               profile.Name = userName;
@@ -287,7 +256,6 @@
               
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
-                console.log(profile);
                 let price = document.getElementById('price').value;
                 updates['drivers/driverAccount/'+userId+'/profile/Name'] = userName;
                 updates['drivers/driverAccount/'+userId+'/profile/location'] = profile.location;
@@ -316,7 +284,6 @@
                       profileImg.style.height = '200px';
                       licenseImg.style.width = '500px';
                       licenseImg.style.height = '400px';
-                      console.log(data.profileImg);
                       document.getElementById('profile').appendChild(profileImg);
                       document.getElementById('profile').appendChild(name);
                       document.getElementById('profile').appendChild(licenseImg);
@@ -326,7 +293,6 @@
             
             } else {
               // User is signed out
-              console.log('Not signed in');
             }
 
           });

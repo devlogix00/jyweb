@@ -51,36 +51,6 @@
                     
 
                     </div>
-<!--                     
-                    <div class="card-body ">
-                        <p class="card-description text-center">Or Be Classical</p>
-                        <span class="bmd-form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">
-                                <i class="material-icons">email</i>
-                              </span>
-                            </div>
-                            <input id='formemail' onblur="getEmail()" type="email" class="form-control" placeholder="Email...">
-                            <small id="userEmailError" class="form-text text-danger" style="display: none;">Please check your email address.</small>
-                          </div>
-                        </span>
-                        <span class="bmd-form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">
-                                <i class="material-icons">lock_outline</i>
-                              </span>
-                            </div>
-                            <input id='formpassword' onblur="getPassword()" type="password" class="form-control" placeholder="Password...">
-                            <small id="userPasswordError" class="form-text text-danger" style="display: none;">Your password must be uppercase, lowercase and more than 10 characters.</small>
-                          </div>
-                        </span>
-                      </div>  -->
-                      <!-- <div class="card-footer justify-content-center">
-                        <a onclick="signIn()" class="btn btn-rose btn-link btn-lg">Lets Go</a>
-                      </div>
-                      <div><h4><a href="signup.html" style="color: white;">Are you a new host?</a></h4></div> -->
                   </div>
              
 
@@ -161,20 +131,11 @@
           const auth = getAuth();
           const provider = new GoogleAuthProvider();  
 
-        //   let user = JSON.parse(localStorage.getItem('user'));
-        //   console.log(user.email);
-        //   console.log(user.password);
-        //   console.log(user.name);
-
-          
-
           const signinBtn = document.querySelector('#gSignIn');
           signinBtn.addEventListener('click', e => {
             e.preventDefault();
             signInWithPopup(auth, provider).then((result) => {
-              console.log(result);
               const token = result.user.accessToken;
-              console.log(token);
               // The signed-in user info
               const user = result.user;
               window.location = 'home.html';
@@ -185,38 +146,10 @@
               // The email of the user's account used
               const email = error.email;
               // The AuthCredential type that was used
-              console.log(errorCode, errorMessage, 'for user: '+email);
-
             });
-          //   signInWithPopup(auth, provider).then((result) => {
-          //   // This gives you a Google Access Token. You can use it to access the Google API
-          //   const credential = GoogleAuthProvider.credentialFromResult(result);
-          //   const token = credential.accessToken;
-          //   // The signed-in user info
-          //   const user = result.user;
-          //   window.location = 'home.html';
-          // }).catch((error) => {
-          //   // Handle Errors here
-          //   const errorCode = error.code;
-          //   const errorMessage = error.message;
-          //   // The email of the user's account used
-          //   const email = error.email;
-          //   // The AuthCredential type that was used
-          //   const credential = GoogleAuthProvider.credentialFromError(error);
-          // });
+
           });
-          
-          // signInWithEmailAndPassword(auth, user.email, user.password).then((userCredential) => {
-          // //signed in
-          // var user = userCredential.user; 
-          // user.displayName = userName; 
-          // console.log(user);           
-                    
-          // }).catch((error) => {
-          //   var errorCode = error.code;
-          //   var errorMessage = error.message;
-          // });
-          
+
           
         </script>
 

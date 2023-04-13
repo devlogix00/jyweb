@@ -114,17 +114,11 @@
           const auth = getAuth();  
           const db = getDatabase(); 
 
-          console.log(auth);
-          console.log(db);
-
           onAuthStateChanged(auth, (user) => {
             if (user) {
-              // User is signed in 
-              console.log(user);  
+              // User is signed in  
               userName = user.displayName;
               userId = user.uid;
-              console.log(userName);
-              console.log(userId);
               document.cookie = 'uid'+userId;
               let wHeading = document.createElement('h1');
               wHeading.innerText = 'Hi, '+ userName; 
@@ -138,13 +132,10 @@
               var yyyy = today.getFullYear();
 
               today = mm + '-' + dd + '-' + yyyy;
-              console.log(today);
-
 
               const dbDriver = ref(db, 'users/userAccount/'+userId+'/bookingdata'+today+'/item');
               onValue(dbDriver, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
                 let drName = document.createElement('h2');
                 drName.innerText = data;
                 document.getElementById('checkout').appendChild(drName);
@@ -153,7 +144,6 @@
               const dbdrvImg = ref(db, 'users/userAccount/'+userId+'/bookingdata'+today+'/img');
               onValue(dbdrvImg, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
                 let drImg = document.createElement('img');
                 drImg.setAttribute('src', data);
                 drImg.setAttribute('width', '50%');
@@ -164,7 +154,6 @@
               const dbdrvDates = ref(db, 'users/userAccount/'+userId+'/bookingdata'+today+'/itemDates');
               onValue(dbdrvDates, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
                 let drDates = document.createElement('h4');
                 if(data.length == 2){
                   drDates.innerText = 'Dates: '+data[0]+ ' - '+data[1];
@@ -194,10 +183,8 @@
               
               const updates = {};
 
-              console.log(userName);
-
               const paybtn = document.querySelector('#payment');
-              // console.log(rmOnServer);
+
               paybtn.addEventListener('click', e => {
                 updates['users/userAccount/'+userId+'/itemdata'+today+'/itemType'] = 'driver';
                 update(ref(db), updates);
@@ -205,7 +192,6 @@
                 } else {
                   // User is signed out
                   alert('You are not currently signed in. Please sign in.')
-                  console.log('Not signed in');
                 }
 
               });

@@ -114,17 +114,14 @@
           const auth = getAuth();  
           const db = getDatabase(); 
 
-          console.log(auth);
-          console.log(db);
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
-              console.log(user);  
+
               userName = user.displayName;
               userId = user.uid;
-              console.log(userName);
-              console.log(userId);
+
               document.cookie = 'uid'+userId;
               let wHeading = document.createElement('h1');
               wHeading.innerText = 'Hi, '+ userName; 
@@ -138,12 +135,12 @@
               var yyyy = today.getFullYear();
 
               today = mm + '-' + dd + '-' + yyyy;
-              console.log(today);
+
 
               const dbtour = ref(db, 'users/userAccount/'+userId+'/tourdata'+today+'/tour');
               onValue(dbtour, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
+
                 let trName = document.createElement('h2');
                 trName.innerText = data;
                 document.getElementById('checkout').appendChild(trName);
@@ -152,7 +149,7 @@
               const dbtourImg = ref(db, 'users/userAccount/'+userId+'/tourdata'+today+'/img');
               onValue(dbtourImg, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
+
                 let trImg = document.createElement('img');
                 trImg.setAttribute('src', './'+data);
                 trImg.setAttribute('width', '50%')
@@ -162,7 +159,6 @@
               const dbtourDates = ref(db, 'users/userAccount/'+userId+'/tourdata'+today+'/tourDates');
               onValue(dbtourDates, (snapshot) => {
                 const data = snapshot.val();
-                console.log(data);
                 let trDates = document.createElement('h4');
                 if(data.length > 1){
                     trDates.innerText = 'Dates: '+data[0]+ ' - '+data[1];
@@ -193,7 +189,7 @@
                 } else {
                   // User is signed out
                   alert('You are not currently signed in. Please sign in.')
-                  console.log('Not signed in');
+
                 }
 
               });
