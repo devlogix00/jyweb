@@ -1,5 +1,13 @@
-.undraw{
-    @media (min-width: 1024) {
-        padding: 10em;
-    }
+
+
+@media (min-width: 1024) {
+   #undraw1 {
+       width: 40%;
+   }
+   #undraw2 {
+       width: 40%;
+   }
+   #undraw3 {
+       width: 20%;
+   }
 }
