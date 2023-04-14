@@ -189,9 +189,7 @@
                     onValue(bookingRef, (snapshot) => {
                         const data = snapshot.val();
                         let url = data.bookingUrl;
-                        let splitDt = url.split('/');
-                        let serveUrl = splitDt[3];
-                        window.location = '.../uploads/'+serveUrl+'.html';
+                        window.location = url+'.html';
                     })
                     });
 
