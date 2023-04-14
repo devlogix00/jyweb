@@ -1377,7 +1377,7 @@ profileDb.onSnapshot((doc) => {
 });
 
 
-//const stripe = require('stripe')('sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC');
+const stripe = require('stripe')('sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC');
 
 app.post('/create-checkout-session', async (req, res) => {
     if(req.headers.cookie != 'undefined'){
