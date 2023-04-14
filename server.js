@@ -15,9 +15,6 @@ const { v4: uuidv4 } = require('uuid');
 const upload = multer({dest: "uploads/"});
 var type = upload.single('file');
 const fs = require('fs');
-//const dom = require('express-dom');
-
-//app.get('*.html', dom(), express.static(__dirname));
 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json());
@@ -96,8 +93,6 @@ const listingDb = database.collection('listings');
 const profileDb = database.collection('drivers');
 const lstLocationDb = database.collection('lstLocations');
 const profLocationDb = database.collection('profLocations');
-
-
 
 // update usersDb with allMessages+bookingId format
 const usersDb = database.collection('allMessages');
@@ -401,599 +396,599 @@ onValue(profList, (snapshot) => {
     onlyOnce: true
 });
 
-onValue(regList, (snapshot) => {
-    const newData = snapshot.val();
-    //console.log(newData);
-    if(newData != null){
-        for(let i = 0; i < newData.length; i++){
-            if(newData[i] != null && newData[i].listingType === 'room'){
-                let rmSearchUrl = ref(adminDB, 'rooms/'+newData[i].listingName);
-                onValue(rmSearchUrl, (snapshot) => {
-                    let rmsearchData = snapshot.val();
-                    if(rmsearchData != null ){
-                       // console.log(rmsearchData.bookingUrl);
-                        if(rmsearchData.bookingUrl != null){
-                            //console.log(rmsearchData.bookingUrl);
-                            let splitDt = rmsearchData.bookingUrl.split('/');
-                            serveUrl = splitDt[3];
-                           // console.log(rmsearchData.roomDates);
-                           // console.log(rmsearchData.img);
-                           // console.log(rmsearchData.checkin);
+// onValue(regList, (snapshot) => {
+//     const newData = snapshot.val();
+//     //console.log(newData);
+//     if(newData != null){
+//         for(let i = 0; i < newData.length; i++){
+//             if(newData[i] != null && newData[i].listingType === 'room'){
+//                 let rmSearchUrl = ref(adminDB, 'rooms/'+newData[i].listingName);
+//                 onValue(rmSearchUrl, (snapshot) => {
+//                     let rmsearchData = snapshot.val();
+//                     if(rmsearchData != null ){
+//                        // console.log(rmsearchData.bookingUrl);
+//                         if(rmsearchData.bookingUrl != null){
+//                             //console.log(rmsearchData.bookingUrl);
+//                             let splitDt = rmsearchData.bookingUrl.split('/');
+//                             serveUrl = splitDt[3];
+//                            // console.log(rmsearchData.roomDates);
+//                            // console.log(rmsearchData.img);
+//                            // console.log(rmsearchData.checkin);
         
-            fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
-            <!DOCTYPE html>
-            <html>
-            <head></head>
-            <script type="module" src="asset.js"></script>
-            <!-- Material Design Lite -->
-            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-            <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-            <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+//             fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
+//             <!DOCTYPE html>
+//             <html>
+//             <head></head>
+//             <script type="module" src="asset.js"></script>
+//             <!-- Material Design Lite -->
+//             <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+//             <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+//             <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
-            <!-- App Styling -->
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-            <link rel="stylesheet" href="main.css">
-            <body>
-                <div>
-                    <div id="chatBox">
-                        <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
-                        <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
-                        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-                        <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-                            <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
-                        </div>
-                        <div id="user-container">
-                            <div hidden id="user-pic"></div>
-                            <div hidden id="user-name"></div>
-                            <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            Sign-out
-                            </button>
-                            <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                            <i class="material-icons">account_circle</i>Sign-in with Google
-                            </button>
-                        </div>
-                        </div>
-                    </header>
-                    <main class="mdl-layout__content mdl-color--grey-100">
-                    <div>
-                        <div id="img" style="display: flex; flex-direction: row;">
-                            <img src=`+rmsearchData.img+` style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
-                            <div id="bookingInfo" style="padding-left: 2em;">
-                                <h1>`+rmsearchData.listingName+`</h1>
-                                <h3>Booked Dates: `+rmsearchData.roomDates[0]+` - `+rmsearchData.roomDates[1]+`</h3>
-                                <h3>Check-In Info: `+rmsearchData.checkin+`</h3>
-                                <button id="checkin" style="display: none;">Check In</button>
-                            </div>
+//             <!-- App Styling -->
+//             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+//             <link rel="stylesheet" href="main.css">
+//             <body>
+//                 <div>
+//                     <div id="chatBox">
+//                         <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+//                         <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+//                         <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+//                         <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+//                             <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
+//                         </div>
+//                         <div id="user-container">
+//                             <div hidden id="user-pic"></div>
+//                             <div hidden id="user-name"></div>
+//                             <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+//                             Sign-out
+//                             </button>
+//                             <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+//                             <i class="material-icons">account_circle</i>Sign-in with Google
+//                             </button>
+//                         </div>
+//                         </div>
+//                     </header>
+//                     <main class="mdl-layout__content mdl-color--grey-100">
+//                     <div>
+//                         <div id="img" style="display: flex; flex-direction: row;">
+//                             <img src=`+rmsearchData.img+` style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
+//                             <div id="bookingInfo" style="padding-left: 2em;">
+//                                 <h1>`+rmsearchData.listingName+`</h1>
+//                                 <h3>Booked Dates: `+rmsearchData.roomDates[0]+` - `+rmsearchData.roomDates[1]+`</h3>
+//                                 <h3>Check-In Info: `+rmsearchData.checkin+`</h3>
+//                                 <button id="checkin" style="display: none;">Check In</button>
+//                             </div>
                             
                             
-                        </div>
-                    </div> 
-                        <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
-                            <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-                                <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                <div id="messages">
-                                </div>
-                                <form id="message-form">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
-                                    <label class="mdl-textfield__label" for="message">Message...</label>
-                                    </div>
-                                    <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                                    Send
-                                    </button>
-                                </form>
-                                <form id="image-form" action="#" >
-                                    <input id="mediaCapture" type="file" accept="image/*" capture="camera">
-                                    <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-                                    <i class="material-icons">image</i>
-                                    </button>
-                                </form>
-                                </div>
-                                <div>
-                                    <a href="https://polar-scrubland-06961.herokuapp.com/host/index.html">Close Chat</a>
-                                </div>
-                            </div>
+//                         </div>
+//                     </div> 
+//                         <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
+//                             <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+//                                 <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+//                                 <div id="messages">
+//                                 </div>
+//                                 <form id="message-form">
+//                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+//                                     <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
+//                                     <label class="mdl-textfield__label" for="message">Message...</label>
+//                                     </div>
+//                                     <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+//                                     Send
+//                                     </button>
+//                                 </form>
+//                                 <form id="image-form" action="#" >
+//                                     <input id="mediaCapture" type="file" accept="image/*" capture="camera">
+//                                     <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+//                                     <i class="material-icons">image</i>
+//                                     </button>
+//                                 </form>
+//                                 </div>
+//                                 <div>
+//                                     <a href="https://polar-scrubland-06961.herokuapp.com/host/index.html">Close Chat</a>
+//                                 </div>
+//                             </div>
 
-                            <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-                                <div class="mdl-snackbar__text"></div>
-                                <button class="mdl-snackbar__action" type="button"></button>
-                            </div>
+//                             <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
+//                                 <div class="mdl-snackbar__text"></div>
+//                                 <button class="mdl-snackbar__action" type="button"></button>
+//                             </div>
 
-                            <script type="module">
-                                // Import the functions you need from the SDKs you need
-                                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-                                import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
-                                import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
-                                import { getDatabase, ref, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-                                import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
-                                // TODO: Add SDKs for Firebase products that you want to use
-                                // https://firebase.google.com/docs/web/setup#available-libraries
+//                             <script type="module">
+//                                 // Import the functions you need from the SDKs you need
+//                                 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+//                                 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+//                                 import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+//                                 import { getDatabase, ref, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+//                                 import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
+//                                 // TODO: Add SDKs for Firebase products that you want to use
+//                                 // https://firebase.google.com/docs/web/setup#available-libraries
                                 
-                                // Your web app's Firebase configuration
-                                // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-                                const firebaseConfig = {
-                                    apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
-                                    authDomain: "booking-app-6750f.firebaseapp.com",
-                                    databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
-                                    projectId: "booking-app-6750f",
-                                    storageBucket: "booking-app-6750f.appspot.com",
-                                    messagingSenderId: "687482685582",
-                                    appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
-                                    measurementId: "G-0WDDDKD9ZL"
-                                    };
+//                                 // Your web app's Firebase configuration
+//                                 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+//                                 const firebaseConfig = {
+//                                     apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
+//                                     authDomain: "booking-app-6750f.firebaseapp.com",
+//                                     databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
+//                                     projectId: "booking-app-6750f",
+//                                     storageBucket: "booking-app-6750f.appspot.com",
+//                                     messagingSenderId: "687482685582",
+//                                     appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
+//                                     measurementId: "G-0WDDDKD9ZL"
+//                                     };
                                 
-                                // Initialize Firebase
-                                const app = initializeApp(firebaseConfig);
-                                const analytics = getAnalytics(app);
-                                const auth = getAuth();  
-                                const db = getDatabase(); 
+//                                 // Initialize Firebase
+//                                 const app = initializeApp(firebaseConfig);
+//                                 const analytics = getAnalytics(app);
+//                                 const auth = getAuth();  
+//                                 const db = getDatabase(); 
 
-                                console.log(auth);
-                                let updates = {};
+//                                 console.log(auth);
+//                                 let updates = {};
 
-                                onAuthStateChanged(auth, (user) => {
-                                    if(user){
-                                        console.log(user);
-                                        let status = document.createElement('h2');
-                                        status.innerText = 'Checked In';
-                                        let roomRef = ref(db, 'rooms/`+rmsearchData.listingName+`');
-                                        onValue(roomRef, (snapshot) => {
-                                            let data = snapshot.val();
+//                                 onAuthStateChanged(auth, (user) => {
+//                                     if(user){
+//                                         console.log(user);
+//                                         let status = document.createElement('h2');
+//                                         status.innerText = 'Checked In';
+//                                         let roomRef = ref(db, 'rooms/`+rmsearchData.listingName+`');
+//                                         onValue(roomRef, (snapshot) => {
+//                                             let data = snapshot.val();
                                             
-                                            if(data.currentUser == user.uid && data.checkedIn == null){
-                                                document.getElementById('checkin').style.display = 'block';
-                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } 
-                                        });
-                                        document.getElementById('checkin').addEventListener('click', function(){
-                                            console.log('checked in!');
-                                            updates['rooms/`+rmsearchData.listingName+`/checkedIn'] = "True";
-                                            update(ref(db), updates);
-                                            let checkinBtn = document.getElementById('checkin');
-                                            checkinBtn.remove();
+//                                             if(data.currentUser == user.uid && data.checkedIn == null){
+//                                                 document.getElementById('checkin').style.display = 'block';
+//                                             } else if(data.host == user.uid && data.checkedIn == 'True'){
+//                                                 document.getElementById('bookingInfo').appendChild(status);
+//                                             } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+//                                                 document.getElementById('bookingInfo').appendChild(status);
+//                                             } 
+//                                         });
+//                                         document.getElementById('checkin').addEventListener('click', function(){
+//                                             console.log('checked in!');
+//                                             updates['rooms/`+rmsearchData.listingName+`/checkedIn'] = "True";
+//                                             update(ref(db), updates);
+//                                             let checkinBtn = document.getElementById('checkin');
+//                                             checkinBtn.remove();
                                            
-                                            document.getElementById('bookingInfo').appendChild(status);
-                                        });
-                                    }
-                                })
-                            </script>
-                            <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
-                        </div>
-                    </main>
-                        </div>
-                    </div>
-                </div>
-            </body>
-            </html>`, err => {
-                if (err) {
-                    console.error(err);
-                }
-            });
+//                                             document.getElementById('bookingInfo').appendChild(status);
+//                                         });
+//                                     }
+//                                 })
+//                             </script>
+//                             <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
+//                         </div>
+//                     </main>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </body>
+//             </html>`, err => {
+//                 if (err) {
+//                     console.error(err);
+//                 }
+//             });
                
 
-                        }
+//                         }
                     
-                    }
-                }, {
-                    onlyOnce: true
-                });
+//                     }
+//                 }, {
+//                     onlyOnce: true
+//                 });
         
-            } else if(newData[i] != null && newData[i].listingType === 'car'){
-                let crSearchUrl = ref(adminDB, 'cars/'+newData[i].listingName);
-                onValue(crSearchUrl, (snapshot) => {
-                    let crsearchData = snapshot.val();
-                    if(crsearchData != null ){
-                        if(crsearchData.bookingUrl != null){
-                            let splitDt = crsearchData.bookingUrl.split('/');
-                            serveUrl = splitDt[3];
-                            // console.log(rmsearchData.roomDates);
-                            // console.log(rmsearchData.img);
-                            // console.log(rmsearchData.checkin);
+//             } else if(newData[i] != null && newData[i].listingType === 'car'){
+//                 let crSearchUrl = ref(adminDB, 'cars/'+newData[i].listingName);
+//                 onValue(crSearchUrl, (snapshot) => {
+//                     let crsearchData = snapshot.val();
+//                     if(crsearchData != null ){
+//                         if(crsearchData.bookingUrl != null){
+//                             let splitDt = crsearchData.bookingUrl.split('/');
+//                             serveUrl = splitDt[3];
+//                             // console.log(rmsearchData.roomDates);
+//                             // console.log(rmsearchData.img);
+//                             // console.log(rmsearchData.checkin);
     
-                    fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
-                    <!DOCTYPE html>
-                    <html>
-                    <head></head>
-                    <script type="module" src="asset.js"></script>
-                    <!-- Material Design Lite -->
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-                    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-                    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+//                     fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
+//                     <!DOCTYPE html>
+//                     <html>
+//                     <head></head>
+//                     <script type="module" src="asset.js"></script>
+//                     <!-- Material Design Lite -->
+//                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+//                     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+//                     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
-                    <!-- App Styling -->
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-                    <link rel="stylesheet" href="main.css">
-                    <body>
-                        <div>
-                            <div id="chatBox">
-                                <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
-                                <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
-                                <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-                                <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-                                    <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
-                                </div>
-                                <div id="user-container">
-                                    <div hidden id="user-pic"></div>
-                                    <div hidden id="user-name"></div>
-                                    <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                                    Sign-out
-                                    </button>
-                                    <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                                    <i class="material-icons">account_circle</i>Sign-in with Google
-                                    </button>
-                                </div>
-                                </div>
-                            </header>
-                            <main class="mdl-layout__content mdl-color--grey-100">
-                            <div>
-                                <div id="img" style="display: flex; flex-direction: row;">
-                                    <img src=`+crsearchData.listingImg+` style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
-                                    <div id="bookingInfo" style="padding-left: 2em;">
-                                        <h1>`+crsearchData.listingName+`</h1>
-                                        <h3>Booked Dates: `+crsearchData.carDates[0]+` - `+crsearchData.carDates[1]+`</h3>
-                                        <button id="pickup" style="display: none;">Pick Up</button>
+//                     <!-- App Styling -->
+//                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+//                     <link rel="stylesheet" href="main.css">
+//                     <body>
+//                         <div>
+//                             <div id="chatBox">
+//                                 <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+//                                 <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+//                                 <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+//                                 <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+//                                     <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
+//                                 </div>
+//                                 <div id="user-container">
+//                                     <div hidden id="user-pic"></div>
+//                                     <div hidden id="user-name"></div>
+//                                     <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+//                                     Sign-out
+//                                     </button>
+//                                     <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+//                                     <i class="material-icons">account_circle</i>Sign-in with Google
+//                                     </button>
+//                                 </div>
+//                                 </div>
+//                             </header>
+//                             <main class="mdl-layout__content mdl-color--grey-100">
+//                             <div>
+//                                 <div id="img" style="display: flex; flex-direction: row;">
+//                                     <img src=`+crsearchData.listingImg+` style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
+//                                     <div id="bookingInfo" style="padding-left: 2em;">
+//                                         <h1>`+crsearchData.listingName+`</h1>
+//                                         <h3>Booked Dates: `+crsearchData.carDates[0]+` - `+crsearchData.carDates[1]+`</h3>
+//                                         <button id="pickup" style="display: none;">Pick Up</button>
                                         
-                                    </div>
+//                                     </div>
                                     
                                     
-                                </div>
-                            </div> 
-                                <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
-                                    <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-                                        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                        <div id="messages">
-                                        </div>
-                                        <form id="message-form">
-                                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
-                                            <label class="mdl-textfield__label" for="message">Message...</label>
-                                            </div>
-                                            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                                            Send
-                                            </button>
-                                        </form>
-                                        <form id="image-form" action="#" >
-                                            <input id="mediaCapture" type="file" accept="image/*" capture="camera">
-                                            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-                                            <i class="material-icons">image</i>
-                                            </button>
-                                        </form>
-                                        </div>
-                                        <div>
-                                            <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
-                                        </div>
-                                    </div>
+//                                 </div>
+//                             </div> 
+//                                 <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
+//                                     <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+//                                         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+//                                         <div id="messages">
+//                                         </div>
+//                                         <form id="message-form">
+//                                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+//                                             <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
+//                                             <label class="mdl-textfield__label" for="message">Message...</label>
+//                                             </div>
+//                                             <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+//                                             Send
+//                                             </button>
+//                                         </form>
+//                                         <form id="image-form" action="#" >
+//                                             <input id="mediaCapture" type="file" accept="image/*" capture="camera">
+//                                             <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+//                                             <i class="material-icons">image</i>
+//                                             </button>
+//                                         </form>
+//                                         </div>
+//                                         <div>
+//                                             <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
+//                                         </div>
+//                                     </div>
 
-                                    <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-                                        <div class="mdl-snackbar__text"></div>
-                                        <button class="mdl-snackbar__action" type="button"></button>
-                                    </div>
+//                                     <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
+//                                         <div class="mdl-snackbar__text"></div>
+//                                         <button class="mdl-snackbar__action" type="button"></button>
+//                                     </div>
 
-                                    <script type="module">
-                                    // Import the functions you need from the SDKs you need
-                                    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-                                    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
-                                    import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
-                                    import { getDatabase, ref, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-                                    import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
-                                    // TODO: Add SDKs for Firebase products that you want to use
-                                    // https://firebase.google.com/docs/web/setup#available-libraries
+//                                     <script type="module">
+//                                     // Import the functions you need from the SDKs you need
+//                                     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+//                                     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+//                                     import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+//                                     import { getDatabase, ref, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+//                                     import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
+//                                     // TODO: Add SDKs for Firebase products that you want to use
+//                                     // https://firebase.google.com/docs/web/setup#available-libraries
                                     
-                                    // Your web app's Firebase configuration
-                                    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-                                    const firebaseConfig = {
-                                        apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
-                                        authDomain: "booking-app-6750f.firebaseapp.com",
-                                        databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
-                                        projectId: "booking-app-6750f",
-                                        storageBucket: "booking-app-6750f.appspot.com",
-                                        messagingSenderId: "687482685582",
-                                        appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
-                                        measurementId: "G-0WDDDKD9ZL"
-                                        };
+//                                     // Your web app's Firebase configuration
+//                                     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+//                                     const firebaseConfig = {
+//                                         apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
+//                                         authDomain: "booking-app-6750f.firebaseapp.com",
+//                                         databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
+//                                         projectId: "booking-app-6750f",
+//                                         storageBucket: "booking-app-6750f.appspot.com",
+//                                         messagingSenderId: "687482685582",
+//                                         appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
+//                                         measurementId: "G-0WDDDKD9ZL"
+//                                         };
                                     
-                                    // Initialize Firebase
-                                    const app = initializeApp(firebaseConfig);
-                                    const analytics = getAnalytics(app);
-                                    const auth = getAuth();  
-                                    const db = getDatabase(); 
+//                                     // Initialize Firebase
+//                                     const app = initializeApp(firebaseConfig);
+//                                     const analytics = getAnalytics(app);
+//                                     const auth = getAuth();  
+//                                     const db = getDatabase(); 
     
-                                    console.log(auth);
-                                    let updates = {};
+//                                     console.log(auth);
+//                                     let updates = {};
     
-                                    onAuthStateChanged(auth, (user) => {
-                                        if(user){
-                                            console.log(user);
-                                            let status = document.createElement('h2');
-                                            status.innerText = 'Picked Up';
-                                            let carRef = ref(db, 'cars/`+crsearchData.listingName+`');
-                                            onValue(carRef, (snapshot) => {
-                                                let data = snapshot.val();
+//                                     onAuthStateChanged(auth, (user) => {
+//                                         if(user){
+//                                             console.log(user);
+//                                             let status = document.createElement('h2');
+//                                             status.innerText = 'Picked Up';
+//                                             let carRef = ref(db, 'cars/`+crsearchData.listingName+`');
+//                                             onValue(carRef, (snapshot) => {
+//                                                 let data = snapshot.val();
                                                 
-                                                if(data.currentUser == user.uid && data.pickedUp == null){
-                                                    document.getElementById('pickup').style.display = 'block';
-                                                } else if(data.host == user.uid && data.pickedUp == 'True'){
+//                                                 if(data.currentUser == user.uid && data.pickedUp == null){
+//                                                     document.getElementById('pickup').style.display = 'block';
+//                                                 } else if(data.host == user.uid && data.pickedUp == 'True'){
                                                     
-                                                    document.getElementById('bookingInfo').appendChild(status);
-                                                } else if(data.currentUser == user.uid && data.pickedUp == 'True'){
+//                                                     document.getElementById('bookingInfo').appendChild(status);
+//                                                 } else if(data.currentUser == user.uid && data.pickedUp == 'True'){
                                                    
-                                                    document.getElementById('bookingInfo').appendChild(status);
-                                                }
-                                            });
-                                            document.getElementById('pickup').addEventListener('click', function(){
-                                                console.log('picked up!');
-                                                updates['cars/`+crsearchData.listingName+`/pickedUp'] = "True";
-                                                update(ref(db), updates);
-                                                let pickUpBtn = document.getElementById('pickup');
-                                                pickUpBtn.remove();
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            });
-                                        }
-                                    })
-                                </script>
-                                    <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
-                                </div>
-                            </main>
-                                </div>
-                            </div>
-                        </div>
-                    </body>
-                    </html>`, err => {
-                        if (err) {
-                            console.error(err);
-                        }
-                    });
+//                                                     document.getElementById('bookingInfo').appendChild(status);
+//                                                 }
+//                                             });
+//                                             document.getElementById('pickup').addEventListener('click', function(){
+//                                                 console.log('picked up!');
+//                                                 updates['cars/`+crsearchData.listingName+`/pickedUp'] = "True";
+//                                                 update(ref(db), updates);
+//                                                 let pickUpBtn = document.getElementById('pickup');
+//                                                 pickUpBtn.remove();
+//                                                 document.getElementById('bookingInfo').appendChild(status);
+//                                             });
+//                                         }
+//                                     })
+//                                 </script>
+//                                     <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
+//                                 </div>
+//                             </main>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </body>
+//                     </html>`, err => {
+//                         if (err) {
+//                             console.error(err);
+//                         }
+//                     });
                     
                 
-                                        }
+//                                         }
                                     
-                                    }
-                                }, {
-                                    onlyOnce: true
-                                });
+//                                     }
+//                                 }, {
+//                                     onlyOnce: true
+//                                 });
                         
-                            }   else if(newData[i] != null && newData[i].listingType === 'tour'){
-                                let trSearchUrl = ref(adminDB, 'tours/'+newData[i].listingName);
-                                onValue(trSearchUrl, (snapshot) => {
-                                    let trsearchData = snapshot.val();
-                                    if(trsearchData != null ){
-                                        if(trsearchData.bookingUrl != null){
-                                            let splitDt = trsearchData.bookingUrl.split('/');
-                                            serveUrl = splitDt[3];
-                                            // console.log(rmsearchData.roomDates);
-                                            // console.log(rmsearchData.img);
-                                            // console.log(rmsearchData.checkin);
+//                             }   else if(newData[i] != null && newData[i].listingType === 'tour'){
+//                                 let trSearchUrl = ref(adminDB, 'tours/'+newData[i].listingName);
+//                                 onValue(trSearchUrl, (snapshot) => {
+//                                     let trsearchData = snapshot.val();
+//                                     if(trsearchData != null ){
+//                                         if(trsearchData.bookingUrl != null){
+//                                             let splitDt = trsearchData.bookingUrl.split('/');
+//                                             serveUrl = splitDt[3];
+//                                             // console.log(rmsearchData.roomDates);
+//                                             // console.log(rmsearchData.img);
+//                                             // console.log(rmsearchData.checkin);
                     
-                                    fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
-                                    <!DOCTYPE html>
-                                    <html>
-                                    <head></head>
-                                    <script type="module" src="asset.js"></script>
-                                    <!-- Material Design Lite -->
-                                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-                                    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-                                    <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+//                                     fs.writeFile(path.join(__dirname, '/'+serveUrl+'.html'), `
+//                                     <!DOCTYPE html>
+//                                     <html>
+//                                     <head></head>
+//                                     <script type="module" src="asset.js"></script>
+//                                     <!-- Material Design Lite -->
+//                                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+//                                     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+//                                     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
                 
-                                    <!-- App Styling -->
-                                    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-                                    <link rel="stylesheet" href="main.css">
-                                    <body>
-                                        <div>
-                                            <div id="chatBox">
-                                                <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
-                                                <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
-                                                <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-                                                <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-                                                    <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
-                                                </div>
-                                                <div id="user-container">
-                                                    <div hidden id="user-pic"></div>
-                                                    <div hidden id="user-name"></div>
-                                                    <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                                                    Sign-out
-                                                    </button>
-                                                    <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                                                    <i class="material-icons">account_circle</i>Sign-in with Google
-                                                    </button>
-                                                </div>
-                                                </div>
-                                            </header>
-                                            <main class="mdl-layout__content mdl-color--grey-100">
-                                            <div>
-                                                <div id="img" style="display: flex; flex-direction: row;">
-                                                    <img src=`+trsearchData.listingImg+` style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
-                                                    <div id="bookingInfo" style="padding-left: 2em;">
-                                                        <h1>`+trsearchData.listingName+`</h1>
-                                                        <h3>Booked Dates: `+trsearchData.tourDates[0]+` - `+trsearchData.tourDates[1]+`</h3>
-                                                        <button id="start" style="display: none;">Start Tour</button>
+//                                     <!-- App Styling -->
+//                                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+//                                     <link rel="stylesheet" href="main.css">
+//                                     <body>
+//                                         <div>
+//                                             <div id="chatBox">
+//                                                 <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+//                                                 <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+//                                                 <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+//                                                 <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+//                                                     <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
+//                                                 </div>
+//                                                 <div id="user-container">
+//                                                     <div hidden id="user-pic"></div>
+//                                                     <div hidden id="user-name"></div>
+//                                                     <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+//                                                     Sign-out
+//                                                     </button>
+//                                                     <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+//                                                     <i class="material-icons">account_circle</i>Sign-in with Google
+//                                                     </button>
+//                                                 </div>
+//                                                 </div>
+//                                             </header>
+//                                             <main class="mdl-layout__content mdl-color--grey-100">
+//                                             <div>
+//                                                 <div id="img" style="display: flex; flex-direction: row;">
+//                                                     <img src=`+trsearchData.listingImg+` style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
+//                                                     <div id="bookingInfo" style="padding-left: 2em;">
+//                                                         <h1>`+trsearchData.listingName+`</h1>
+//                                                         <h3>Booked Dates: `+trsearchData.tourDates[0]+` - `+trsearchData.tourDates[1]+`</h3>
+//                                                         <button id="start" style="display: none;">Start Tour</button>
                                                         
-                                                    </div>
+//                                                     </div>
                                                     
                                                     
-                                                </div>
-                                            </div> 
-                                                <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
-                                                    <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-                                                        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                                        <div id="messages">
-                                                        </div>
-                                                        <form id="message-form">
-                                                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                                            <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
-                                                            <label class="mdl-textfield__label" for="message">Message...</label>
-                                                            </div>
-                                                            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                                                            Send
-                                                            </button>
-                                                        </form>
-                                                        <form id="image-form" action="#" >
-                                                            <input id="mediaCapture" type="file" accept="image/*" capture="camera">
-                                                            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-                                                            <i class="material-icons">image</i>
-                                                            </button>
-                                                        </form>
-                                                        </div>
-                                                        <div>
-                                                            <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
-                                                        </div>
-                                                    </div>
+//                                                 </div>
+//                                             </div> 
+//                                                 <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
+//                                                     <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+//                                                         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+//                                                         <div id="messages">
+//                                                         </div>
+//                                                         <form id="message-form">
+//                                                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+//                                                             <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
+//                                                             <label class="mdl-textfield__label" for="message">Message...</label>
+//                                                             </div>
+//                                                             <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+//                                                             Send
+//                                                             </button>
+//                                                         </form>
+//                                                         <form id="image-form" action="#" >
+//                                                             <input id="mediaCapture" type="file" accept="image/*" capture="camera">
+//                                                             <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+//                                                             <i class="material-icons">image</i>
+//                                                             </button>
+//                                                         </form>
+//                                                         </div>
+//                                                         <div>
+//                                                             <a href="https://polar-scrubland-06961.herokuapp.com/index.html">Close Chat</a>
+//                                                         </div>
+//                                                     </div>
                 
-                                                    <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-                                                        <div class="mdl-snackbar__text"></div>
-                                                        <button class="mdl-snackbar__action" type="button"></button>
-                                                    </div>
+//                                                     <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
+//                                                         <div class="mdl-snackbar__text"></div>
+//                                                         <button class="mdl-snackbar__action" type="button"></button>
+//                                                     </div>
 
-                                                     <script type="module">
-                                                        // Import the functions you need from the SDKs you need
-                                                        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-                                                        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
-                                                        import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
-                                                        import { getDatabase, ref, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-                                                        import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
-                                                        // TODO: Add SDKs for Firebase products that you want to use
-                                                        // https://firebase.google.com/docs/web/setup#available-libraries
-                                                        // Your web app's Firebase configuration
-                                                        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-                                                        const firebaseConfig = {
-                                                            apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
-                                                            authDomain: "booking-app-6750f.firebaseapp.com",
-                                                            databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
-                                                            projectId: "booking-app-6750f",
-                                                            storageBucket: "booking-app-6750f.appspot.com",
-                                                            messagingSenderId: "687482685582",
-                                                            appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
-                                                            measurementId: "G-0WDDDKD9ZL"
-                                                            };
+//                                                      <script type="module">
+//                                                         // Import the functions you need from the SDKs you need
+//                                                         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+//                                                         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+//                                                         import { initializeAuth,getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+//                                                         import { getDatabase, ref, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+//                                                         import {getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
+//                                                         // TODO: Add SDKs for Firebase products that you want to use
+//                                                         // https://firebase.google.com/docs/web/setup#available-libraries
+//                                                         // Your web app's Firebase configuration
+//                                                         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+//                                                         const firebaseConfig = {
+//                                                             apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
+//                                                             authDomain: "booking-app-6750f.firebaseapp.com",
+//                                                             databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
+//                                                             projectId: "booking-app-6750f",
+//                                                             storageBucket: "booking-app-6750f.appspot.com",
+//                                                             messagingSenderId: "687482685582",
+//                                                             appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
+//                                                             measurementId: "G-0WDDDKD9ZL"
+//                                                             };
                                                         
-                                                        // Initialize Firebase
-                                                        const app = initializeApp(firebaseConfig);
-                                                        const analytics = getAnalytics(app);
-                                                        const auth = getAuth();  
-                                                        const db = getDatabase(); 
+//                                                         // Initialize Firebase
+//                                                         const app = initializeApp(firebaseConfig);
+//                                                         const analytics = getAnalytics(app);
+//                                                         const auth = getAuth();  
+//                                                         const db = getDatabase(); 
 
-                                                        console.log(auth);
-                                                        let updates = {};
+//                                                         console.log(auth);
+//                                                         let updates = {};
 
-                                                        onAuthStateChanged(auth, (user) => {
-                                                            if(user){
-                                                                console.log(user);
-                                                                let status = document.createElement('h2');
-                                                                status.innerText = 'Tour Started';
-                                                                let tourRef = ref(db, 'tours/`+trsearchData.listingName+`');
-                                                                onValue(tourRef, (snapshot) => {
-                                                                    let data = snapshot.val();
-                                                                    if(data.currentUser == user.uid && data.tourStarted == null){
-                                                                        document.getElementById('start').style.display = 'block';
-                                                                    } else if(data.host == user.uid && data.tourStarted == 'True'){
+//                                                         onAuthStateChanged(auth, (user) => {
+//                                                             if(user){
+//                                                                 console.log(user);
+//                                                                 let status = document.createElement('h2');
+//                                                                 status.innerText = 'Tour Started';
+//                                                                 let tourRef = ref(db, 'tours/`+trsearchData.listingName+`');
+//                                                                 onValue(tourRef, (snapshot) => {
+//                                                                     let data = snapshot.val();
+//                                                                     if(data.currentUser == user.uid && data.tourStarted == null){
+//                                                                         document.getElementById('start').style.display = 'block';
+//                                                                     } else if(data.host == user.uid && data.tourStarted == 'True'){
                                                                        
-                                                                        document.getElementById('bookingInfo').appendChild(status);
-                                                                    } else if(data.currentUser == user.uid && data.tourStarted == 'True'){
+//                                                                         document.getElementById('bookingInfo').appendChild(status);
+//                                                                     } else if(data.currentUser == user.uid && data.tourStarted == 'True'){
                                                                        
-                                                                        document.getElementById('bookingInfo').appendChild(status);
-                                                                    }
-                                                                });
-                                                                document.getElementById('start').addEventListener('click', function(){
-                                                                    console.log('checked in!');
-                                                                    updates['tours/`+trsearchData.listingName+`/tourStarted'] = "True";
-                                                                    update(ref(db), updates);
-                                                                    let tourStartBtn = document.getElementById('start');
-                                                                    tourStartBtn.remove();
+//                                                                         document.getElementById('bookingInfo').appendChild(status);
+//                                                                     }
+//                                                                 });
+//                                                                 document.getElementById('start').addEventListener('click', function(){
+//                                                                     console.log('checked in!');
+//                                                                     updates['tours/`+trsearchData.listingName+`/tourStarted'] = "True";
+//                                                                     update(ref(db), updates);
+//                                                                     let tourStartBtn = document.getElementById('start');
+//                                                                     tourStartBtn.remove();
                                                                    
-                                                                    document.getElementById('bookingInfo').appendChild(status);
-                                                                });
-                                                            }
-                                                        })
-                                                    </script>
-                                                    <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
-                                                </div>
-                                            </main>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </body>
-                                    </html>`, err => {
-                                        if (err) {
-                                            console.error(err);
-                                        }
-                                    });
+//                                                                     document.getElementById('bookingInfo').appendChild(status);
+//                                                                 });
+//                                                             }
+//                                                         })
+//                                                     </script>
+//                                                     <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
+//                                                 </div>
+//                                             </main>
+//                                                 </div>
+//                                             </div>
+//                                         </div>
+//                                     </body>
+//                                     </html>`, err => {
+//                                         if (err) {
+//                                             console.error(err);
+//                                         }
+//                                     });
                                     
                                 
-                                                        }
+//                                                         }
                                                     
-                                                    }
-                                                }, {
-                                                    onlyOnce: false
-                                                });
+//                                                     }
+//                                                 }, {
+//                                                     onlyOnce: false
+//                                                 });
                                         
-                                            } 
-            if(newData[i] != null){
-                const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
-                onValue(loginRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if(data === null){
-                        app.post('/host/analytics', async (req, res) => {
-                            let url = req.headers.referer;
-                                if(url.includes('?')){
-                                   // console.log('parameterized url');
-                                    let url1 = url.split('&');
-                                    let url2 = url1[0].split('?');
-                                    let url3 = url2[1].split('=');
-                                    code = url3[1];
-                                  //  console.log(code);
+//                                             } 
+//             if(newData[i] != null){
+//                 const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
+//                 onValue(loginRef, (snapshot) => {
+//                     const data = snapshot.val();
+//                     if(data === null){
+//                         app.post('/host/analytics', async (req, res) => {
+//                             let url = req.headers.referer;
+//                                 if(url.includes('?')){
+//                                    // console.log('parameterized url');
+//                                     let url1 = url.split('&');
+//                                     let url2 = url1[0].split('?');
+//                                     let url3 = url2[1].split('=');
+//                                     code = url3[1];
+//                                   //  console.log(code);
                             
-                                    if(req.headers.cookie != 'undefined'){
-                                    //console.log(req.headers.cookie);
-                                    let storedC = req.headers.cookie+'';
-                                    storedC = storedC.split(';');
-                                    //console.log(storedC);
-                                    let result = [];
-                                    for(let i in storedC){
-                                        //console.log(storedC[i].split('='));
-                                        result.push(storedC[i].split('='));
-                                    }
-                                    //console.log(result);
-                                    for(let i in result){
-                                        if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-                                            userId = result[i][1];
-                                         //   console.log(userId);
-                                            const rsponse = await stripe.oauth.token({
-                                                grant_type: 'authorization_code',
-                                                code: code,
-                                                assert_capabilities: ['transfers']
-                                            });
+//                                     if(req.headers.cookie != 'undefined'){
+//                                     //console.log(req.headers.cookie);
+//                                     let storedC = req.headers.cookie+'';
+//                                     storedC = storedC.split(';');
+//                                     //console.log(storedC);
+//                                     let result = [];
+//                                     for(let i in storedC){
+//                                         //console.log(storedC[i].split('='));
+//                                         result.push(storedC[i].split('='));
+//                                     }
+//                                     //console.log(result);
+//                                     for(let i in result){
+//                                         if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
+//                                             userId = result[i][1];
+//                                          //   console.log(userId);
+//                                             const rsponse = await stripe.oauth.token({
+//                                                 grant_type: 'authorization_code',
+//                                                 code: code,
+//                                                 assert_capabilities: ['transfers']
+//                                             });
                                             
-                                            var connected_account_id = await rsponse.stripe_user_id;
-                                        //    console.log(connected_account_id);
+//                                             var connected_account_id = await rsponse.stripe_user_id;
+//                                         //    console.log(connected_account_id);
                             
-                                            if(connected_account_id != 'undefined'){
-                                                const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                            //    console.log(link);
-                                                let updates = {};
-                                                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                                                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                                                update(ref(db), updates);
-                                            }
+//                                             if(connected_account_id != 'undefined'){
+//                                                 const link = await stripe.accounts.createLoginLink(connected_account_id);
+//                                             //    console.log(link);
+//                                                 let updates = {};
+//                                                 updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+//                                                 updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+//                                                 update(ref(db), updates);
+//                                             }
                                             
-                                        }
-                                    }
-                                    }
-                                }
+//                                         }
+//                                     }
+//                                     }
+//                                 }
                                 
-                        });
-                    }
-                }, {
-                    onlyOnce: true
-                });
+//                         });
+//                     }
+//                 }, {
+//                     onlyOnce: true
+//                 });
                 
-            }
-            }
-        }
-    }, {
-    onlyOnce: true
-});
+//             }
+//             }
+//         }
+//     }, {
+//     onlyOnce: true
+// });
 
 let drvProfileRef = ref(adminDB, 'profiles/profiles');
 onValue(drvProfileRef, (snapshot) => {
