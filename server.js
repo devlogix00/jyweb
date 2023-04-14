@@ -1474,6 +1474,8 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
               ],
             mode: 'payment',
+            // success_url: 'http://localhost:8080/success.html',
+            // cancel_url: 'http://localhost:8080/cancel.html',
             success_url: 'https://polar-scrubland-06961.herokuapp.com/success.html',
             cancel_url: 'https://polar-scrubland-06961.herokuapp.com/cancel.html',
             payment_intent_data: {

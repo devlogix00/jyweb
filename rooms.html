@@ -246,34 +246,34 @@
                     coordList.push(locData[i]);
                   }
                 }
-                for(let i = 0; i < coordList.length; i++){
-                  if(coordList[i].locType === "room"){
-                    let position = coordList[i].loc;
-                    const map = new google.maps.Map(document.getElementById("map"), {
-                        zoom: 2,
-                        center: {lat: 8.090440925828062, lng: -1.6977176080814078}
-                    });
+              //   for(let i = 0; i < coordList.length; i++){
+              //     if(coordList[i].locType === "room"){
+              //       let position = coordList[i].loc;
+              //       const map = new google.maps.Map(document.getElementById("map"), {
+              //           zoom: 2,
+              //           center: {lat: 8.090440925828062, lng: -1.6977176080814078}
+              //       });
 
-                    var marker = new google.maps.Marker({
-                      map: map,
-                      position: position
-                    });
+              //       var marker = new google.maps.Marker({
+              //         map: map,
+              //         position: position
+              //       });
 
-                    marker.addListener('click', flipCard);
+              //       marker.addListener('click', flipCard);
 
-                    function flipCard(){
+              //       function flipCard(){
 
-                      let itemCard = document.getElementById(coordList[i].itemId);
-                      let itemPos = itemCard.getBoundingClientRect()
-                      let itemPosX = itemPos.x;
-                      let itemPosY = itemPos.y;
-                      window.scrollTo(itemPosX, itemPosY);
-                      itemCard.classList.toggle("rotating-card-container");
-                      document.getElementById('roomsContainer').scrollLeft = itemPos.left;
-                    }
-                }
+              //         let itemCard = document.getElementById(coordList[i].itemId);
+              //         let itemPos = itemCard.getBoundingClientRect()
+              //         let itemPosX = itemPos.x;
+              //         let itemPosY = itemPos.y;
+              //         window.scrollTo(itemPosX, itemPosY);
+              //         itemCard.classList.toggle("rotating-card-container");
+              //         document.getElementById('roomsContainer').scrollLeft = itemPos.left;
+              //       }
+              //   }
                 
-              }
+              // }
             }
               
             });

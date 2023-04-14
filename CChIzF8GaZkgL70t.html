@@ -35,10 +35,10 @@
                     <main class="mdl-layout__content mdl-color--grey-100">
                     <div>
                         <div id="img" style="display: flex; flex-direction: row;">
-                            <img src=uploads/53d239e157283da65c12211af3aa9a86 style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
+                            <img src=uploads/aca8e1ab98d63902d7d69bfbf3e15c07 style="width: 400px; height: 400px;  border-radius: 100px; padding-top: 1em; padding-left: 1em;"></img>
                             <div id="bookingInfo" style="padding-left: 2em;">
-                                <h1>Golden Green</h1>
-                                <h3>Booked Dates: Fri Apr 14 2023 - Fri Apr 21 2023</h3>
+                                <h1>The Golden Palace</h1>
+                                <h3>Booked Dates: Thu Apr 06 2023 - Sat Apr 08 2023</h3>
                                 <h3>Check-In Info: Self Check-in: door code is 1234.</h3>
                                 <button id="checkin" style="display: none;">Check In</button>
                             </div>
@@ -114,7 +114,7 @@
                                         console.log(user);
                                         let status = document.createElement('h2');
                                         status.innerText = 'Checked In';
-                                        let roomRef = ref(db, 'rooms/Golden Green');
+                                        let roomRef = ref(db, 'rooms/The Golden Palace');
                                         onValue(roomRef, (snapshot) => {
                                             let data = snapshot.val();
                                             
@@ -128,7 +128,7 @@
                                         });
                                         document.getElementById('checkin').addEventListener('click', function(){
                                             console.log('checked in!');
-                                            updates['rooms/Golden Green/checkedIn'] = "True";
+                                            updates['rooms/The Golden Palace/checkedIn'] = "True";
                                             update(ref(db), updates);
                                             let checkinBtn = document.getElementById('checkin');
                                             checkinBtn.remove();
