@@ -90,7 +90,7 @@ admin.initializeApp({
 
 const adminDB = admin.database();
 const database = admin.firestore();
-var storage = customApp.storage('booking-app-6750f.appspot.com');
+var storage = admin.storage('booking-app-6750f.appspot.com');
 const listingDb = database.collection('listings');
 const profileDb = database.collection('drivers');
 const lstLocationDb = database.collection('lstLocations');
