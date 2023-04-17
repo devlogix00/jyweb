@@ -239,7 +239,7 @@
                         onValue(bookingRef, (snapshot) => {
                           const data = snapshot.val();
                           let url = data.bookingUrl;
-                          window.location = url+'.html';
+                          window.location = './bookroom.html';
                         })
                       });
                     }
@@ -292,7 +292,7 @@
                           onValue(bookingRef, (snapshot) => {
                             const data = snapshot.val();
                             let url = data.bookingUrl;
-                            window.location = url+'.html';
+                            window.location = './bookcar.html';
                           })
                         });
                       }
@@ -348,7 +348,7 @@
                         onValue(bookingRef, (snapshot) => {
                           const data = snapshot.val();
                           let url = data.bookingUrl;
-                          window.location = url+'.html';
+                          window.location = './booktour.html';
                         })
                       });
 
@@ -405,7 +405,7 @@
                           let url = data.bookingUrl;
                           let splitDt = url.split('/');
                           let serveUrl = splitDt[3];
-                          window.location = './uploads/'+serveUrl+'.html';
+                          window.location = './bookdriver.html';
                         })
                         
                       });
