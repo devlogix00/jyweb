@@ -400,108 +400,71 @@ onValue(profList, (snapshot) => {
 });
 
 onValue(regList, (snapshot) => {
-            
-            if(newData[i] != null && newData[i].listingType === 'car'){
-                let crSearchUrl = ref(adminDB, 'cars/'+newData[i].listingName);
-                onValue(crSearchUrl, (snapshot) => {
-                    let crsearchData = snapshot.val();
-                    if(crsearchData != null ){
-                        if(crsearchData.bookingUrl != null){
-                            let splitDt = crsearchData.bookingUrl.split('/');
-                            serveUrl = splitDt[3];
-                         
-    
-                   
-                    
-                
-                                        }
-                                    
-                                    }
-                                }, {
-                                    onlyOnce: true
-                                });
+    newData = snapshot.val();
+    for(let i = 0; i < newData.length; i++){
+        if(newData[i] != null){
+            const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
+            onValue(loginRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data === null){
+                    app.post('/host/analytics', async (req, res) => {
+                        let url = req.headers.referer;
+                            if(url.includes('?')){
+                               // console.log('parameterized url');
+                                let url1 = url.split('&');
+                                let url2 = url1[0].split('?');
+                                let url3 = url2[1].split('=');
+                                code = url3[1];
+                              //  console.log(code);
                         
-                            }   else if(newData[i] != null && newData[i].listingType === 'tour'){
-                                let trSearchUrl = ref(adminDB, 'tours/'+newData[i].listingName);
-                                onValue(trSearchUrl, (snapshot) => {
-                                    let trsearchData = snapshot.val();
-                                    if(trsearchData != null ){
-                                        if(trsearchData.bookingUrl != null){
-                                            let splitDt = trsearchData.bookingUrl.split('/');
-                                            serveUrl = splitDt[3];
-                      
-                    
-                              
-                                    
-                                
-                                                        }
-                                                    
-                                                    }
-                                                }, {
-                                                    onlyOnce: false
-                                                });
+                                if(req.headers.cookie != 'undefined'){
+                                //console.log(req.headers.cookie);
+                                let storedC = req.headers.cookie+'';
+                                storedC = storedC.split(';');
+                                //console.log(storedC);
+                                let result = [];
+                                for(let i in storedC){
+                                    //console.log(storedC[i].split('='));
+                                    result.push(storedC[i].split('='));
+                                }
+                                //console.log(result);
+                                for(let i in result){
+                                    if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
+                                        userId = result[i][1];
+                                     //   console.log(userId);
+                                        const rsponse = await stripe.oauth.token({
+                                            grant_type: 'authorization_code',
+                                            code: code,
+                                            assert_capabilities: ['transfers']
+                                        });
                                         
-                                            } 
-            if(newData[i] != null){
-                const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
-                onValue(loginRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if(data === null){
-                        app.post('/host/analytics', async (req, res) => {
-                            let url = req.headers.referer;
-                                if(url.includes('?')){
-                                   // console.log('parameterized url');
-                                    let url1 = url.split('&');
-                                    let url2 = url1[0].split('?');
-                                    let url3 = url2[1].split('=');
-                                    code = url3[1];
-                                  //  console.log(code);
-                            
-                                    if(req.headers.cookie != 'undefined'){
-                                    //console.log(req.headers.cookie);
-                                    let storedC = req.headers.cookie+'';
-                                    storedC = storedC.split(';');
-                                    //console.log(storedC);
-                                    let result = [];
-                                    for(let i in storedC){
-                                        //console.log(storedC[i].split('='));
-                                        result.push(storedC[i].split('='));
-                                    }
-                                    //console.log(result);
-                                    for(let i in result){
-                                        if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-                                            userId = result[i][1];
-                                         //   console.log(userId);
-                                            const rsponse = await stripe.oauth.token({
-                                                grant_type: 'authorization_code',
-                                                code: code,
-                                                assert_capabilities: ['transfers']
-                                            });
-                                            
-                                            var connected_account_id = await rsponse.stripe_user_id;
-                                        //    console.log(connected_account_id);
-                            
-                                            if(connected_account_id != 'undefined'){
-                                                const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                            //    console.log(link);
-                                                let updates = {};
-                                                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                                                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                                                update(ref(db), updates);
-                                            }
-                                            
+                                        var connected_account_id = await rsponse.stripe_user_id;
+                                    //    console.log(connected_account_id);
+                        
+                                        if(connected_account_id != 'undefined'){
+                                            const link = await stripe.accounts.createLoginLink(connected_account_id);
+                                        //    console.log(link);
+                                            let updates = {};
+                                            updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+                                            updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+                                            update(ref(db), updates);
                                         }
-                                    }
+                                        
                                     }
                                 }
-                                
-                        });
-                    }
-                }, {
-                    onlyOnce: true
-                });
-                
-            }
+                                }
+                            }
+                            
+                    });
+                }
+            }, {
+                onlyOnce: true
+            });
+            
+        }
+    }
+             
+          
             
         
     }, {
