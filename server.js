@@ -61,23 +61,23 @@ const db = getDatabase();
 
 let itemName;
 let userId;
-let dates;
-let img;
+//let dates;
+//let img;
 let datesLength;
-let stat;
+//let stat;
 let itemPrice;
 let app_fee;
 let itemId = uuidv4();
 let accid;
 let code;
 let serveUrl;
-let imgSrc;
-let rmName;
-let crName;
-let trName;
-let roomDates;
-let checkinInfo;
-let rmSearchUrl;
+//let imgSrc;
+//let rmName;
+//let crName;
+//let trName;
+//let roomDates;
+//let checkinInfo;
+//let rmSearchUrl;
 let regList;
 let deletedId;
 
@@ -90,15 +90,15 @@ admin.initializeApp({
 
 const adminDB = admin.database();
 const database = admin.firestore();
-var storage = admin.storage('booking-app-6750f.appspot.com');
+//var storage = admin.storage('booking-app-6750f.appspot.com');
 const listingDb = database.collection('listings');
 const profileDb = database.collection('drivers');
-const lstLocationDb = database.collection('lstLocations');
-const profLocationDb = database.collection('profLocations');
+//const lstLocationDb = database.collection('lstLocations');
+//const profLocationDb = database.collection('profLocations');
 
 // update usersDb with allMessages+bookingId format
 const usersDb = database.collection('allMessages');
-let timestamp = serverTimestamp();
+//let timestamp = serverTimestamp();
 const databaseRef = ref(adminDB, 'messages/');
 
 //console.log(serveUrl);
