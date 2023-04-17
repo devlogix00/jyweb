@@ -71,6 +71,7 @@ let itemId = uuidv4();
 let accid;
 let code;
 let serveUrl;
+let newData;
 //let imgSrc;
 //let rmName;
 //let crName;
@@ -399,7 +400,7 @@ onValue(profList, (snapshot) => {
 });
 
 onValue(regList, (snapshot) => {
-    
+            
             if(newData[i] != null && newData[i].listingType === 'car'){
                 let crSearchUrl = ref(adminDB, 'cars/'+newData[i].listingName);
                 onValue(crSearchUrl, (snapshot) => {
