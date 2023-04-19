@@ -1,7 +1,6 @@
 <!DOCTYPE html>
             <html>
             <head></head>
-            <script type="module" src="asset.js"></script>
             <!-- Material Design Lite -->
             <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
             <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
@@ -117,9 +116,9 @@
                                 }
 
                                 // Initiate firebase auth
-                                function initFirebaseAuth() {
-                                onAuthStateChanged(getAuth(), authStateObserver);
-                                }
+                                // function initFirebaseAuth() {
+                                // onAuthStateChanged(getAuth(), authStateObserver);
+                                // }
 
                                 // Returns the signed-in user's profile Pic URL.
                                 function getProfilePicUrl() {
@@ -209,17 +208,23 @@
                                     let userDiv = document.createElement('div');
                                     let userPic = document.createElement('img');
                                     let usernm = document.createElement('p');
-                                    for(let i = 0; i < data.length; i++){
-                                        userDiv.setAttribute('id', 'user'+i);
-                                        userPic.setAttribute('src', data[i].profile_picture.stringValue);
-                                        userPic.style.borderRadius = '30%';
-                                        usernm.innerText = data[i].username.stringValue;
+                                    if(data !== null){
+                                        for(let i = 0; i < data.length; i++){
+                                            if(data[i] !== null){
+                                                userDiv.setAttribute('id', 'user'+i);
+                                                userPic.setAttribute('src', data[i].profile_picture.stringValue);
+                                                userPic.style.borderRadius = '30%';
+                                                usernm.innerText = data[i].username.stringValue;
 
-                                        userDiv.appendChild(userPic);
-                                        userDiv.appendChild(usernm);
+                                                userDiv.appendChild(userPic);
+                                                userDiv.appendChild(usernm);
 
-                                        document.getElementById('userlist').appendChild(userDiv);
+                                                document.getElementById('userlist').appendChild(userDiv);
+                                            }
+                                        
                                     }
+                                    }
+                                    
                                     });
 
                                     
@@ -574,7 +579,7 @@
                                 
                             
 
-                                initFirebaseAuth();
+                                // initFirebaseAuth();
                                 authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
