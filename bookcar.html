@@ -116,9 +116,9 @@
                                 }
 
                                 // Initiate firebase auth
-                                // function initFirebaseAuth() {
-                                // onAuthStateChanged(getAuth(), authStateObserver);
-                                // }
+                                function initFirebaseAuth() {
+                                onAuthStateChanged(getAuth(), authStateObserver);
+                                }
 
                                 // Returns the signed-in user's profile Pic URL.
                                 function getProfilePicUrl() {
@@ -579,8 +579,8 @@
                                 
                             
 
-                                // initFirebaseAuth();
-                                authStateObserver(getAuth().currentUser);
+                                initFirebaseAuth();
+                               // authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
                                     window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
