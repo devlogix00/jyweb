@@ -593,39 +593,40 @@
                                         status.innerText = 'Picked Up';
                                         let carRef;
                                         
-                                        let regList = sRef(db, 'listings/listings');
-                                        onValue(regList, (snapshot) => {
-                                            const newData = snapshot.val();
-                                            console.log(newData);
-                                            if(newData != null){
-                                                for(let i = 0; i < newData.length; i++){
-                                                    if(newData[i] != null && newData[i].listingType === 'car'){
-                                                        let crSearchUrl = sRef(db, 'cars/'+newData[i].listingName);
-                                                        onValue(crSearchUrl, (snapshot) => {
-                                                            let crsearchData = snapshot.val();
-                                                            carRef = sRef(db, 'cars/'+crsearchData.listingName);
-                                                            if(crsearchData != null ){
-                                                                if(crsearchData.currentUser === user.uid){
-                                                                   let crImg = document.createElement('img');
-                                                                   crImg.setAttribute('src', crsearchData.img);
-                                                                   crImg.style.width = '400px';
-                                                                   crImg.style.height = '400px';
-                                                                   crImg.style.borderRadius = '100px';
-                                                                   crImg.style.paddingTop = '1em';
-                                                                   crImg.style.paddingLeft = '1em';
-                                                                   document.getElementById('img').appendChild(crImg);
-                                                                   let crNme = document.createElement('h1');
-                                                                   crNme.innerText = crsearchData.listingName;
-                                                                   let bookingDates = document.createElement('h3');
-                                                                   bookingDates.innerText = 'Booking Dates: '+crsearchData.carDates[0]+' - '+crsearchData.carDates[1];
-                                                                   document.getElementById('bookingInfo').appendChild(crNme);
-                                                                   document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                                }
-                                                                
+                                        let carList = sRef(db, 'users/userAccount/'+user.uid+'/cardata');
+                                        onValue(carList, (snapshot) => {
+                                            const carData = snapshot.val();
+                                            if(carData != null){
+                                                let crSearchUrl = sRef(db, 'cars/'+carData.car);
+                                                onValue(crSearchUrl, (snapshot) => {
+                                                    let crsearchData = snapshot.val();
+                                                    carRef = sRef(db, 'cars/'+carData.car);
+                                                    if(crsearchData != null ){
+                                                        if(crsearchData.currentUser === user.uid){
+                                                            let crImg = document.createElement('img');
+                                                            crImg.setAttribute('src', crsearchData.listingImg);
+                                                            crImg.style.width = '400px';
+                                                            crImg.style.height = '400px';
+                                                            crImg.style.borderRadius = '100px';
+                                                            crImg.style.paddingTop = '1em';
+                                                            crImg.style.paddingLeft = '1em';
+                                                            document.getElementById('img').appendChild(crImg);
+                                                            let crNme = document.createElement('h1');
+                                                            crNme.innerText = crsearchData.listingName;
+                                                            let bookingDates = document.createElement('h3');
+                                                            if(rmsearchData.roomDates.length === 2){
+                                                                bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
+                                                            } else {
+                                                                bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
                                                             }
-                                                        }); 
+                                                            document.getElementById('bookingInfo').appendChild(crNme);
+                                                            document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                        }
+                                                        
                                                     }
-                                                }
+                                                }); 
+                                                    
+                                                
                                             }     
                                         });
 
