@@ -105,7 +105,25 @@
                                 const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
-                                const recentMessageQuery = query(collection(getFirestore(), 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
+
+
+                                
+                            
+
+                                //initFirebaseAuth();
+                               // authStateObserver(getAuth().currentUser);
+
+                                document.getElementById('bookme').addEventListener('click', function(){
+                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
+                                });
+
+                                console.log(auth);
+                                let updates = {};
+
+                                onAuthStateChanged(auth, (user) => {
+                                    if(user){
+
+                                        const recentMessageQuery = query(collection(getFirestore(), 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
                                  // Signs-in BookMe.
                                 async function signIn() {
                                 var provider = new GoogleAuthProvider();
@@ -504,22 +522,6 @@
                                     
                                     }
                                 }
-
-                                
-                            
-
-                                //initFirebaseAuth();
-                               // authStateObserver(getAuth().currentUser);
-
-                                document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
-                                });
-
-                                console.log(auth);
-                                let updates = {};
-
-                                onAuthStateChanged(auth, (user) => {
-                                    if(user){
                                         console.log(user);
 
                                         // User is signed in!
