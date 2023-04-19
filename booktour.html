@@ -116,9 +116,9 @@
                                 }
 
                                 // Initiate firebase auth
-                                function initFirebaseAuth() {
-                                onAuthStateChanged(getAuth(), authStateObserver);
-                                }
+                                // function initFirebaseAuth() {
+                                // onAuthStateChanged(auth);
+                                // }
 
                                 // Returns the signed-in user's profile Pic URL.
                                 function getProfilePicUrl() {
@@ -502,7 +502,7 @@
                                 
                             
 
-                                initFirebaseAuth();
+                               // initFirebaseAuth();
                                 //authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
