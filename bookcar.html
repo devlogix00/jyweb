@@ -621,6 +621,27 @@
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(crNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
+
+                                                            onValue(carRef, (snapshot) => {
+                                                            let data = snapshot.val();
+                                                            
+                                                            if(data.currentUser == user.uid && data.checkedIn == null){
+                                                                document.getElementById('pickup').style.display = 'block';
+                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } 
+                                                            });
+                                                            document.getElementById('pickup').addEventListener('click', function(){
+                                                                console.log('picked up!');
+                                                                updates['cars/'+crsearchData.listingName+'/pickedUp'] = "True";
+                                                                update(sRef(db), updates);
+                                                                let pickupBtn = document.getElementById('pickup');
+                                                                pickupBtn.remove();
+                                                            
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            });
                                                         }
                                                         
                                                     }
@@ -630,26 +651,7 @@
                                             }     
                                         });
 
-                                        onValue(carRef, (snapshot) => {
-                                            let data = snapshot.val();
-                                            
-                                            if(data.currentUser == user.uid && data.checkedIn == null){
-                                                document.getElementById('pickup').style.display = 'block';
-                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } 
-                                        });
-                                        document.getElementById('pickup').addEventListener('click', function(){
-                                            console.log('picked up!');
-                                            updates['cars/`+crsearchData.listingName+`/pickedUp'] = "True";
-                                            update(sRef(db), updates);
-                                            let pickupBtn = document.getElementById('pickup');
-                                            pickupBtn.remove();
-                                           
-                                            document.getElementById('bookingInfo').appendChild(status);
-                                        });
+                                       
                                     }
                                 })
                             </script>

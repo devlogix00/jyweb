@@ -626,6 +626,27 @@
                                                             document.getElementById('bookingInfo').appendChild(rmNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
                                                             document.getElementById('bookingInfo').appendChild(checkin);
+
+                                                            onValue(roomRef, (snapshot) => {
+                                                            let data = snapshot.val();
+                                                            
+                                                            if(data.currentUser == user.uid && data.checkedIn == null){
+                                                                document.getElementById('checkin').style.display = 'block';
+                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } 
+                                                            });
+                                                            document.getElementById('checkin').addEventListener('click', function(){
+                                                                console.log('checked in!');
+                                                                updates['rooms/'+rmsearchData.listingName+'/checkedIn'] = "True";
+                                                                update(sRef(db), updates);
+                                                                let checkinBtn = document.getElementById('checkin');
+                                                                checkinBtn.remove();
+                                                            
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            });
                                                         }
                                                         
                                                     }
@@ -635,26 +656,7 @@
                                             }     
                                         });
 
-                                        onValue(roomRef, (snapshot) => {
-                                            let data = snapshot.val();
-                                            
-                                            if(data.currentUser == user.uid && data.checkedIn == null){
-                                                document.getElementById('checkin').style.display = 'block';
-                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } 
-                                        });
-                                        document.getElementById('checkin').addEventListener('click', function(){
-                                            console.log('checked in!');
-                                            updates['rooms/`+rmsearchData.listingName+`/checkedIn'] = "True";
-                                            update(sRef(db), updates);
-                                            let checkinBtn = document.getElementById('checkin');
-                                            checkinBtn.remove();
-                                           
-                                            document.getElementById('bookingInfo').appendChild(status);
-                                        });
+                                        
                                     }
                                 })
                             </script>

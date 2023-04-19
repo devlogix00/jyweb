@@ -622,6 +622,26 @@
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(trNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
+
+                                                            onValue(tourRef, (snapshot) => {
+                                                            let data = snapshot.val();
+                                                            
+                                                            if(data.currentUser == user.uid && data.checkedIn == null){
+                                                                document.getElementById('start').style.display = 'block';
+                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } 
+                                                            });
+                                                            document.getElementById('checkin').addEventListener('click', function(){
+                                                                console.log('Tour started!');
+                                                                updates['tours/'+trsearchData.listingName+'/tourStarted'] = "True";
+                                                                update(sRef(db), updates);
+                                                                let tourSrtdBtn = document.getElementById('start');
+                                                                tourSrtdBtn.remove();
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            });
                                                         }
                                                         
                                                     }
@@ -631,25 +651,7 @@
                                             }     
                                         });
 
-                                        onValue(tourRef, (snapshot) => {
-                                            let data = snapshot.val();
-                                            
-                                            if(data.currentUser == user.uid && data.checkedIn == null){
-                                                document.getElementById('start').style.display = 'block';
-                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                                                document.getElementById('bookingInfo').appendChild(status);
-                                            } 
-                                        });
-                                        document.getElementById('checkin').addEventListener('click', function(){
-                                            console.log('Tour started!');
-                                            updates['tours/`+trsearchData.listingName+`/tourStarted'] = "True";
-                                            update(sRef(db), updates);
-                                            let tourSrtdBtn = document.getElementById('start');
-                                            tourSrtdBtn.remove();
-                                            document.getElementById('bookingInfo').appendChild(status);
-                                        });
+                                        
                                     }
                                 })
                             </script>
