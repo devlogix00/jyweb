@@ -205,10 +205,11 @@
                                     onValue(userCountRef, (snapshot) => {
                                     const data = snapshot.val();
                         
-                                    let userDiv = document.createElement('div');
-                                    let userPic = document.createElement('img');
-                                    let usernm = document.createElement('p');
+                                   
                                     if(data !== null){
+                                        let userDiv = document.createElement('div');
+                                        let userPic = document.createElement('img');
+                                        let usernm = document.createElement('p');
                                         for(let i = 0; i < data.length; i++){
                                             if(data[i] !== null){
                                                 userDiv.setAttribute('id', 'user'+i);
