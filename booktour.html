@@ -594,39 +594,40 @@
                                         status.innerText = 'Tour Started';
                                         let tourRef;
                                         
-                                        let regList = sRef(db, 'listings/listings');
-                                        onValue(regList, (snapshot) => {
-                                            const newData = snapshot.val();
-                                            //console.log(newData);
-                                            if(newData != null){
-                                                for(let i = 0; i < newData.length; i++){
-                                                    if(newData[i] != null && newData[i].listingType === 'tour'){
-                                                        let trSearchUrl = sRef(db, 'tours/'+newData[i].listingName);
-                                                        onValue(trSearchUrl, (snapshot) => {
-                                                            let trsearchData = snapshot.val();
-                                                            tourRef = sRef(db, 'tours/'+trsearchData.listingName);
-                                                            if(trsearchData != null ){
-                                                                if(trsearchData.currentUser === user.uid){
-                                                                   let trImg = document.createElement('img');
-                                                                   trImg.setAttribute('src', trsearchData.img);
-                                                                   trImg.style.width = '400px';
-                                                                   trImg.style.height = '400px';
-                                                                   trImg.style.borderRadius = '100px';
-                                                                   trImg.style.paddingTop = '1em';
-                                                                   trImg.style.paddingLeft = '1em';
-                                                                   document.getElementById('img').appendChild(trImg);
-                                                                   let trNme = document.createElement('h1');
-                                                                   trNme.innerText = trsearchData.listingName;
-                                                                   let bookingDates = document.createElement('h3');
-                                                                   bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
-                                                                   document.getElementById('bookingInfo').appendChild(trNme);
-                                                                   document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                                }
-                                                                
+                                        let tourList = sRef(db, 'users/userAccount/'+user.uid+'/tourdata');
+                                        onValue(tourList, (snapshot) => {
+                                            const tourData = snapshot.val();
+                                            if(tourData != null){
+                                                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
+                                                onValue(trSearchUrl, (snapshot) => {
+                                                    let trsearchData = snapshot.val();
+                                                    tourRef = sRef(db, 'tours/'+tourData.tour);
+                                                    if(trsearchData != null ){
+                                                        if(trsearchData.currentUser === user.uid){
+                                                            let trImg = document.createElement('img');
+                                                            trImg.setAttribute('src', trsearchData.listingImg);
+                                                            trImg.style.width = '400px';
+                                                            trImg.style.height = '400px';
+                                                            trImg.style.borderRadius = '100px';
+                                                            trImg.style.paddingTop = '1em';
+                                                            trImg.style.paddingLeft = '1em';
+                                                            document.getElementById('img').appendChild(trImg);
+                                                            let trNme = document.createElement('h1');
+                                                            trNme.innerText = trsearchData.listingName;
+                                                            let bookingDates = document.createElement('h3');
+                                                            if(trsearchData.tourDates.length === 2){
+                                                                bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
+                                                            } else {
+                                                                bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
                                                             }
-                                                        }); 
+                                                            document.getElementById('bookingInfo').appendChild(trNme);
+                                                            document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                        }
+                                                        
                                                     }
-                                                }
+                                                }); 
+                                                    
+                                                
                                             }     
                                         });
 

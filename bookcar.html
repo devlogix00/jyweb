@@ -614,10 +614,10 @@
                                                             let crNme = document.createElement('h1');
                                                             crNme.innerText = crsearchData.listingName;
                                                             let bookingDates = document.createElement('h3');
-                                                            if(rmsearchData.roomDates.length === 2){
-                                                                bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
+                                                            if(crsearchData.carDates.length === 2){
+                                                                bookingDates.innerText = 'Booking Dates: '+crsearchData.carDates[0]+' - '+crsearchData.carDates[1];
                                                             } else {
-                                                                bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
+                                                                bookingDates.innerText = 'Booking Date: '+crsearchData.carDates[0];
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(crNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
