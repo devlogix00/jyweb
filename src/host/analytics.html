@@ -48,7 +48,8 @@
         <div style="padding: 2em;">
           <h3>Login to Access Your Payments Dashboard</h3>
           <div id="setup">
-            <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8080/host/analytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a>
+            <!-- <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8080/host/analytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a> -->
+            <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://polar-scrubland-06961.herokuapp.com/src/host/analytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a>
           </div>
           <div id="login">
 
@@ -196,13 +197,18 @@
 
             function getStripe(){
                
-                fetch("http://localhost:8080/host/analytics", {
+              fetch("https://polar-scrubland-06961.herokuapp.com/src/analytics", {
                     method: 'POST',
                     body: ''
-                    
                 })
                 .then((res) => console.log(res))
                 .then((err) => console.error(err));
+                // fetch("http://localhost:8080/host/drvanalytics", {
+                //     method: 'POST',
+                //     body: ''
+                // })
+                // .then((res) => console.log(res))
+                // .then((err) => console.error(err));
 
                 
             }
