@@ -353,119 +353,120 @@ app.post('/host/listings', (req, res) => {
     });
 });
 
- onValue(regList, (snapshot) => {
-        const listData = snapshot.val();
-        if(listData != null){
-            for(let i = 0; i < listData.length; i++){
-                
-                if(listData[i] != null && (listData[i].listingType == 'room' || listData[i].listingType == 'car')){
-                    let lstObj = {
-                        loc: listData[i].location,
-                        locType: listData[i].listingType,
-                        itemId: listData[i].itemId
-                    };
-                    locList[i] = lstObj;
-                } 
-            }
-           // console.log(locList);
-            set(ref(db, 'lstLocations/'), {
-                locList
-            });
+onValue(regList, (snapshot) => {
+    const listData = snapshot.val();
+    if(listData != null){
+        for(let i = 0; i < listData.length; i++){
+            
+            if(listData[i] != null && (listData[i].listingType == 'room' || listData[i].listingType == 'car')){
+                let lstObj = {
+                    loc: listData[i].location,
+                    locType: listData[i].listingType,
+                    itemId: listData[i].itemId
+                };
+                locList[i] = lstObj;
+            } 
         }
-    }, {
-        onlyOnce: true
-    });
-    
-    onValue(profList, (snapshot) => {
-        const profListData = snapshot.val();
-        if(profListData != null){
-            for(let i = 0; i < profListData.length; i++){
-                let profLstObj = {
-                    loc: profListData[i].location,
-                    locType: 'driver',
-                    itemId: profListData[i].itemId
-                };  
-                profLocList[i] = profLstObj; 
-            }
-          //  console.log(profLocList);
-            set(ref(db, 'profLocations/'), {
-                profLocList
-            });
-        }
-    }, {
-        onlyOnce: true
-    });
+       // console.log(locList);
+        set(ref(db, 'lstLocations/'), {
+            locList
+        });
+    }
+}, {
+    onlyOnce: true
+});
 
-app.post('/host/analytics', async (req, res) => {
-    let url = req.headers.referer;
-                                if(url.includes('?')){
-                                   // console.log('parameterized url');
-                                    let url1 = url.split('&');
-                                    let url2 = url1[0].split('?');
-                                    let url3 = url2[1].split('=');
-                                    code = url3[1];
-                                  //  console.log(code);
-                            
-                                    if(req.headers.cookie != 'undefined'){
-                                    //console.log(req.headers.cookie);
-                                    let storedC = req.headers.cookie+'';
-                                    storedC = storedC.split(';');
-                                    //console.log(storedC);
-                                    let result = [];
-                                    for(let i in storedC){
-                                        //console.log(storedC[i].split('='));
-                                        result.push(storedC[i].split('='));
-                                    }
-                                    //console.log(result);
-                                    for(let i in result){
-                                        if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-                                            userId = result[i][1];
-                                         //   console.log(userId);
-                                            const rsponse = await stripe.oauth.token({
-                                                grant_type: 'authorization_code',
-                                                code: code,
-                                                assert_capabilities: ['transfers']
-                                            });
-                                            
-                                            var connected_account_id = await rsponse.stripe_user_id;
-                                        //    console.log(connected_account_id);
-                            
-                                            if(connected_account_id != 'undefined'){
-                                                const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                            //    console.log(link);
-                                            // onValue(regList, (snapshot) => {
-                                            //     newData = snapshot.val();
-                                            //     for(let i = 0; i < newData.length; i++){
-                                            //         if(newData[i] != null){
-                                            //             const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
-                                            //             onValue(loginRef, (snapshot) => {
-                                            //                 const data = snapshot.val();
-                                                            
-                                            //             }, {
-                                            //                 onlyOnce: true
-                                            //             });
-                                                        
-                                            //         }
-                                            //     }
-                                                         
-                                                      
-                                                        
-                                                    
-                                            //     }, {
-                                            //     onlyOnce: true
-                                            // });
-                                                let updates = {};
-                                                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                                                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                                                update(ref(db), updates);
-                                            }
-                                            
+onValue(profList, (snapshot) => {
+    const profListData = snapshot.val();
+    if(profListData != null){
+        for(let i = 0; i < profListData.length; i++){
+            let profLstObj = {
+                loc: profListData[i].location,
+                locType: 'driver',
+                itemId: profListData[i].itemId
+            };  
+            profLocList[i] = profLstObj; 
+        }
+      //  console.log(profLocList);
+        set(ref(db, 'profLocations/'), {
+            profLocList
+        });
+    }
+}, {
+    onlyOnce: true
+});
+
+onValue(regList, (snapshot) => {
+    newData = snapshot.val();
+    for(let i = 0; i < newData.length; i++){
+        if(newData[i] != null){
+            const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
+            onValue(loginRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data === null){
+                    app.post('/src/host/analytics', async (req, res) => {
+                        let url = req.headers.referer;
+                            if(url.includes('?')){
+                               // console.log('parameterized url');
+                                let url1 = url.split('&');
+                                let url2 = url1[0].split('?');
+                                let url3 = url2[1].split('=');
+                                code = url3[1];
+                              //  console.log(code);
+                        
+                                if(req.headers.cookie != 'undefined'){
+                                //console.log(req.headers.cookie);
+                                let storedC = req.headers.cookie+'';
+                                storedC = storedC.split(';');
+                                //console.log(storedC);
+                                let result = [];
+                                for(let i in storedC){
+                                    //console.log(storedC[i].split('='));
+                                    result.push(storedC[i].split('='));
+                                }
+                                //console.log(result);
+                                for(let i in result){
+                                    if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
+                                        userId = result[i][1];
+                                     //   console.log(userId);
+                                        const rsponse = await stripe.oauth.token({
+                                            grant_type: 'authorization_code',
+                                            code: code,
+                                            assert_capabilities: ['transfers']
+                                        });
+                                        
+                                        var connected_account_id = await rsponse.stripe_user_id;
+                                    //    console.log(connected_account_id);
+                        
+                                        if(connected_account_id != 'undefined'){
+                                            const link = await stripe.accounts.createLoginLink(connected_account_id);
+                                        //    console.log(link);
+                                            let updates = {};
+                                            updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+                                            updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+                                            update(ref(db), updates);
                                         }
-                                    }
+                                        
                                     }
                                 }
-   
-})
+                                }
+                            }
+                            
+                    });
+                }
+            }, {
+                onlyOnce: true
+            });
+            
+        }
+    }
+             
+          
+            
+        
+    }, {
+    onlyOnce: true
+});
 
 let drvProfileRef = ref(adminDB, 'profiles/profiles');
 onValue(drvProfileRef, (snapshot) => {
@@ -478,7 +479,7 @@ onValue(drvProfileRef, (snapshot) => {
             onValue(loginRef, (snapshot) => {
                 const data = snapshot.val();
                 if(data === null){
-                    app.post('/host/drvanalytics', async (req, res) => {
+                    app.post('/src/host/drvanalytics', async (req, res) => {
                         let url = req.headers.referer;
                         if(url.includes('?')){
                         //    console.log('parameterized url');
@@ -536,7 +537,7 @@ onValue(drvProfileRef, (snapshot) => {
             
         }
     }
-});
+})
 
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname, '/index.html'));
@@ -779,7 +780,7 @@ app.post('/create-checkout-session', async (req, res) => {
             mode: 'payment',
             //success_url: 'http://localhost:8080/success.html',
             //cancel_url: 'http://localhost:8080/cancel.html',
-            success_url: 'https://polar-scrubland-06961.herokuapp.com/success.html',
+             success_url: 'https://polar-scrubland-06961.herokuapp.com/success.html',
             cancel_url: 'https://polar-scrubland-06961.herokuapp.com/cancel.html',
             payment_intent_data: {
                 application_fee_amount: app_fee,
