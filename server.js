@@ -1,21 +1,20 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { initializeApp } = require('firebase-admin/app');
+//const { initializeApp } = require('firebase-admin/app');
 var admin = require("firebase-admin");
 var serviceAccount = require("./src/booking-app-6750f-4b6124a7337e.json")
 const { getDatabase, ref, onValue, set, update, remove } = require('firebase/database');
 const { getAuth, onAuthStateChanged, currentUser } = require('firebase/auth');
-const { addDoc, collection, getFirestore, Timestamp, fromDate, orderBy, limit, onSnapshot, query, serverTimestamp, setDoc } = require('firebase/firestore');
+//const { addDoc, collection, getFirestore, Timestamp, fromDate, orderBy, limit, onSnapshot, query, serverTimestamp, setDoc } = require('firebase/firestore');
 const app = express();
 const port = process.env.PORT || 8080;
 const stripe = require('stripe')('sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC');
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
 const upload = multer({dest: "uploads/"});
-var type = upload.single('file');
+//var type = upload.single('file');
 const fs = require('fs');
-
 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json());
@@ -96,7 +95,6 @@ const listingDb = database.collection('listings');
 const profileDb = database.collection('drivers');
 //const lstLocationDb = database.collection('lstLocations');
 //const profLocationDb = database.collection('profLocations');
-
 // update usersDb with allMessages+bookingId format
 const usersDb = database.collection('allMessages');
 //let timestamp = serverTimestamp();
@@ -255,11 +253,10 @@ if(profileRefdb != null){
     })
 }
 
-
+/* Message exchange between firestore and realtime. */
 let messages = [];
 updates = {};
 const recentMessageQuery = usersDb.get().then((QuerySnapshot) => {
-
         QuerySnapshot.forEach((doc) => {
             var message = doc.data();
             messages.push(message);
@@ -707,7 +704,7 @@ app.post('/create-checkout-session', async (req, res) => {
     
     
     // TODO(1): Access item data from db
-    let itemRef = ref(db, 'users/userAccount/'+userId+'/itemdata'+today);
+    let itemRef = ref(adminDB, 'users/userAccount/'+userId+'/itemdata'+today);
             
     onValue(itemRef, (snapshot) => {
         const data = snapshot.val();
