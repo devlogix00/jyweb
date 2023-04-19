@@ -629,7 +629,7 @@
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             } 
                                                             });
-                                                            document.getElementById('checkin').addEventListener('click', function(){
+                                                            document.getElementById('start').addEventListener('click', function(){
                                                                 console.log('Tour started!');
                                                                 updates['tours/'+trsearchData.listingName+'/tourStarted'] = "True";
                                                                 update(sRef(db), updates);
