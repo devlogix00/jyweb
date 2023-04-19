@@ -121,20 +121,22 @@
                                 console.log(auth);
                                 let updates = {};
 
-                                onAuthStateChanged(auth, (user) => {
-                                    if(user){
-
-                                        const recentMessageQuery = query(collection(getFirestore(), 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
-                                 // Signs-in BookMe.
+                                // Signs-in BookMe.
                                 async function signIn() {
                                 var provider = new GoogleAuthProvider();
-                                signInWithPopup(getAuth(), provider);
+                                signInWithPopup(auth, provider);
                                 }
 
                                 // Signs-out of BookMe.
                                 function signOutUser() {
-                                signOut(getAuth());
+                                signOut(auth);
                                 }
+
+                                onAuthStateChanged(auth, (user) => {
+                                    if(user){
+                                        console.log(user)
+                                        const recentMessageQuery = query(collection(fs, 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
+                                 
 
                                 // Initiate firebase auth
                                 // function initFirebaseAuth() {
@@ -143,17 +145,17 @@
 
                                 // Returns the signed-in user's profile Pic URL.
                                 function getProfilePicUrl() {
-                                return getAuth().currentUser.photoURL;
+                                return user.photoURL;
                                 }
 
                                 // Returns the signed-in user's display name.
                                 function getUserName() {
-                                return getAuth().currentUser.displayName;
+                                return user.displayName;
                                 }
 
                                 // Returns true if a user is signed-in.
                                 function isUserSignedIn() {
-                                return !!getAuth().currentUser;
+                                return !!user;
                                 } 
 
                                 // Template for messages.
@@ -193,10 +195,6 @@
                                 return url;
                                 }
 
-                            
-
-                                    
-
                                 // Triggers when the auth state change for instance when the user signs-in or signs-out.
                                 // function authStateObserver(user) {
                                 // if (user) {
@@ -222,9 +220,9 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(getFirestore(), 'bookroom'), {
-                                            name: getUserName(),
-                                            profilePicUrl: getProfilePicUrl(),
+                                        addDoc(collection(fs, 'bookroom'), {
+                                            name: user.displayName,
+                                            profilePicUrl: user.photoURL,
                                             text: messageText,
                                             timestamp: timestamp
                                         });
@@ -438,28 +436,28 @@
                                             
                                             function writeUserData(name, email, imageUrl) {
                                             set(sRef(db, 'messages/'), {
-                                                name: getUserName(),
+                                                name: user.displayName,
                                                 imageUrl: downloadURL,
-                                                profilePicUrl: getProfilePicUrl()
+                                                profilePicUrl: user.photoURL
                                             });
                                             }
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
-                                            addDoc(collection(getFirestore(), 'bookroom'), {
-                                                    name: getUserName(),
-                                                    profilePicUrl: getProfilePicUrl(),
+                                            addDoc(collection(fs, 'bookroom'), {
+                                                    name: user.displayName,
+                                                    profilePicUrl: user.photoURL,
                                                     imageUrl: downloadURL,
                                                     timestamp: timestamp
                                             });
-                                            addDoc(collection(getFirestore(), 'imagePost'), {
-                                                name: getUserName(),
-                                                profilePicUrl: getProfilePicUrl(),
+                                            addDoc(collection(fs, 'imagePost'), {
+                                                name: user.displayName,
+                                                profilePicUrl: user.photoURL,
                                                 imageUrl: downloadURL,
                                                 timestamp: timestamp
                                             });
                                             });
                                             let messages = [];
-                                            const recentMessageQuery = query(collection(getFirestore(), 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
+                                            const recentMessageQuery = query(collection(fs, 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
                                             onSnapshot(recentMessageQuery, function(snapshot) {
                                                 snapshot.docChanges().forEach(function(change) {
                                                     if(change.type === 'removed') {
@@ -524,8 +522,8 @@
                                         console.log(user);
                                         // User is signed in!
                                         // Get the signed-in user's profile pic and name.
-                                        var profilePicUrl = getProfilePicUrl();
-                                        var userName = getUserName();
+                                        var profilePicUrl = user.photoURL;
+                                        var userName = user.displayName;
                                         var userId = user.uid;
                                         let users = [];
 
@@ -535,7 +533,7 @@
                                             email: user.email
                                         });
 
-                                        const recentuserQuery = query(collection(getFirestore(), 'bookroomusers'));
+                                        const recentuserQuery = query(collection(fs, 'bookroomusers'));
                                         onSnapshot(recentuserQuery, function(snapshot) {
                                         console.log(snapshot);
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
