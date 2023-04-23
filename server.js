@@ -139,8 +139,6 @@ function uploadFiles(req, res){
             name: data.name,
             profilePicUrl: data.profilePicUrl,
             imageUrl: filepath
-            
-            
         });
 
     }, {
@@ -396,39 +394,35 @@ onValue(profList, (snapshot) => {
     onlyOnce: true
 });
 
-onValue(regList, (snapshot) => {
-    newData = snapshot.val();
-    for(let i = 0; i < newData.length; i++){
-        if(newData[i] != null){
-            const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
-            onValue(loginRef, (snapshot) => {
-                const data = snapshot.val();
-                if(data === null){
-                    app.post('/analytics', async (req, res) => {
+app.post('/analytics', async (req, res) => {
+    onValue(regList, (snapshot) => {
+        newData = snapshot.val();
+        for(let i = 0; i < newData.length; i++){
+            if(newData[i] != null){
+                const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
+                onValue(loginRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if(data === null){
                         let url = req.headers.referer;
-                            if(url.includes('?')){
-                               // console.log('parameterized url');
-                                let url1 = url.split('&');
-                                let url2 = url1[0].split('?');
-                                let url3 = url2[1].split('=');
-                                code = url3[1];
-                              //  console.log(code);
-                        
-                                if(req.headers.cookie != 'undefined'){
-                                //console.log(req.headers.cookie);
+                        if(url.includes('?')){
+                            let url1 = url.split('&');
+                            let url2 = url1[0].split('?');
+                            let url3 = url2[1].split('=');
+                            code = url3[1];
+
+                            if(req.headers.cookie != 'undefined'){
                                 let storedC = req.headers.cookie+'';
                                 storedC = storedC.split(';');
-                                //console.log(storedC);
+                            
                                 let result = [];
                                 for(let i in storedC){
-                                    //console.log(storedC[i].split('='));
                                     result.push(storedC[i].split('='));
                                 }
-                                //console.log(result);
+                        
                                 for(let i in result){
                                     if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
                                         userId = result[i][1];
-                                     //   console.log(userId);
+                                
                                         const rsponse = await stripe.oauth.token({
                                             grant_type: 'authorization_code',
                                             code: code,
@@ -436,11 +430,9 @@ onValue(regList, (snapshot) => {
                                         });
                                         
                                         var connected_account_id = await rsponse.stripe_user_id;
-                                    //    console.log(connected_account_id);
                         
                                         if(connected_account_id != 'undefined'){
                                             const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                        //    console.log(link);
                                             let updates = {};
                                             updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
                                             updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
@@ -449,37 +441,35 @@ onValue(regList, (snapshot) => {
                                         
                                     }
                                 }
-                                }
                             }
-                            
-                    });
-                }
-            }, {
-                onlyOnce: true
-            });
-            
+                        }
+                    }
+                }, {
+                    onlyOnce: true
+                });
+                
+            }
         }
-    }
-             
-          
             
+        }, {
+        onlyOnce: true
+    });
+    
         
-    }, {
-    onlyOnce: true
 });
 
-let drvProfileRef = ref(adminDB, 'profiles/profiles');
-onValue(drvProfileRef, (snapshot) => {
-    const data = snapshot.val();
-    if(data != null){
-      //  console.log('profiles',data);
-        for(let i = 0; i < data.length; i++){
-            drName = data[i].Name;
-            const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
-            onValue(loginRef, (snapshot) => {
-                const data = snapshot.val();
-                if(data === null){
-                    app.post('/', async (req, res) => {
+app.post('/drvanalytics', async (req, res) => {
+    let drvProfileRef = ref(adminDB, 'profiles/profiles');
+    onValue(drvProfileRef, (snapshot) => {
+        const data = snapshot.val();
+        if(data != null){
+        //  console.log('profiles',data);
+            for(let i = 0; i < data.length; i++){
+                drName = data[i].Name;
+                const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
+                onValue(loginRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if(data === null){
                         let url = req.headers.referer;
                         if(url.includes('?')){
                         //    console.log('parameterized url');
@@ -526,18 +516,19 @@ onValue(drvProfileRef, (snapshot) => {
                             }
                             }
                         }
-                       
-                    });
-                }
-            }, {
-                onlyOnce: true
-            });
-           
-
+                    }
+                }, {
+                    onlyOnce: true
+                });
             
+
+                
+            }
         }
-    }
-})
+    });
+
+   
+});
 
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname, '/index.html'));
