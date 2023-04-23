@@ -403,15 +403,15 @@ app.post('/analytics', async (req, res) => {
         let url3 = url2[1].split('=');
         code = url3[1];
     }
-    const rsponse = await stripe.oauth.token({
+    const rsponse = stripe.oauth.token({
         grant_type: 'authorization_code',
         code: code,
         assert_capabilities: ['transfers']
     });
     
-    var connected_account_id = await rsponse.stripe_user_id;
+    var connected_account_id = rsponse.stripe_user_id;
     if(connected_account_id != 'undefined'){
-        const link = await stripe.accounts.createLoginLink(connected_account_id);
+        const link = stripe.accounts.createLoginLink(connected_account_id);
     }
 
     if(req.headers.cookie != 'undefined'){
