@@ -397,7 +397,7 @@ onValue(profList, (snapshot) => {
 app.post('/analytics', async (req, res) => {
     let url = req.headers.referer;
     if(url.includes('?')){
-    //    console.log('parameterized url');
+        console.log('parameterized url', url);
         let url1 = url.split('&');
         let url2 = url1[0].split('?');
         let url3 = url2[1].split('=');
@@ -464,7 +464,7 @@ app.post('/analytics', async (req, res) => {
 app.post('/drvanalytics', async (req, res) => {
     let url = req.headers.referer;
     if(url.includes('?')){
-    //    console.log('parameterized url');
+        console.log('parameterized url', url);
         let url1 = url.split('&');
         let url2 = url1[0].split('?');
         let url3 = url2[1].split('=');
