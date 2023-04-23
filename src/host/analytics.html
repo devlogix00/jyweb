@@ -196,14 +196,14 @@
 
         </script> 
         <script type="module">
-            function getStripe(){
+           
               try {
-                const response = axios.post('/analytics');
+                const response = axios.get('/');
                 console.log('What is going on? ', response);
               } catch (error){
                 console.error(error);
               }
-              getStripe();
+             
               // fetch("https://polar-scrubland-06961.herokuapp.com/", {
               //       method: 'POST',
               //       body: ''
@@ -216,7 +216,7 @@
                 // })
                 // .then((res) => console.log(res))
                 // .then((err) => console.error(err));
-            }
+            
         </script>
         <!-- <script src="https://js.stripe.com/v3/">
             let clientSecret = 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC';
