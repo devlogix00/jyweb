@@ -410,6 +410,9 @@ app.post('/analytics', async (req, res) => {
     });
     
     var connected_account_id = await rsponse.stripe_user_id;
+    if(connected_account_id != 'undefined'){
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
+    }
 
     if(req.headers.cookie != 'undefined'){
         let storedC = req.headers.cookie+'';
@@ -423,13 +426,10 @@ app.post('/analytics', async (req, res) => {
         for(let i in result){
             if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
                 userId = result[i][1];
-                if(connected_account_id != 'undefined'){
-                    const link = await stripe.accounts.createLoginLink(connected_account_id);
-                    let updates = {};
-                    updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                    updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                    update(ref(db), updates);
-                }
+                let updates = {};
+                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+                update(ref(db), updates);
             }
         }
     }
@@ -477,7 +477,10 @@ app.post('/drvanalytics', async (req, res) => {
     });
     
     var connected_account_id = await rsponse.stripe_user_id;
- //   console.log(connected_account_id);
+    if(connected_account_id != 'undefined'){
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
+    }
+    //   console.log(connected_account_id);
 
     if(req.headers.cookie != 'undefined'){
         //console.log(req.headers.cookie);
@@ -493,16 +496,12 @@ app.post('/drvanalytics', async (req, res) => {
         for(let i in result){
             if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
                 userId = result[i][1];
-            //  console.log(userId);
-            if(connected_account_id != 'undefined'){
-                const link = await stripe.accounts.createLoginLink(connected_account_id);
-             //   console.log(link);
                 let updates = {};
                 updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
                 updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
                 update(ref(db), updates);
-                
-            }
+            //  console.log(userId);
+            
             }
         }
         }
