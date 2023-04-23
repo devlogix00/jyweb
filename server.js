@@ -395,6 +395,43 @@ onValue(profList, (snapshot) => {
 });
 
 app.post('/analytics', async (req, res) => {
+    let url = req.headers.referer;
+    if(req.headers.cookie != 'undefined'){
+        let storedC = req.headers.cookie+'';
+        storedC = storedC.split(';');
+    
+        let result = [];
+        for(let i in storedC){
+            result.push(storedC[i].split('='));
+        }
+
+        for(let i in result){
+            if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
+                userId = result[i][1];
+            }
+        }
+    }
+    let url = req.headers.referer;
+    if(url.includes('?')){
+    //    console.log('parameterized url');
+        let url1 = url.split('&');
+        let url2 = url1[0].split('?');
+        let url3 = url2[1].split('=');
+        code = url3[1];
+    }
+    const rsponse = await stripe.oauth.token({
+        grant_type: 'authorization_code',
+        code: code,
+        assert_capabilities: ['transfers']
+    });
+    
+    var connected_account_id = await rsponse.stripe_user_id;
+
+    if(connected_account_id != 'undefined'){
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
+        
+    }
+   
     onValue(regList, (snapshot) => {
         newData = snapshot.val();
         for(let i = 0; i < newData.length; i++){
@@ -402,50 +439,12 @@ app.post('/analytics', async (req, res) => {
                 const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
                 onValue(loginRef, (snapshot) => {
                     const data = snapshot.val();
-                    if(data === null){
-                        let url = req.headers.referer;
-                        if(url.includes('?')){
-                            let url1 = url.split('&');
-                            let url2 = url1[0].split('?');
-                            let url3 = url2[1].split('=');
-                            code = url3[1];
-
-                            if(req.headers.cookie != 'undefined'){
-                                let storedC = req.headers.cookie+'';
-                                storedC = storedC.split(';');
-                            
-                                let result = [];
-                                for(let i in storedC){
-                                    result.push(storedC[i].split('='));
-                                }
+                    if(data != null){
+                        let updates = {};
+                        updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+                        updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+                        update(ref(db), updates);
                         
-                                for(let i in result){
-                                    if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-                                        userId = result[i][1];
-                                        
-                                        app.post('/', async function(req, res){
-                                            const rsponse = await stripe.oauth.token({
-                                                grant_type: 'authorization_code',
-                                                code: code,
-                                                assert_capabilities: ['transfers']
-                                            });
-                                            
-                                            var connected_account_id = await rsponse.stripe_user_id;
-                            
-                                            if(connected_account_id != 'undefined'){
-                                                const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                                let updates = {};
-                                                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                                                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                                                update(ref(db), updates);
-                                            }
-                                        })
-                                        
-                                        
-                                    }
-                                }
-                            }
-                        }
                     }
                 }, {
                     onlyOnce: true
@@ -457,11 +456,53 @@ app.post('/analytics', async (req, res) => {
         }, {
         onlyOnce: true
     });
-    
         
 });
 
 app.post('/drvanalytics', async (req, res) => {
+    let url = req.headers.referer;
+        if(url.includes('?')){
+        //    console.log('parameterized url');
+            let url1 = url.split('&');
+            let url2 = url1[0].split('?');
+            let url3 = url2[1].split('=');
+            code = url3[1];
+        }
+    const rsponse = await stripe.oauth.token({
+        grant_type: 'authorization_code',
+        code: code,
+        assert_capabilities: ['transfers']
+    });
+    
+    var connected_account_id = await rsponse.stripe_user_id;
+ //   console.log(connected_account_id);
+
+    if(req.headers.cookie != 'undefined'){
+        //console.log(req.headers.cookie);
+        let storedC = req.headers.cookie+'';
+        storedC = storedC.split(';');
+        //console.log(storedC);
+        let result = [];
+        for(let i in storedC){
+            //console.log(storedC[i].split('='));
+            result.push(storedC[i].split('='));
+        }
+        //console.log(result);
+        for(let i in result){
+            if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
+                userId = result[i][1];
+            //  console.log(userId);
+
+            }
+        }
+        }
+
+    if(connected_account_id != 'undefined'){
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
+     //   console.log(link);
+        
+    }
+
     let drvProfileRef = ref(adminDB, 'profiles/profiles');
     onValue(drvProfileRef, (snapshot) => {
         const data = snapshot.val();
@@ -472,55 +513,11 @@ app.post('/drvanalytics', async (req, res) => {
                 const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
                 onValue(loginRef, (snapshot) => {
                     const data = snapshot.val();
-                    if(data === null){
-                        let url = req.headers.referer;
-                        if(url.includes('?')){
-                        //    console.log('parameterized url');
-                            let url1 = url.split('&');
-                            let url2 = url1[0].split('?');
-                            let url3 = url2[1].split('=');
-                            code = url3[1];
-                         //   console.log(code);
-                    
-                            if(req.headers.cookie != 'undefined'){
-                            //console.log(req.headers.cookie);
-                            let storedC = req.headers.cookie+'';
-                            storedC = storedC.split(';');
-                            //console.log(storedC);
-                            let result = [];
-                            for(let i in storedC){
-                                //console.log(storedC[i].split('='));
-                                result.push(storedC[i].split('='));
-                            }
-                            //console.log(result);
-                            for(let i in result){
-                                if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-                                    userId = result[i][1];
-                                  //  console.log(userId);
-                                  app.post('/', async function(req, res){
-                                    const rsponse = await stripe.oauth.token({
-                                        grant_type: 'authorization_code',
-                                        code: code,
-                                        assert_capabilities: ['transfers']
-                                    });
-                                    
-                                    var connected_account_id = await rsponse.stripe_user_id;
-                                 //   console.log(connected_account_id);
-                    
-                                    if(connected_account_id != 'undefined'){
-                                        const link = await stripe.accounts.createLoginLink(connected_account_id);
-                                     //   console.log(link);
-                                        let updates = {};
-                                        updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
-                                        updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                                        update(ref(db), updates);
-                                    }
-                                  })
-                                    
-                                }
-                            }
-                            }
-                        }
+                    if(data != null){
+                        let updates = {};
+                        updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
+                        updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
+                        update(ref(db), updates);
                     }
                 }, {
                     onlyOnce: true
