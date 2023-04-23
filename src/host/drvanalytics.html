@@ -18,7 +18,7 @@
         <script src="./js/plugins/moment.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
-        
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       </head>
 
       <body class="sidebar-collapse" onload="getStripe()">        
@@ -194,13 +194,18 @@
         <script>
 
             function getStripe(){
-                console.log('What is going on?');
-                fetch("https://polar-scrubland-06961.herokuapp.com/", {
-                    method: 'POST',
-                    body: ''
-                })
-                .then((res) => console.log(res))
-                .then((err) => console.error(err));
+                try {
+                  const response = await axios.post('/analytics');
+                  console.log('What is going on? ', response);
+                } catch (error){
+                  console.error(error);
+                }
+                // fetch("https://polar-scrubland-06961.herokuapp.com/", {
+                //     method: 'POST',
+                //     body: ''
+                // })
+                // .then((res) => console.log(res))
+                // .then((err) => console.error(err));
                 // fetch("http://localhost:8080/host/drvanalytics", {
                 //     method: 'POST',
                 //     body: ''
