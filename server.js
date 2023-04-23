@@ -411,7 +411,7 @@ app.post('/analytics', async (req, res) => {
             }
         }
     }
-    let url = req.headers.referer;
+    url = req.headers.referer;
     if(url.includes('?')){
     //    console.log('parameterized url');
         let url1 = url.split('&');
@@ -460,14 +460,14 @@ app.post('/analytics', async (req, res) => {
 });
 
 app.post('/drvanalytics', async (req, res) => {
-    let url = req.headers.referer;
-        if(url.includes('?')){
-        //    console.log('parameterized url');
-            let url1 = url.split('&');
-            let url2 = url1[0].split('?');
-            let url3 = url2[1].split('=');
-            code = url3[1];
-        }
+    url = req.headers.referer;
+    if(url.includes('?')){
+    //    console.log('parameterized url');
+        let url1 = url.split('&');
+        let url2 = url1[0].split('?');
+        let url3 = url2[1].split('=');
+        code = url3[1];
+    }
     const rsponse = await stripe.oauth.token({
         grant_type: 'authorization_code',
         code: code,
