@@ -394,7 +394,7 @@ onValue(profList, (snapshot) => {
     onlyOnce: true
 });
 
-app.post('/analytics', (req, res) => {
+app.post('/analytics', async (req, res) => {
     let url = req.headers.referer;
     if(url.includes('?')){
         console.log('parameterized url', url);
@@ -403,15 +403,15 @@ app.post('/analytics', (req, res) => {
         let url3 = url2[1].split('=');
         code = url3[1];
     }
-    const rsponse = stripe.oauth.token({
+    const rsponse = await stripe.oauth.token({
         grant_type: 'authorization_code',
         code: code,
         assert_capabilities: ['transfers']
     });
     
-    var connected_account_id = rsponse.stripe_user_id;
+    var connected_account_id = await rsponse.stripe_user_id;
     if(connected_account_id != 'undefined'){
-        const link = stripe.accounts.createLoginLink(connected_account_id);
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
     }
 
     if(req.headers.cookie != 'undefined'){
@@ -461,7 +461,7 @@ app.post('/analytics', (req, res) => {
         
 });
 
-app.post('/drvanalytics', (req, res) => {
+app.post('/drvanalytics', async (req, res) => {
     let url = req.headers.referer;
     if(url.includes('?')){
         console.log('parameterized url', url);
@@ -470,15 +470,15 @@ app.post('/drvanalytics', (req, res) => {
         let url3 = url2[1].split('=');
         code = url3[1];
     }
-    const rsponse = stripe.oauth.token({
+    const rsponse = await stripe.oauth.token({
         grant_type: 'authorization_code',
         code: code,
         assert_capabilities: ['transfers']
     });
     
-    var connected_account_id =  rsponse.stripe_user_id;
+    var connected_account_id = await rsponse.stripe_user_id;
     if(connected_account_id != 'undefined'){
-        const link = stripe.accounts.createLoginLink(connected_account_id);
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
     }
     //   console.log(connected_account_id);
 
