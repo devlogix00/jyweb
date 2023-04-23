@@ -21,7 +21,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       </head>
 
-      <body class="sidebar-collapse" onload="getStripe()">        
+      <body class="sidebar-collapse">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
           <div class="container">
             <div class="navbar-translate" ></div>          
@@ -191,7 +191,7 @@
           });
 
         </script> 
-        <script>
+        <script type="module">
 
             function getStripe(){
                 try {
@@ -200,6 +200,7 @@
                 } catch (error){
                   console.error(error);
                 }
+                getStripe();
                 // fetch("https://polar-scrubland-06961.herokuapp.com/", {
                 //     method: 'POST',
                 //     body: ''
