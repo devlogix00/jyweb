@@ -395,14 +395,37 @@ onValue(profList, (snapshot) => {
 });
 
 app.post('/analytics', async (req, res) => {
-    let url = req.headers.referer;
-    if(url.includes('?')){
-        console.log('parameterized url', url);
-        let url1 = url.split('&');
-        let url2 = url1[0].split('?');
-        let url3 = url2[1].split('=');
-        code = url3[1];
-    }
+    // let url = req.headers.referer;
+    // if(url.includes('?')){
+    //     console.log('parameterized url', url);
+    //     let url1 = url.split('&');
+    //     let url2 = url1[0].split('?');
+    //     let url3 = url2[1].split('=');
+    //     code = url3[1];
+    // }
+
+     onValue(regList, (snapshot) => {
+        newData = snapshot.val();
+        for(let i = 0; i < newData.length; i++){
+            if(newData[i] != null){
+                const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/code');
+                onValue(loginRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if(data != null){
+                        code = data;
+                        
+                    }
+                }, {
+                    onlyOnce: true
+                });
+                
+            }
+        }
+            
+        }, {
+        onlyOnce: true
+    });
+
     const rsponse = await stripe.oauth.token({
         grant_type: 'authorization_code',
         code: code,
@@ -433,43 +456,41 @@ app.post('/analytics', async (req, res) => {
             }
         }
     }
-    
-
-    
-   
-    // onValue(regList, (snapshot) => {
-    //     newData = snapshot.val();
-    //     for(let i = 0; i < newData.length; i++){
-    //         if(newData[i] != null){
-    //             const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
-    //             onValue(loginRef, (snapshot) => {
-    //                 const data = snapshot.val();
-    //                 if(data != null){
-                        
-                        
-    //                 }
-    //             }, {
-    //                 onlyOnce: true
-    //             });
-                
-    //         }
-    //     }
-            
-    //     }, {
-    //     onlyOnce: true
-    // });
-        
 });
 
 app.post('/drvanalytics', async (req, res) => {
-    let url = req.headers.referer;
-    if(url.includes('?')){
-        console.log('parameterized url', url);
-        let url1 = url.split('&');
-        let url2 = url1[0].split('?');
-        let url3 = url2[1].split('=');
-        code = url3[1];
-    }
+    // let url = req.headers.referer;
+    // if(url.includes('?')){
+    //     console.log('parameterized url', url);
+    //     let url1 = url.split('&');
+    //     let url2 = url1[0].split('?');
+    //     let url3 = url2[1].split('=');
+    //     code = url3[1];
+    // }
+
+    let drvProfileRef = ref(adminDB, 'profiles/profiles');
+    onValue(drvProfileRef, (snapshot) => {
+        const data = snapshot.val();
+        if(data != null){
+        //  console.log('profiles',data);
+            for(let i = 0; i < data.length; i++){
+                drName = data[i].Name;
+                const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/code');
+                onValue(loginRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if(data != null){
+                       code = data;
+                    }
+                }, {
+                    onlyOnce: true
+                });
+            
+
+                
+            }
+        }
+    });
+
     const rsponse = await stripe.oauth.token({
         grant_type: 'authorization_code',
         code: code,
@@ -508,28 +529,7 @@ app.post('/drvanalytics', async (req, res) => {
 
     
 
-    // let drvProfileRef = ref(adminDB, 'profiles/profiles');
-    // onValue(drvProfileRef, (snapshot) => {
-    //     const data = snapshot.val();
-    //     if(data != null){
-    //     //  console.log('profiles',data);
-    //         for(let i = 0; i < data.length; i++){
-    //             drName = data[i].Name;
-    //             const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
-    //             onValue(loginRef, (snapshot) => {
-    //                 const data = snapshot.val();
-    //                 if(data != null){
-                       
-    //                 }
-    //             }, {
-    //                 onlyOnce: true
-    //             });
-            
-
-                
-    //         }
-    //     }
-    // });
+   
 
    
 });
