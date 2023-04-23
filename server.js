@@ -429,33 +429,34 @@ app.post('/analytics', async (req, res) => {
 
     if(connected_account_id != 'undefined'){
         link = await stripe.accounts.createLoginLink(connected_account_id);
+        let updates = {};
+        updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+        updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+        update(ref(db), updates);
         
     }
    
-    onValue(regList, (snapshot) => {
-        newData = snapshot.val();
-        for(let i = 0; i < newData.length; i++){
-            if(newData[i] != null){
-                const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
-                onValue(loginRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if(data != null){
-                        let updates = {};
-                        updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                        updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                        update(ref(db), updates);
+    // onValue(regList, (snapshot) => {
+    //     newData = snapshot.val();
+    //     for(let i = 0; i < newData.length; i++){
+    //         if(newData[i] != null){
+    //             const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/login');
+    //             onValue(loginRef, (snapshot) => {
+    //                 const data = snapshot.val();
+    //                 if(data != null){
                         
-                    }
-                }, {
-                    onlyOnce: true
-                });
+                        
+    //                 }
+    //             }, {
+    //                 onlyOnce: true
+    //             });
                 
-            }
-        }
+    //         }
+    //     }
             
-        }, {
-        onlyOnce: true
-    });
+    //     }, {
+    //     onlyOnce: true
+    // });
         
 });
 
@@ -500,6 +501,10 @@ app.post('/drvanalytics', async (req, res) => {
     if(connected_account_id != 'undefined'){
         link = await stripe.accounts.createLoginLink(connected_account_id);
      //   console.log(link);
+        let updates = {};
+        updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
+        updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
+        update(ref(db), updates);
         
     }
 
@@ -514,10 +519,7 @@ app.post('/drvanalytics', async (req, res) => {
                 onValue(loginRef, (snapshot) => {
                     const data = snapshot.val();
                     if(data != null){
-                        let updates = {};
-                        updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
-                        updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                        update(ref(db), updates);
+                       
                     }
                 }, {
                     onlyOnce: true
