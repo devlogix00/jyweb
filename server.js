@@ -410,6 +410,7 @@ app.post('/analytics', async (req, res) => {
     });
     
     var connected_account_id = await rsponse.stripe_user_id;
+    
     if(req.headers.cookie != 'undefined'){
         let storedC = req.headers.cookie+'';
         storedC = storedC.split(';');
