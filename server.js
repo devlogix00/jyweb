@@ -80,7 +80,7 @@ let newData;
 //let rmSearchUrl;
 let regList;
 let deletedId;
-const link;
+
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -428,7 +428,7 @@ app.post('/analytics', async (req, res) => {
     var connected_account_id = await rsponse.stripe_user_id;
 
     if(connected_account_id != 'undefined'){
-        link = await stripe.accounts.createLoginLink(connected_account_id);
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
         let updates = {};
         updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
         updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
@@ -499,7 +499,7 @@ app.post('/drvanalytics', async (req, res) => {
         }
 
     if(connected_account_id != 'undefined'){
-        link = await stripe.accounts.createLoginLink(connected_account_id);
+        const link = await stripe.accounts.createLoginLink(connected_account_id);
      //   console.log(link);
         let updates = {};
         updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
@@ -508,28 +508,28 @@ app.post('/drvanalytics', async (req, res) => {
         
     }
 
-    let drvProfileRef = ref(adminDB, 'profiles/profiles');
-    onValue(drvProfileRef, (snapshot) => {
-        const data = snapshot.val();
-        if(data != null){
-        //  console.log('profiles',data);
-            for(let i = 0; i < data.length; i++){
-                drName = data[i].Name;
-                const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
-                onValue(loginRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if(data != null){
+    // let drvProfileRef = ref(adminDB, 'profiles/profiles');
+    // onValue(drvProfileRef, (snapshot) => {
+    //     const data = snapshot.val();
+    //     if(data != null){
+    //     //  console.log('profiles',data);
+    //         for(let i = 0; i < data.length; i++){
+    //             drName = data[i].Name;
+    //             const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/login');
+    //             onValue(loginRef, (snapshot) => {
+    //                 const data = snapshot.val();
+    //                 if(data != null){
                        
-                    }
-                }, {
-                    onlyOnce: true
-                });
+    //                 }
+    //             }, {
+    //                 onlyOnce: true
+    //             });
             
 
                 
-            }
-        }
-    });
+    //         }
+    //     }
+    // });
 
    
 });
