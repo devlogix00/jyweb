@@ -195,7 +195,7 @@
 
             function getStripe(){
                 try {
-                  const response = await axios.post('/analytics');
+                  const response = axios.post('/analytics');
                   console.log('What is going on? ', response);
                 } catch (error){
                   console.error(error);
