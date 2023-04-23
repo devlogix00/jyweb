@@ -404,7 +404,7 @@ onValue(regList, (snapshot) => {
             onValue(loginRef, (snapshot) => {
                 const data = snapshot.val();
                 if(data === null){
-                    app.post('/src/host/analytics', async (req, res) => {
+                    app.post('/analytics', async (req, res) => {
                         let url = req.headers.referer;
                             if(url.includes('?')){
                                // console.log('parameterized url');
@@ -479,7 +479,7 @@ onValue(drvProfileRef, (snapshot) => {
             onValue(loginRef, (snapshot) => {
                 const data = snapshot.val();
                 if(data === null){
-                    app.post('/src/host/drvanalytics', async (req, res) => {
+                    app.post('/drvanalytics', async (req, res) => {
                         let url = req.headers.referer;
                         if(url.includes('?')){
                         //    console.log('parameterized url');
