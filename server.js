@@ -80,7 +80,7 @@ let newData;
 //let rmSearchUrl;
 let regList;
 let deletedId;
-
+const link;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -428,7 +428,7 @@ app.post('/analytics', async (req, res) => {
     var connected_account_id = await rsponse.stripe_user_id;
 
     if(connected_account_id != 'undefined'){
-        const link = await stripe.accounts.createLoginLink(connected_account_id);
+        link = await stripe.accounts.createLoginLink(connected_account_id);
         
     }
    
@@ -498,7 +498,7 @@ app.post('/drvanalytics', async (req, res) => {
         }
 
     if(connected_account_id != 'undefined'){
-        const link = await stripe.accounts.createLoginLink(connected_account_id);
+        link = await stripe.accounts.createLoginLink(connected_account_id);
      //   console.log(link);
         
     }
