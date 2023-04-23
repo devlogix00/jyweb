@@ -423,7 +423,7 @@ app.post('/analytics', async (req, res) => {
                                     if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
                                         userId = result[i][1];
                                         
-                                        app.post('/', function(req, res){
+                                        app.post('/', async function(req, res){
                                             const rsponse = await stripe.oauth.token({
                                                 grant_type: 'authorization_code',
                                                 code: code,
