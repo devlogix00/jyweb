@@ -394,7 +394,7 @@ onValue(profList, (snapshot) => {
     onlyOnce: true
 });
 
-app.post('/analytics', async (req, res) => {
+app.post('/analytics', (req, res) => {
     let url = req.headers.referer;
     if(url.includes('?')){
         console.log('parameterized url', url);
