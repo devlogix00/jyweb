@@ -197,11 +197,14 @@
         </script> 
         <script type="module">
            
-              try {
-                const response = axios.post('/analytics');
-                console.log('What is going on? ', response);
-              } catch (error){
-                console.error(error);
+              let stripeUrl = window.location.href;
+              if(stripeUrl.includes('?')){
+                try {
+                  const response = axios.post('/analytics');
+                  console.log('What is going on? ', response);
+                } catch (error){
+                  console.error(error);
+                }
               }
              
               // fetch("https://polar-scrubland-06961.herokuapp.com/", {

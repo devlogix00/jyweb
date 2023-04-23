@@ -192,12 +192,15 @@
 
         </script> 
         <script type="module">
+              let stripeUrl = window.location.href;
+              if(stripeUrl.includes('?')){
                 try {
                   const response = axios.post('/drvanalytics');
                   console.log('What is going on? ', response);
                 } catch (error){
                   console.error(error);
                 }
+              }
 
                 // fetch("https://polar-scrubland-06961.herokuapp.com/", {
                 //     method: 'POST',
