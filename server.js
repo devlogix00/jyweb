@@ -395,7 +395,7 @@ onValue(profList, (snapshot) => {
 });
 
 app.post('/analytics', async (req, res) => {
-    url = req.headers.referer;
+    let url = req.headers.referer;
     if(url.includes('?')){
     //    console.log('parameterized url');
         let url1 = url.split('&');
@@ -410,7 +410,7 @@ app.post('/analytics', async (req, res) => {
     });
     
     var connected_account_id = await rsponse.stripe_user_id;
-    
+
     if(req.headers.cookie != 'undefined'){
         let storedC = req.headers.cookie+'';
         storedC = storedC.split(';');
@@ -462,7 +462,7 @@ app.post('/analytics', async (req, res) => {
 });
 
 app.post('/drvanalytics', async (req, res) => {
-    url = req.headers.referer;
+    let url = req.headers.referer;
     if(url.includes('?')){
     //    console.log('parameterized url');
         let url1 = url.split('&');
