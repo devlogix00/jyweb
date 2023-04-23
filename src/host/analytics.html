@@ -154,18 +154,18 @@
               document.cookie = 'analyticsUID='+userId;
               console.log(userName);
 
-              let stripeUrl = window.location.href;
-              if(stripeUrl.includes('?')){
-                console.log('parameterized url');
-                let url1 = stripeUrl.split('&');
-                let url2 = url1[0].split('?');
-                let url3 = url2[1].split('=');
-                let code = url3[1];
+              // let stripeUrl = window.location.href;
+              // if(stripeUrl.includes('?')){
+              //   console.log('parameterized url');
+              //   let url1 = stripeUrl.split('&');
+              //   let url2 = url1[0].split('?');
+              //   let url3 = url2[1].split('=');
+              //   let code = url3[1];
                 
-                let updates = {};
-                updates['hosts/hostAccount/'+userId+'/stripe/code'] = code;
-                update(ref(db), updates);
-              }
+              //   let updates = {};
+              //   updates['hosts/hostAccount/'+userId+'/stripe/code'] = code;
+              //   update(ref(db), updates);
+              // }
               
               const loginRef = ref(db, 'hosts/hostAccount/'+userId+'/stripe/login');
               onValue(loginRef, (snapshot) => {
