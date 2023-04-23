@@ -198,13 +198,18 @@
         <script>
 
             function getStripe(){
-               
-              fetch("https://polar-scrubland-06961.herokuapp.com/", {
-                    method: 'POST',
-                    body: ''
-                })
-                .then((res) => console.log(res))
-                .then((err) => console.error(err));
+              try {
+                const response = await axios.post('/analytics');
+                console.log('What is going on? ', response);
+              } catch (error){
+                console.error(error);
+              }
+              // fetch("https://polar-scrubland-06961.herokuapp.com/", {
+              //       method: 'POST',
+              //       body: ''
+              //   })
+              //   .then((res) => console.log(res))
+              //   .then((err) => console.error(err));
                 // fetch("http://localhost:8080/host/drvanalytics", {
                 //     method: 'POST',
                 //     body: ''
