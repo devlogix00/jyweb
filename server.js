@@ -402,6 +402,37 @@ app.post('/analytics', async (req, res) => {
         let url2 = url1[0].split('?');
         let url3 = url2[1].split('=');
         code = url3[1];
+
+        const rsponse = await stripe.oauth.token({
+            grant_type: 'authorization_code',
+            code: code,
+            assert_capabilities: ['transfers']
+        });
+        
+        var connected_account_id = await rsponse.stripe_user_id;
+        if(connected_account_id != 'undefined'){
+            const link = await stripe.accounts.createLoginLink(connected_account_id);
+        }
+    
+        if(req.headers.cookie != 'undefined'){
+            let storedC = req.headers.cookie+'';
+            storedC = storedC.split(';');
+        
+            let result = [];
+            for(let i in storedC){
+                result.push(storedC[i].split('='));
+            }
+    
+            for(let i in result){
+                if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
+                    userId = result[i][1];
+                    let updates = {};
+                    updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+                    updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+                    update(ref(db), updates);
+                }
+            }
+        }
     }
 
     //  onValue(regList, (snapshot) => {
@@ -426,36 +457,7 @@ app.post('/analytics', async (req, res) => {
     //     onlyOnce: true
     // });
 
-    const rsponse = await stripe.oauth.token({
-        grant_type: 'authorization_code',
-        code: code,
-        assert_capabilities: ['transfers']
-    });
     
-    var connected_account_id = await rsponse.stripe_user_id;
-    if(connected_account_id != 'undefined'){
-        const link = await stripe.accounts.createLoginLink(connected_account_id);
-    }
-
-    if(req.headers.cookie != 'undefined'){
-        let storedC = req.headers.cookie+'';
-        storedC = storedC.split(';');
-    
-        let result = [];
-        for(let i in storedC){
-            result.push(storedC[i].split('='));
-        }
-
-        for(let i in result){
-            if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-                userId = result[i][1];
-                let updates = {};
-                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                update(ref(db), updates);
-            }
-        }
-    }
 });
 
 // app.post('/drvanalytics', async (req, res) => {
