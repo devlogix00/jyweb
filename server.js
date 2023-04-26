@@ -194,36 +194,6 @@ function uploadFiles(req, res){
     }
 });
 
-// app.post("/uploadprof", upload.single('file'), 
-// function uploadFiles(req, res){
-    
-//     console.log(req.body);
-    
-//     res.json({ message: "Successfully uploaded file" });
-
-//     let uploads = './uploads/';
-//     let newfilepath = path.join(uploads, req.file.filename);
-//     app.get('/', (req, res) => {
-//         res.sendFile(filepath, { root: __dirname });
-//     });
-    
-//     let profileRef = ref(adminDB,'profile/');
-//     if(profileRef != null){
-//         console.log(profileRef);
-//         onValue(profileRef, (snapshot) => {
-//             let data = snapshot.val();
-//             if(data != null ){
-//                 let updates = {};
-//                 updates['drivers/driverAccount/'+data.userId+'/profile/profileImg'] = newfilepath;
-//                 updates['/profile/profileImg'] = newfilepath;
-//                 update(ref(adminDB), updates);
-//             }
-//         }, {
-//             onlyOnce: true
-//         })
-//     }
-// });
-
 let profileRefdb = ref(adminDB,'profile/');
 if(profileRefdb != null){
     //console.log(profileRefdb);
@@ -402,6 +372,7 @@ app.post('/analytics', async (req, res) => {
         let url2 = url1[0].split('?');
         let url3 = url2[1].split('=');
         code = url3[1];
+        console.log(code);
 
         const rsponse = await stripe.oauth.token({
             grant_type: 'authorization_code',
@@ -434,107 +405,7 @@ app.post('/analytics', async (req, res) => {
             }
         }
     }
-
-    //  onValue(regList, (snapshot) => {
-    //     newData = snapshot.val();
-    //     for(let i = 0; i < newData.length; i++){
-    //         if(newData[i] != null){
-    //             const loginRef = ref(db, 'hosts/hostAccount/'+newData[i].host+'/stripe/code');
-    //             onValue(loginRef, (snapshot) => {
-    //                 const data = snapshot.val();
-    //                 if(data != null){
-    //                     code = data;
-                        
-    //                 }
-    //             }, {
-    //                 onlyOnce: true
-    //             });
-                
-    //         }
-    //     }
-            
-    //     }, {
-    //     onlyOnce: true
-    // });
-
-    
 });
-
-// app.post('/drvanalytics', async (req, res) => {
-//     // let url = req.headers.referer;
-//     // if(url.includes('?')){
-//     //     console.log('parameterized url', url);
-//     //     let url1 = url.split('&');
-//     //     let url2 = url1[0].split('?');
-//     //     let url3 = url2[1].split('=');
-//     //     code = url3[1];
-//     // }
-
-//     let drvProfileRef = ref(adminDB, 'profiles/profiles');
-//     onValue(drvProfileRef, (snapshot) => {
-//         const data = snapshot.val();
-//         if(data != null){
-//         //  console.log('profiles',data);
-//             for(let i = 0; i < data.length; i++){
-//                 drName = data[i].Name;
-//                 const loginRef = ref(db, 'drivers/driverAccount/'+data[i].userId+'/stripe/code');
-//                 onValue(loginRef, (snapshot) => {
-//                     const data = snapshot.val();
-//                     if(data != null){
-//                        code = data;
-//                     }
-//                 }, {
-//                     onlyOnce: true
-//                 });
-            
-
-                
-//             }
-//         }
-//     });
-
-//     const rsponse = await stripe.oauth.token({
-//         grant_type: 'authorization_code',
-//         code: code,
-//         assert_capabilities: ['transfers']
-//     });
-    
-//     var connected_account_id = await rsponse.stripe_user_id;
-//     if(connected_account_id != 'undefined'){
-//         const link = await stripe.accounts.createLoginLink(connected_account_id);
-//     }
-//     //   console.log(connected_account_id);
-
-//     if(req.headers.cookie != 'undefined'){
-//         //console.log(req.headers.cookie);
-//         let storedC = req.headers.cookie+'';
-//         storedC = storedC.split(';');
-//         //console.log(storedC);
-//         let result = [];
-//         for(let i in storedC){
-//             //console.log(storedC[i].split('='));
-//             result.push(storedC[i].split('='));
-//         }
-//         //console.log(result);
-//         for(let i in result){
-//             if(result[i][0] === 'analyticsUID' || result[i][0] === ' analyticsUID'){
-//                 userId = result[i][1];
-//                 let updates = {};
-//                 updates['drivers/driverAccount/'+userId+'/stripe/login'] = link.url;
-//                 updates['drivers/driverAccount/'+userId+'/stripe/accid'] = connected_account_id;
-//                 update(ref(db), updates);
-//             //  console.log(userId);
-            
-//             }
-//         }
-//         }
-
-    
-
-   
-
-   
-// });
 
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname, '/index.html'));
@@ -570,8 +441,6 @@ app.get('/', function(req, res){
 
     res.sendFile(path.join(__dirname, '/'+serveUrl+'.html'));
 
-
-    
 });
 
 app.post("/upload_files", upload.single('file'), 
@@ -640,11 +509,6 @@ app.post("/upload_files", upload.single('file'),
     }
 );
 
-// const storage = admin.storage();
-// let bucket = storage.bucket('uploads');
-// console.log(bucket);
-
-
 listingDb.onSnapshot((doc) => {
    // console.log(doc);
     let listings = [];
@@ -699,7 +563,6 @@ app.post('/create-checkout-session', async (req, res) => {
         }
     }
     
-    
     // TODO(1): Access item data from db
     let itemRef = ref(adminDB, 'users/userAccount/'+userId+'/itemdata'+today);
             
@@ -748,14 +611,10 @@ app.post('/create-checkout-session', async (req, res) => {
         itemPrice = data.itemPrice*100;
         app_fee = 0.15*itemPrice;
 
-       // console.log(itemName);
-      //  console.log(datesLength);
     }, {
         onlyOnce: true
     });
 
-    //console.log(itemName);
-   // console.log(datesLength);
 
     if(itemName != null){
         const session = await stripe.checkout.sessions.create({
@@ -832,10 +691,3 @@ app.post('/create-checkout-session', async (req, res) => {
 
 app.listen(port);
 console.log('Server started at http://localhost:'+port);
-
-// let server = app.listen(port);
-// server.on('connection', function(socket){
-//     console.log('A new connection was just made by server socket!');
-//     socket.setKeepAlive(true, 0)
-// })
-
