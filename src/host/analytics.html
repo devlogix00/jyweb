@@ -21,7 +21,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       </head>
 
-      <body class="sidebar-collapse">        
+      <body class="sidebar-collapse" onload="getAnalytics()">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
           <div class="container">
             <div class="navbar-translate" ></div>          
@@ -195,24 +195,26 @@
           });
 
         </script> 
-        <script type="module">
+        <script>
            
-              let stripeUrl = window.location.href;
-              if(stripeUrl.includes('?')){
-                try {
-                  const response = axios.post('/analytics');
-                  console.log('What is going on? ', response);
-                } catch (error){
-                  console.error(error);
-                }
-              }
+              // let stripeUrl = window.location.href;
+              // if(stripeUrl.includes('?')){
+              //   try {
+              //     const response = axios.post('/analytics');
+              //     console.log('What is going on? ', response);
+              //   } catch (error){
+              //     console.error(error);
+              //   }
+              // }
              
-              // fetch("https://polar-scrubland-06961.herokuapp.com/", {
-              //       method: 'POST',
-              //       body: ''
-              //   })
-              //   .then((res) => console.log(res))
-              //   .then((err) => console.error(err));
+              async function getAnalytics(){
+                fetch("https://polar-scrubland-06961.herokuapp.com/analytics", {
+                    method: 'POST',
+                    body: ''
+                })
+                .then((res) => console.log(res))
+                .then((err) => console.error(err));
+              }
                 // fetch("http://localhost:8080/host/drvanalytics", {
                 //     method: 'POST',
                 //     body: ''
