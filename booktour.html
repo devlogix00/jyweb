@@ -76,6 +76,13 @@
   </header>
 
   <main class="mdl-layout__content mdl-color--grey-100">
+    <div>
+        <div id="img" style="display: flex; flex-direction: row;">
+            <div id="bookingInfo" style="padding-left: 2em; padding-top: 1em;">
+                <button id="checkin" style="display: none; ">Check In</button>
+            </div>
+        </div>
+    </div> 
     <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
       <!-- Messages container -->
       <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
@@ -244,7 +251,7 @@
                     let splitUrl = trSearchData.bookingUrl.split('/');
                     let bookingId = splitUrl[3];
 
-                    setDoc(doc(fs, "booktourusers"), {
+                    setDoc(doc(fs, "booktourusers", bookingId), {
                         username: userName,
                         profile_picture : profilePicUrl,
                         email: user.email,
