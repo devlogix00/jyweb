@@ -216,6 +216,8 @@
                                     return false;
                                     }
 
+                                    console.log(getFirestore());
+
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
                                         addDoc(collection(getFirestore(), 'booktour'), {
