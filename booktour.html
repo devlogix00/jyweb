@@ -224,7 +224,7 @@
                                             const listingData = snapshot.val();
                                             if(listingData != null){
                                                 for(let i = 0; i < listingData.length; i++){
-                                                    if(listingData[i].listingType === 'tour'){
+                                                    if(listingData[i].listingType === 'tour' && listingData[i] != null){
                                                         let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
                                                         onValue(trSearchUrl, (snapshot) => {
                                                             let trsearchData = snapshot.val();
