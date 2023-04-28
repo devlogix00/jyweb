@@ -374,20 +374,20 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                const messageRef = sRef(db, 'booktour/'+bookingId);
-                                onValue(messageRef, (snapshot) => {
-                                const data = snapshot.val();
-                                if(data != null){
+                                // const messageRef = sRef(db, 'booktour/'+bookingId);
+                                // onValue(messageRef, (snapshot) => {
+                                // const data = snapshot.val();
+                                // if(data != null){
                             
-                                    let setToList = [new Set(data)];
+                                //     let setToList = [new Set(data)];
                                     
-                                    for(let i = 0; i < data.length; i++){
-                                        if(data[i].timestamp != null){
-                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                        }  
-                                    }
-                                    }       
-                                });
+                                //     for(let i = 0; i < data.length; i++){
+                                //         if(data[i].timestamp != null){
+                                //             displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                //         }  
+                                //     }
+                                //     }       
+                                // });
 
                                 // A loading image URL.
                                 var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
@@ -457,13 +457,13 @@
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
-                                            function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'+bookingId), {
-                                                name: user.displayName,
-                                                imageUrl: downloadURL,
-                                                profilePicUrl: user.photoURL
-                                            });
-                                            }
+                                            // function writeUserData(name, email, imageUrl) {
+                                            // set(sRef(db, 'messages/'+bookingId), {
+                                            //     name: user.displayName,
+                                            //     imageUrl: downloadURL,
+                                            //     profilePicUrl: user.photoURL
+                                            // });
+                                            // }
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
                                             // Use booking id here
@@ -492,7 +492,7 @@
                                                         messages = [];
                                                         messages.push(message);
                                                         // Use booking id here
-                                                        set(sRef(db, 'booktour/'+bookingId), messages)
+                                                        //set(sRef(db, 'booktour/'+bookingId), messages)
                                                         // ref('allMessages/').set(messages);
                                                         //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                     }
@@ -516,8 +516,8 @@
                                         
                                             // Saving the Device Token to Real-Time Database.
                                             const updates = {};
-                                            updates['messages/fcmTokens'] = currentToken;
-                                            update(ref(db), updates);
+                                            // updates['messages/fcmTokens'] = currentToken;
+                                            // update(ref(db), updates);
 
                                             // This will fire when a message is received while the app is in the foreground.
                                             // When the app is in the background, firebase-messaging-sw.js will receive the message instead.
