@@ -137,7 +137,7 @@
                                                                 if(trsearchData.currentUser === user.uid){
                                                                     let bookingurl = trsearchData.bookingUrl;
                                                                     let spliturl = bookingurl.split('/');
-                                                                    console.log(spliturl)
+                                                                    bookingId = spliturl[3];
                                                                 }
                                                             }
                                                         });
@@ -146,7 +146,7 @@
                                             }
                                         });
 
-                                        const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                        const recentMessageQuery = query(collection(getFirestore(), 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
                                  // Signs-in BookMe.
                                 async function signIn() {
                                 var provider = new GoogleAuthProvider();
@@ -242,7 +242,7 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(getFirestore(), 'booktour'), {
+                                        addDoc(collection(getFirestore(), 'booktour/'+bookingId), {
                                             name: getUserName(),
                                             profilePicUrl: getProfilePicUrl(),
                                             text: messageText,
@@ -258,7 +258,7 @@
                                                 } else {
                                                     var message = change.doc.data();
                                                     messages.push(message);
-                                                    set(sRef(db, 'booktour'), messages)
+                                                    set(sRef(db, 'booktour/'+bookingId), messages)
                                                 // ref('allMessages/').set(messages);
                                                     //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                 }
@@ -373,7 +373,7 @@
                                 messageInputElement.focus();
                                 }
 
-                                const messageRef = sRef(db, 'booktour');
+                                const messageRef = sRef(db, 'booktour/'+bookingId);
                                 onValue(messageRef, (snapshot) => {
                                 const data = snapshot.val();
                                 if(data != null){
@@ -457,7 +457,7 @@
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
                                             function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'), {
+                                            set(sRef(db, 'messages/'+bookingId), {
                                                 name: getUserName(),
                                                 imageUrl: downloadURL,
                                                 profilePicUrl: getProfilePicUrl()
@@ -465,13 +465,13 @@
                                             }
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
-                                            addDoc(collection(getFirestore(), 'booktour'), {
+                                            addDoc(collection(getFirestore(), 'booktour/'+bookingId), {
                                                     name: getUserName(),
                                                     profilePicUrl: getProfilePicUrl(),
                                                     imageUrl: downloadURL,
                                                     timestamp: timestamp
                                             });
-                                            addDoc(collection(getFirestore(), 'imagePost'), {
+                                            addDoc(collection(getFirestore(), 'imagePost/'+bookingId), {
                                                 name: getUserName(),
                                                 profilePicUrl: getProfilePicUrl(),
                                                 imageUrl: downloadURL,
@@ -479,7 +479,7 @@
                                             });
                                             });
                                             let messages = [];
-                                            const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                            const recentMessageQuery = query(collection(getFirestore(), 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
                                             onSnapshot(recentMessageQuery, function(snapshot) {
                                                 snapshot.docChanges().forEach(function(change) {
                                                     if(change.type === 'removed') {
@@ -489,7 +489,7 @@
                                                         var message = change.doc.data();
                                                         messages = [];
                                                         messages.push(message);
-                                                        set(sRef(db, 'booktour'), messages)
+                                                        set(sRef(db, 'booktour/'+bookingId), messages)
                                                         // ref('allMessages/').set(messages);
                                                         //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                     }
@@ -550,22 +550,22 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, "booktourusers", userId), {
+                                        setDoc(doc(fs, "booktourusers/"+bookingId, userId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
                                             email: user.email
                                         });
 
                                         
-                                        const recentuserQuery = query(collection(getFirestore(), 'booktourusers'));
+                                        const recentuserQuery = query(collection(getFirestore(), 'booktourusers/'+bookingId));
                                         onSnapshot(recentuserQuery, function(snapshot) {
                                     
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
                                         users.push(user);
-                                        set(sRef(db, 'booktourusers'), users);
+                                        set(sRef(db, 'booktourusers/'+bookingId), users);
                                         });
                                     
-                                        const userCountRef = sRef(db, 'booktourusers/');
+                                        const userCountRef = sRef(db, 'booktourusers/'+bookingId);
                                         onValue(userCountRef, (snapshot) => {
                                         const data = snapshot.val();
                             

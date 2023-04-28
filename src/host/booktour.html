@@ -147,7 +147,7 @@
                                                                 if(trsearchData.host === userId){
                                                                     let bookingurl = trsearchData.bookingUrl;
                                                                     let spliturl = bookingurl.split('/');
-                                                                    console.log(spliturl)
+                                                                    bookingId = spliturl[3];
                                                                 }
                                                             }
                                                         });
@@ -157,7 +157,7 @@
                                         });
 
                                         /* Keep track of booking id for firestore access here */
-                                        const recentMessageQuery = query(collection(fs, 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                        const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
                                  
 
                                 // Initiate firebase auth
@@ -242,7 +242,7 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(fs, 'booktour'), {
+                                        addDoc(collection(fs, 'booktour/'+bookingId), {
                                             name: user.displayName,
                                             profilePicUrl: user.photoURL,
                                             text: messageText,
@@ -258,7 +258,7 @@
                                                 } else {
                                                     var message = change.doc.data();
                                                     messages.push(message);
-                                                    set(sRef(db, 'booktour'), messages)
+                                                    set(sRef(db, 'booktour/'+bookingId), messages)
                                                 // ref('allMessages/').set(messages);
                                                     //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                 }
@@ -374,7 +374,7 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                const messageRef = sRef(db, 'booktour');
+                                const messageRef = sRef(db, 'booktour/'+bookingId);
                                 onValue(messageRef, (snapshot) => {
                                 const data = snapshot.val();
                                 if(data != null){
@@ -458,7 +458,7 @@
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
                                             function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'), {
+                                            set(sRef(db, 'messages/'+bookingId), {
                                                 name: user.displayName,
                                                 imageUrl: downloadURL,
                                                 profilePicUrl: user.photoURL
@@ -467,13 +467,13 @@
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
                                             // Use booking id here
-                                            addDoc(collection(fs, 'booktour'), {
+                                            addDoc(collection(fs, 'booktour/'+bookingId), {
                                                     name: user.displayName,
                                                     profilePicUrl: user.photoURL,
                                                     imageUrl: downloadURL,
                                                     timestamp: timestamp
                                             });
-                                            addDoc(collection(fs, 'imagePost'), {
+                                            addDoc(collection(fs, 'imagePost/'+bookingId), {
                                                 name: user.displayName,
                                                 profilePicUrl: user.photoURL,
                                                 imageUrl: downloadURL,
@@ -481,7 +481,7 @@
                                             });
                                             });
                                             let messages = [];
-                                            const recentMessageQuery = query(collection(fs, 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                            const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
                                             onSnapshot(recentMessageQuery, function(snapshot) {
                                                 snapshot.docChanges().forEach(function(change) {
                                                     if(change.type === 'removed') {
@@ -492,7 +492,7 @@
                                                         messages = [];
                                                         messages.push(message);
                                                         // Use booking id here
-                                                        set(sRef(db, 'booktour'), messages)
+                                                        set(sRef(db, 'booktour/'+bookingId), messages)
                                                         // ref('allMessages/').set(messages);
                                                         //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                     }
