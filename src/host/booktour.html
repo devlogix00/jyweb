@@ -103,7 +103,7 @@
                                 const analytics = getAnalytics(app);
                                 const auth = getAuth();  
                                 const db = getDatabase(); 
-                               // const fs = getFirestore();
+                                const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
 
@@ -157,7 +157,7 @@
                                         });
 
                                         /* Keep track of booking id for firestore access here */
-                                       // const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
+                                        const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
                                  
 
                                 // Initiate firebase auth
@@ -242,28 +242,28 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        // addDoc(collection(fs, 'booktour/'+bookingId), {
-                                        //     name: user.displayName,
-                                        //     profilePicUrl: user.photoURL,
-                                        //     text: messageText,
-                                        //     timestamp: timestamp
-                                        // });
+                                        addDoc(collection(fs, 'booktour/'+bookingId), {
+                                            name: user.displayName,
+                                            profilePicUrl: user.photoURL,
+                                            text: messageText,
+                                            timestamp: timestamp
+                                        });
 
                                     
-                                        // onSnapshot(recentMessageQuery, function(snapshot) {
-                                        //     snapshot.docChanges().forEach(function(change) {
-                                        //         if(change.type === 'removed') {
-                                        //             deleteMessage(change.doc.id);
+                                        onSnapshot(recentMessageQuery, function(snapshot) {
+                                            snapshot.docChanges().forEach(function(change) {
+                                                if(change.type === 'removed') {
+                                                    deleteMessage(change.doc.id);
                                             
-                                        //         } else {
-                                        //             var message = change.doc.data();
-                                        //             messages.push(message);
-                                        //             set(sRef(db, 'booktour/'+bookingId), messages)
-                                        //         // ref('allMessages/').set(messages);
-                                        //             //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                        //         }
-                                        //     })
-                                        // });
+                                                } else {
+                                                    var message = change.doc.data();
+                                                    messages.push(message);
+                                                    set(sRef(db, 'booktour/'+bookingId), messages)
+                                                // ref('allMessages/').set(messages);
+                                                    //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                                                }
+                                            })
+                                        });
                                     }
 
                                     // Resets the given MaterialTextField.
@@ -374,20 +374,20 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                // const messageRef = sRef(db, 'booktour/'+bookingId);
-                                // onValue(messageRef, (snapshot) => {
-                                // const data = snapshot.val();
-                                // if(data != null){
+                                const messageRef = sRef(db, 'booktour/'+bookingId);
+                                onValue(messageRef, (snapshot) => {
+                                const data = snapshot.val();
+                                if(data != null){
                             
-                                //     let setToList = [new Set(data)];
+                                    let setToList = [new Set(data)];
                                     
-                                //     for(let i = 0; i < data.length; i++){
-                                //         if(data[i].timestamp != null){
-                                //             displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                //         }  
-                                //     }
-                                //     }       
-                                // });
+                                    for(let i = 0; i < data.length; i++){
+                                        if(data[i].timestamp != null){
+                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                        }  
+                                    }
+                                    }       
+                                });
 
                                 // A loading image URL.
                                 var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
@@ -457,28 +457,28 @@
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
-                                            // function writeUserData(name, email, imageUrl) {
-                                            // set(sRef(db, 'messages/'+bookingId), {
-                                            //     name: user.displayName,
-                                            //     imageUrl: downloadURL,
-                                            //     profilePicUrl: user.photoURL
-                                            // });
-                                            // }
+                                            function writeUserData(name, email, imageUrl) {
+                                            set(sRef(db, 'messages/'+bookingId), {
+                                                name: user.displayName,
+                                                imageUrl: downloadURL,
+                                                profilePicUrl: user.photoURL
+                                            });
+                                            }
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
                                             // Use booking id here
-                                            // addDoc(collection(fs, 'booktour/'+bookingId), {
-                                            //         name: user.displayName,
-                                            //         profilePicUrl: user.photoURL,
-                                            //         imageUrl: downloadURL,
-                                            //         timestamp: timestamp
-                                            // });
-                                            // addDoc(collection(fs, 'imagePost/'+bookingId), {
-                                            //     name: user.displayName,
-                                            //     profilePicUrl: user.photoURL,
-                                            //     imageUrl: downloadURL,
-                                            //     timestamp: timestamp
-                                            // });
+                                            addDoc(collection(fs, 'booktour/'+bookingId), {
+                                                    name: user.displayName,
+                                                    profilePicUrl: user.photoURL,
+                                                    imageUrl: downloadURL,
+                                                    timestamp: timestamp
+                                            });
+                                            addDoc(collection(fs, 'imagePost/'+bookingId), {
+                                                name: user.displayName,
+                                                profilePicUrl: user.photoURL,
+                                                imageUrl: downloadURL,
+                                                timestamp: timestamp
+                                            });
                                             });
                                             let messages = [];
                                             const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
@@ -492,7 +492,7 @@
                                                         messages = [];
                                                         messages.push(message);
                                                         // Use booking id here
-                                                        //set(sRef(db, 'booktour/'+bookingId), messages)
+                                                        set(sRef(db, 'booktour/'+bookingId), messages)
                                                         // ref('allMessages/').set(messages);
                                                         //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                     }
@@ -516,8 +516,8 @@
                                         
                                             // Saving the Device Token to Real-Time Database.
                                             const updates = {};
-                                            // updates['messages/fcmTokens'] = currentToken;
-                                            // update(ref(db), updates);
+                                            updates['messages/fcmTokens'] = currentToken;
+                                            update(ref(db), updates);
 
                                             // This will fire when a message is received while the app is in the foreground.
                                             // When the app is in the background, firebase-messaging-sw.js will receive the message instead.
@@ -554,45 +554,45 @@
 
                                         // Use booking id here
 
-                                        // setDoc(doc(fs, "booktourusers", userId), {
-                                        //     username: userName,
-                                        //     profile_picture : profilePicUrl,
-                                        //     email: user.email
-                                        // });
+                                        setDoc(doc(fs, "booktourusers", userId), {
+                                            username: userName,
+                                            profile_picture : profilePicUrl,
+                                            email: user.email
+                                        });
 
-                                        // const recentuserQuery = query(collection(fs, 'booktourusers'));
-                                        // onSnapshot(recentuserQuery, function(snapshot) {
-                                        // console.log(snapshot);
-                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        // users.push(user);
-                                        // set(sRef(db, 'booktourusers'), users);
-                                        // });
+                                        const recentuserQuery = query(collection(fs, 'booktourusers'));
+                                        onSnapshot(recentuserQuery, function(snapshot) {
+                                        console.log(snapshot);
+                                        var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
+                                        users.push(user);
+                                        set(sRef(db, 'booktourusers'), users);
+                                        });
                                     
-                                        // const userCountRef = sRef(db, 'booktourusers/');
-                                        // onValue(userCountRef, (snapshot) => {
-                                        // const data = snapshot.val();
+                                        const userCountRef = sRef(db, 'booktourusers/');
+                                        onValue(userCountRef, (snapshot) => {
+                                        const data = snapshot.val();
                             
                                     
-                                        // if(data !== null){
-                                        //     let userDiv = document.createElement('div');
-                                        //     let userPic = document.createElement('img');
-                                        //     let usernm = document.createElement('p');
-                                        //     for(let i = 0; i < data.length; i++){
-                                        //         if(data[i] !== null){
-                                        //             userDiv.setAttribute('id', 'user'+i);
-                                        //             userPic.setAttribute('src', data[i].profile_picture.stringValue);
-                                        //             userPic.style.borderRadius = '30%';
-                                        //             usernm.innerText = data[i].username.stringValue;
+                                        if(data !== null){
+                                            let userDiv = document.createElement('div');
+                                            let userPic = document.createElement('img');
+                                            let usernm = document.createElement('p');
+                                            for(let i = 0; i < data.length; i++){
+                                                if(data[i] !== null){
+                                                    userDiv.setAttribute('id', 'user'+i);
+                                                    userPic.setAttribute('src', data[i].profile_picture.stringValue);
+                                                    userPic.style.borderRadius = '30%';
+                                                    usernm.innerText = data[i].username.stringValue;
 
-                                        //             userDiv.appendChild(userPic);
-                                        //             userDiv.appendChild(usernm);
+                                                    userDiv.appendChild(userPic);
+                                                    userDiv.appendChild(usernm);
 
-                                        //             document.getElementById('userlist').appendChild(userDiv);
-                                        //         }
+                                                    document.getElementById('userlist').appendChild(userDiv);
+                                                }
                                             
-                                        // }
-                                        // }
-                                        // });
+                                        }
+                                        }
+                                        });
 
                                         
                                 
@@ -617,51 +617,51 @@
                                         status.innerText = 'Checked In';
                                         let tourRef;
                                         
-                                        // let listings = sRef(db, 'listings/listings');
-                                        // onValue(listings, (snapshot) => {
-                                        //     const listingData = snapshot.val();
-                                        //     if(listingData != null){
-                                        //         for(let i = 0; i < listingData.length; i++){
-                                        //             if(listingData[i].listingType === 'tour'){
-                                        //                 let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
-                                        //                 onValue(trSearchUrl, (snapshot) => {
-                                        //                     let trsearchData = snapshot.val();
-                                        //                     tourRef = sRef(db, 'tours/'+listingData[i].listingName);
-                                        //                     if(trsearchData != null ){
-                                        //                         if(trsearchData.host === userId){
-                                        //                             let trImg = document.createElement('img');
-                                        //                             trImg.setAttribute('src', trsearchData.img);
-                                        //                             trImg.style.width = '400px';
-                                        //                             trImg.style.height = '400px';
-                                        //                             trImg.style.borderRadius = '100px';
-                                        //                             trImg.style.paddingTop = '1em';
-                                        //                             trImg.style.paddingLeft = '1em';
-                                        //                             document.getElementById('img').appendChild(trImg);
-                                        //                             let trNme = document.createElement('h1');
-                                        //                             trNme.innerText = trsearchData.listingName;
-                                        //                             let bookingDates = document.createElement('h3');
-                                        //                             if(trsearchData.tourDates.length === 2){
-                                        //                                 bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
-                                        //                             } else {
-                                        //                                 bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
-                                        //                             }
-                                        //                             let checkin = document.createElement('h3');
-                                        //                             checkin.innerText = trsearchData.checkin;
-                                        //                             document.getElementById('bookingInfo').appendChild(trNme);
-                                        //                             document.getElementById('bookingInfo').appendChild(bookingDates);
-                                        //                             document.getElementById('bookingInfo').appendChild(checkin);
-                                        //                             document.getElementById('bookingInfo').appendChild(status);
+                                        let listings = sRef(db, 'listings/listings');
+                                        onValue(listings, (snapshot) => {
+                                            const listingData = snapshot.val();
+                                            if(listingData != null){
+                                                for(let i = 0; i < listingData.length; i++){
+                                                    if(listingData[i].listingType === 'tour'){
+                                                        let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
+                                                        onValue(trSearchUrl, (snapshot) => {
+                                                            let trsearchData = snapshot.val();
+                                                            tourRef = sRef(db, 'tours/'+listingData[i].listingName);
+                                                            if(trsearchData != null ){
+                                                                if(trsearchData.host === userId){
+                                                                    let trImg = document.createElement('img');
+                                                                    trImg.setAttribute('src', trsearchData.img);
+                                                                    trImg.style.width = '400px';
+                                                                    trImg.style.height = '400px';
+                                                                    trImg.style.borderRadius = '100px';
+                                                                    trImg.style.paddingTop = '1em';
+                                                                    trImg.style.paddingLeft = '1em';
+                                                                    document.getElementById('img').appendChild(trImg);
+                                                                    let trNme = document.createElement('h1');
+                                                                    trNme.innerText = trsearchData.listingName;
+                                                                    let bookingDates = document.createElement('h3');
+                                                                    if(trsearchData.tourDates.length === 2){
+                                                                        bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
+                                                                    } else {
+                                                                        bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
+                                                                    }
+                                                                    let checkin = document.createElement('h3');
+                                                                    checkin.innerText = trsearchData.checkin;
+                                                                    document.getElementById('bookingInfo').appendChild(trNme);
+                                                                    document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                                    document.getElementById('bookingInfo').appendChild(checkin);
+                                                                    document.getElementById('bookingInfo').appendChild(status);
                                                          
-                                        //                         }
+                                                                }
                                                                 
-                                        //                     }
-                                        //                 }); 
-                                        //             }
-                                        //         }
+                                                            }
+                                                        }); 
+                                                    }
+                                                }
                                                 
                                                 
-                                        //     }     
-                                        // });
+                                            }     
+                                        });
 
                                         
                                     }else {
