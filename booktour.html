@@ -111,7 +111,7 @@
                                 //authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
+                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/UserAccount.html';
                                 });
 
                                 console.log(auth);
@@ -220,15 +220,6 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(getFirestore(), 'booktour'), {
-                                            name: getUserName(),
-                                            profilePicUrl: getProfilePicUrl(),
-                                            text: messageText,
-                                            timestamp: timestamp
-                                        });
-
-                                       
-                                  
                                         onValue(listings, (snapshot) => {
                                             const listingData = snapshot.val();
                                             if(listingData != null){
@@ -237,12 +228,17 @@
                                                         let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
                                                         onValue(trSearchUrl, (snapshot) => {
                                                             let trsearchData = snapshot.val();
-                                                    
                                                             if(trsearchData != null ){
                                                                 if(trsearchData.currentUser === user.uid){
                                                                     let bookingurl = trsearchData.bookingUrl;
                                                                     let spliturl = bookingurl.split('/');
                                                                     bookingId = spliturl[3];
+                                                                    addDoc(collection(getFirestore(), bookingId), {
+                                                                        name: getUserName(),
+                                                                        profilePicUrl: getProfilePicUrl(),
+                                                                        text: messageText,
+                                                                        timestamp: timestamp
+                                                                    });
                                                                     const recentMessageQuery = query(collection(getFirestore(), bookingId), orderBy('timestamp', 'desc'), limit(12));
                                                                     onSnapshot(recentMessageQuery, function(snapshot) {
                                                                     snapshot.docChanges().forEach(function(change) {
@@ -383,9 +379,9 @@
                             
                                     let setToList = [new Set(data)];
                                     
-                                    for(let i = 0; i < data.length; i++){
-                                        if(data[i].timestamp != null){
-                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                    for(let i = 0; i < setToList.length; i++){
+                                        if(setToList[i].timestamp != null){
+                                            displayMessage(i, setToList[i].timestamp, setToList[i].name, setToList[i].text, setToList[i].profilePicUrl, setToList[i].imageUrl);
                                         }  
                                     }
                                     }       
