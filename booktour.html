@@ -105,24 +105,9 @@
                                 const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
-
-
                                 
-                            
 
-                           
-
-                                document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
-                                });
-
-                                console.log(auth);
-                                let updates = {};
-
-                                onAuthStateChanged(auth, (user) => {
-                                    if(user){
-
-                                        const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
                                  // Signs-in BookMe.
                                 async function signIn() {
                                 var provider = new GoogleAuthProvider();
@@ -152,7 +137,27 @@
                                 // Returns true if a user is signed-in.
                                 function isUserSignedIn() {
                                 return !!getAuth().currentUser;
-                                } 
+                                }
+
+                                
+                            
+
+                           
+
+                                document.getElementById('bookme').addEventListener('click', function(){
+                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
+                                });
+
+                                console.log(auth);
+                                let updates = {};
+
+                                onAuthStateChanged(auth, (user) => {
+                                    if(user){
+ 
+                                        initFirebaseAuth();
+                                        function authStateObserver(user){
+                                            if (user){
+
 
                                 // Template for messages.
                                 var MESSAGE_TEMPLATE =
@@ -679,8 +684,8 @@
                                                 
                                             }     
                                         });
-                                        initFirebaseAuth();
-                                        authStateObserver(getAuth().currentUser);
+                                            }
+                                        };
                                        
                                     } else {
                                          // User is signed out!
