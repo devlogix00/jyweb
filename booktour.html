@@ -172,18 +172,7 @@
                                     element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
                                     }
 
-                                    // Triggered when the send new message form is submitted.
-                                    function onMessageFormSubmit(e) {
-                                    e.preventDefault();
-                                    // Check that the user entered a message and is signed in.
-                                    if (messageInputElement.value && checkSignedInWithMessage()) {
-                                        saveMessage(messageInputElement.value).then(function () {
-                                        // Clear message text field and re-enable the SEND button.
-                                        resetMaterialTextfield(messageInputElement);
-                                        toggleButton();
-                                        });
-                                    }
-                                    }
+                                    
 
                                     // Enables or disables the submit button depending on the values of the input
                                     // fields.
@@ -450,7 +439,7 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, "booktourusers/"+bookingId, userId), {
+                                        setDoc(doc(fs, "booktourusers/"+bookingId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
                                             email: user.email
@@ -646,7 +635,18 @@
                                 return url;
                                 }
 
-                            
+                            // Triggered when the send new message form is submitted.
+                            function onMessageFormSubmit(e) {
+                                    e.preventDefault();
+                                    // Check that the user entered a message and is signed in.
+                                    if (messageInputElement.value && checkSignedInWithMessage()) {
+                                        saveMessage(messageInputElement.value).then(function () {
+                                        // Clear message text field and re-enable the SEND button.
+                                        resetMaterialTextfield(messageInputElement);
+                                        toggleButton();
+                                        });
+                                    }
+                                    }
 
                                     
 
