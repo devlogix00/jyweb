@@ -443,14 +443,14 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, bookingId), {
+                                        setDoc(doc(fs, 'booktourusers/'+bookingId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
                                             email: user.email
                                         });
 
                                         
-                                        const recentuserQuery = query(collection(getFirestore(), bookingId));
+                                        const recentuserQuery = query(collection(getFirestore(), 'booktourusers/'+bookingId));
                                         onSnapshot(recentuserQuery, function(snapshot) {
                                          
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
