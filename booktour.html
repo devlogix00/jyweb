@@ -162,6 +162,8 @@
                                     }
                                     }
 
+                                    messageFormElement.addEventListener('submit', onMessageFormSubmit);
+
                                     
                                         onSnapshot(recentMessageQuery, function(snapshot) {
                                             snapshot.docChanges().forEach(function(change) {
@@ -621,7 +623,7 @@
                                 var signOutButtonElement = document.getElementById('sign-out');
                                 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 
-                                messageFormElement.addEventListener('submit', onMessageFormSubmit);
+                                
                                 signOutButtonElement.addEventListener('click', signOutUser);
                                 signInButtonElement.addEventListener('click', signIn);
 
