@@ -189,174 +189,54 @@
         return !!getAuth().currentUser;
         } 
 
-        // Triggers when the auth state change for instance when the user signs-in or signs-out.
-        function authStateObserver(user) {
-        if (user) {
-            // User is signed in!
-            // Get the signed-in user's profile pic and name.
-            var profilePicUrl = getProfilePicUrl();
-            var userName = getUserName();
-            var userId = user.uid;
-            let users = [];
+         // Displays a Message in the UI.
+        function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
+        var div =
+            document.getElementById(id) || createAndInsertMessage(timestamp);
 
-              // Template for messages.
-            var MESSAGE_TEMPLATE =
-            '<div class="message-container">' +
-            '<div class="spacing"><div class="pic"></div></div>' +
-            '<div class="message"></div>' +
-            '<div class="name"></div>' +
-            '</div>';
+        // profile picture
+        if (picUrl) {
+            div.querySelector('.pic').style.backgroundImage =
+            'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
+        }
 
-            var messageListElement = document.getElementById('messages');
-            var messageFormElement = document.getElementById('message-form');
-            var messageInputElement = document.getElementById('message');
-            var submitButtonElement = document.getElementById('submit');
-            var imageButtonElement = document.getElementById('submitImage');
-            var imageFormElement = document.getElementById('image-form');
-            var mediaCaptureElement = document.getElementById('mediaCapture');
-            var userPicElement = document.getElementById('user-pic');
-            var userNameElement = document.getElementById('user-name');
-            var signInButtonElement = document.getElementById('sign-in');
-            var signOutButtonElement = document.getElementById('sign-out');
-            var signInSnackbarElement = document.getElementById('must-signin-snackbar');
+        div.querySelector('.name').textContent = name;
+        var messageElement = div.querySelector('.message');
 
-            messageFormElement.addEventListener('submit', onMessageFormSubmit);
-            signOutButtonElement.addEventListener('click', signOutUser);
-            signInButtonElement.addEventListener('click', signIn);
-
-            // Toggle for the button.
-            messageInputElement.addEventListener('keyup', toggleButton);
-            messageInputElement.addEventListener('change', toggleButton);
-
-            // Adds a size to Google Profile pics URLs.
-            function addSizeToGoogleProfilePic(url) {
-            if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
-                return url + '?sz=150';
-            }
-            return url;
-            }
-           
-            let tourRef = sRef(db, 'users/userAccount/'+userId+'/tourdata');
-            onValue(tourRef, (snapshot) => {
-                let tourData = snapshot.val();
-                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
-                onValue(trSearchUrl, (snapshot) => {
-                    let trSearchData = snapshot.val();
-                    let splitUrl = trSearchData.bookingUrl.split('/');
-                    let bookingId = splitUrl[3];
-
-                    setDoc(doc(fs, "booktourusers", bookingId), {
-                        username: userName,
-                        profile_picture : profilePicUrl,
-                        email: user.email,
-                        bookingId: bookingId
-                    });
-                });
+        if (text) {
+            // If the message is text.
+            messageElement.textContent = text;
+            // Replace all line breaks by <br>.
+            messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+        } else if (imageUrl) {
+            // If the message is an image.
+            var image = document.createElement('img');
+            image.addEventListener('load', function () {
+            messageListElement.scrollTop = messageListElement.scrollHeight;
             });
+            image.src = imageUrl;
+    
+            messageElement.innerHTML = '';
+            messageElement.appendChild(image);
+        }
+        // Show the card fading-in and scroll to view the new message.
+        setTimeout(function () {
+            div.classList.add('visible');
+        }, 1);
+        messageListElement.scrollTop = messageListElement.scrollHeight;
+        messageInputElement.focus();
+        }
 
-            
+        // Adds a size to Google Profile pics URLs.
+        function addSizeToGoogleProfilePic(url) {
+        if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
+            return url + '?sz=150';
+        }
+        return url;
+        }
 
-            
-            const recentuserQuery = query(collection(fs, 'booktourusers'));
-            onSnapshot(recentuserQuery, function(snapshot) {
-           
-               var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-               users.push(user);
-               set(sRef(db, 'booktourusers'), users);
-            });
-        
-            const userCountRef = sRef(db, 'booktourusers/');
-            onValue(userCountRef, (snapshot) => {
-            const data = snapshot.val();
-   
-            let userDiv = document.createElement('div');
-            let userPic = document.createElement('img');
-            let usernm = document.createElement('p');
-            for(let i = 0; i < data.length; i++){
-                userDiv.setAttribute('id', 'user'+i);
-                userPic.setAttribute('src', data[i].profile_picture.stringValue);
-                userPic.style.borderRadius = '30%';
-                usernm.innerText = data[i].username.stringValue;
-
-                userDiv.appendChild(userPic);
-                userDiv.appendChild(usernm);
-
-                document.getElementById('userlist').appendChild(userDiv);
-            }
-            });
-
-            
-     
-            
-
-            // Set the user's profile pic and name.
-            userPicElement.style.backgroundImage =
-            'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
-            userNameElement.textContent = userName;
-
-            // Show user's profile and sign-out button.
-            userNameElement.removeAttribute('hidden');
-            userPicElement.removeAttribute('hidden');
-            signOutButtonElement.removeAttribute('hidden');
-
-            // Hide sign-in button.
-            signInButtonElement.setAttribute('hidden', 'true');
-
-            // We save the Firebase Messaging Device token and enable notifications.
-            // saveMessagingDeviceToken();
-
-            let status = document.createElement('h2');
-            status.innerText = 'Tour Started';
-            onValue(tourRef, (snapshot) => {
-                let nwtourData = snapshot.val();
-                if(nwtourData != null){
-                    let trImg = document.createElement('img');
-                    trImg.setAttribute('src', nwtourData.img);
-                    trImg.style.width = '400px';
-                    trImg.style.height = '400px';
-                    trImg.style.borderRadius = '100px';
-                    trImg.style.paddingTop = '1em';
-                    trImg.style.paddingLeft = '1em';
-                    document.getElementById('img').appendChild(trImg);
-                    let trNme = document.createElement('h1');
-                    trNme.innerText = nwtourData.tour;
-                    let bookingDates = document.createElement('h3');
-                    if(nwtourData.tourDates.length === 2){
-                        bookingDates.innerText = 'Booking Dates: '+nwtourData.tourDates[0]+' - '+nwtourData.tourDates[1];
-                    } else {
-                        bookingDates.innerText = 'Booking Date: '+nwtourData.tourDates[0];
-                    }
-                    let checkin = document.createElement('h3');
-                    checkin.innerText = nwtourData.checkin;
-                    document.getElementById('bookingInfo').appendChild(trNme);
-                    document.getElementById('bookingInfo').appendChild(bookingDates);
-
-                    onValue(tourRef, (snapshot) => {
-                    let data = snapshot.val();
-                    
-                    if(data.currentUser == user.uid && data.tourStarted == null){
-                        document.getElementById('start').style.display = 'block';
-                    } else if(data.host == user.uid && data.tourStarted == 'True'){
-                        document.getElementById('bookingInfo').appendChild(status);
-                    } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                        document.getElementById('bookingInfo').appendChild(status);
-                    } 
-                    });
-                    document.getElementById('start').addEventListener('click', function(){
-                        console.log('tour started!');
-                        updates['tours/'+nwtourData.listingName+'/tourStarted'] = "True";
-                        update(sRef(db), updates);
-                        let startBtn = document.getElementById('start');
-                        startBtn.remove();
-                    
-                        document.getElementById('bookingInfo').appendChild(status);
-                    });
-            
-                }
-
-            });
-            // Saves a new message on the Cloud Firestore.
-            async function saveMessage(messageText) {
+        // Saves a new message on the Cloud Firestore.
+        async function saveMessage(messageText) {
                 
                 onValue(tourRef, (snapshot) => {
                     let tourData = snapshot.val();
@@ -395,7 +275,7 @@
                 });
             }
 
-            // Returns true if user is signed-in. Otherwise false and displays a message.
+             // Returns true if user is signed-in. Otherwise false and displays a message.
         function checkSignedInWithMessage() {
         // Return true if the user is signed in Firebase
         if (isUserSignedIn()) {
@@ -411,10 +291,8 @@
         return false;
         }
 
-        
-
-        // Resets the given MaterialTextField.
-        function resetMaterialTextfield(element) {
+         // Resets the given MaterialTextField.
+         function resetMaterialTextfield(element) {
         element.value = '';
         element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
         }
@@ -482,92 +360,6 @@
             return div;
         }
 
-    // Displays a Message in the UI.
-    function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
-    var div =
-        document.getElementById(id) || createAndInsertMessage(timestamp);
-
-    // profile picture
-    if (picUrl) {
-        div.querySelector('.pic').style.backgroundImage =
-        'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
-    }
-
-    div.querySelector('.name').textContent = name;
-    var messageElement = div.querySelector('.message');
-
-    if (text) {
-        // If the message is text.
-        messageElement.textContent = text;
-        // Replace all line breaks by <br>.
-        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-    } else if (imageUrl) {
-        // If the message is an image.
-        var image = document.createElement('img');
-        image.addEventListener('load', function () {
-        messageListElement.scrollTop = messageListElement.scrollHeight;
-        });
-        image.src = imageUrl;
- 
-        messageElement.innerHTML = '';
-        messageElement.appendChild(image);
-    }
-    // Show the card fading-in and scroll to view the new message.
-    setTimeout(function () {
-        div.classList.add('visible');
-    }, 1);
-    messageListElement.scrollTop = messageListElement.scrollHeight;
-    messageInputElement.focus();
-    }
-
-    const messageRef = sRef(db, 'booktour');
-    onValue(messageRef, (snapshot) => {
-      const data = snapshot.val();
-      if(data != null){
-   
-        let setToList = [new Set(data)];
-        
-        for(let i = 0; i < data.length; i++){
-            if(data[i].timestamp != null){
-                displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-            }  
-          }
-        }       
-    });
-
-    // A loading image URL.
-    var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
-
-    // Events for image upload.
-    imageButtonElement.addEventListener('click', function (e) {
-    e.preventDefault();
-    mediaCaptureElement.click();
-    });
-    mediaCaptureElement.addEventListener('change', onMediaFileSelected);
-
-    // Triggered when a file is selected via the media picker.
-    function onMediaFileSelected(event) {
-    event.preventDefault();
-    var file = event.target.files[0];
-   
-
-    // Clear the selection in the file picker input.
-    imageFormElement.reset();
-
-    // Check if the file is an image.
-    if (!file.type.match('image.*')) {
-        var data = {
-        message: 'You can only share images',
-        timeout: 2000,
-        };
-        signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
-        return;
-    }
-    // Check if the user is signed-in
-    if (checkSignedInWithMessage()) {
-        saveImageMessage(file);
-    }
-    }
 
     // Saves a new message containing an image in Firebase.
     // This first saves the image in Firebase storage.
@@ -688,6 +480,226 @@
          
         }
     }
+
+        // Triggers when the auth state change for instance when the user signs-in or signs-out.
+        function authStateObserver(user) {
+        if (user) {
+            // User is signed in!
+            // Get the signed-in user's profile pic and name.
+            var profilePicUrl = getProfilePicUrl();
+            var userName = getUserName();
+            var userId = user.uid;
+            let users = [];
+
+              // Template for messages.
+            var MESSAGE_TEMPLATE =
+            '<div class="message-container">' +
+            '<div class="spacing"><div class="pic"></div></div>' +
+            '<div class="message"></div>' +
+            '<div class="name"></div>' +
+            '</div>';
+
+            var messageListElement = document.getElementById('messages');
+            var messageFormElement = document.getElementById('message-form');
+            var messageInputElement = document.getElementById('message');
+            var submitButtonElement = document.getElementById('submit');
+            var imageButtonElement = document.getElementById('submitImage');
+            var imageFormElement = document.getElementById('image-form');
+            var mediaCaptureElement = document.getElementById('mediaCapture');
+            var userPicElement = document.getElementById('user-pic');
+            var userNameElement = document.getElementById('user-name');
+            var signInButtonElement = document.getElementById('sign-in');
+            var signOutButtonElement = document.getElementById('sign-out');
+            var signInSnackbarElement = document.getElementById('must-signin-snackbar');
+
+            messageFormElement.addEventListener('submit', onMessageFormSubmit);
+            signOutButtonElement.addEventListener('click', signOutUser);
+            signInButtonElement.addEventListener('click', signIn);
+
+            // Toggle for the button.
+            messageInputElement.addEventListener('keyup', toggleButton);
+            messageInputElement.addEventListener('change', toggleButton);
+
+            
+           
+            let tourRef = sRef(db, 'users/userAccount/'+userId+'/tourdata');
+            onValue(tourRef, (snapshot) => {
+                let tourData = snapshot.val();
+                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
+                onValue(trSearchUrl, (snapshot) => {
+                    let trSearchData = snapshot.val();
+                    let splitUrl = trSearchData.bookingUrl.split('/');
+                    let bookingId = splitUrl[3];
+
+                    setDoc(doc(fs, "booktourusers", bookingId), {
+                        username: userName,
+                        profile_picture : profilePicUrl,
+                        email: user.email,
+                        bookingId: bookingId
+                    });
+                });
+            });
+
+            
+
+            
+            const recentuserQuery = query(collection(fs, 'booktourusers'));
+            onSnapshot(recentuserQuery, function(snapshot) {
+           
+               var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
+               users.push(user);
+               set(sRef(db, 'booktourusers'), users);
+            });
+        
+            const userCountRef = sRef(db, 'booktourusers/');
+            onValue(userCountRef, (snapshot) => {
+            const data = snapshot.val();
+   
+            let userDiv = document.createElement('div');
+            let userPic = document.createElement('img');
+            let usernm = document.createElement('p');
+            for(let i = 0; i < data.length; i++){
+                userDiv.setAttribute('id', 'user'+i);
+                userPic.setAttribute('src', data[i].profile_picture.stringValue);
+                userPic.style.borderRadius = '30%';
+                usernm.innerText = data[i].username.stringValue;
+
+                userDiv.appendChild(userPic);
+                userDiv.appendChild(usernm);
+
+                document.getElementById('userlist').appendChild(userDiv);
+            }
+            });
+
+            
+     
+            
+
+            // Set the user's profile pic and name.
+            userPicElement.style.backgroundImage =
+            'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
+            userNameElement.textContent = userName;
+
+            // Show user's profile and sign-out button.
+            userNameElement.removeAttribute('hidden');
+            userPicElement.removeAttribute('hidden');
+            signOutButtonElement.removeAttribute('hidden');
+
+            // Hide sign-in button.
+            signInButtonElement.setAttribute('hidden', 'true');
+
+            // We save the Firebase Messaging Device token and enable notifications.
+            // saveMessagingDeviceToken();
+
+            let status = document.createElement('h2');
+            status.innerText = 'Tour Started';
+            onValue(tourRef, (snapshot) => {
+                let nwtourData = snapshot.val();
+                if(nwtourData != null){
+                    let trImg = document.createElement('img');
+                    trImg.setAttribute('src', nwtourData.img);
+                    trImg.style.width = '400px';
+                    trImg.style.height = '400px';
+                    trImg.style.borderRadius = '100px';
+                    trImg.style.paddingTop = '1em';
+                    trImg.style.paddingLeft = '1em';
+                    document.getElementById('img').appendChild(trImg);
+                    let trNme = document.createElement('h1');
+                    trNme.innerText = nwtourData.tour;
+                    let bookingDates = document.createElement('h3');
+                    if(nwtourData.tourDates.length === 2){
+                        bookingDates.innerText = 'Booking Dates: '+nwtourData.tourDates[0]+' - '+nwtourData.tourDates[1];
+                    } else {
+                        bookingDates.innerText = 'Booking Date: '+nwtourData.tourDates[0];
+                    }
+                    let checkin = document.createElement('h3');
+                    checkin.innerText = nwtourData.checkin;
+                    document.getElementById('bookingInfo').appendChild(trNme);
+                    document.getElementById('bookingInfo').appendChild(bookingDates);
+
+                    onValue(tourRef, (snapshot) => {
+                    let data = snapshot.val();
+                    
+                    if(data.currentUser == user.uid && data.tourStarted == null){
+                        document.getElementById('start').style.display = 'block';
+                    } else if(data.host == user.uid && data.tourStarted == 'True'){
+                        document.getElementById('bookingInfo').appendChild(status);
+                    } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                        document.getElementById('bookingInfo').appendChild(status);
+                    } 
+                    });
+                    document.getElementById('start').addEventListener('click', function(){
+                        console.log('tour started!');
+                        updates['tours/'+nwtourData.listingName+'/tourStarted'] = "True";
+                        update(sRef(db), updates);
+                        let startBtn = document.getElementById('start');
+                        startBtn.remove();
+                    
+                        document.getElementById('bookingInfo').appendChild(status);
+                    });
+            
+                }
+
+            });
+            
+
+           
+
+        
+
+       
+
+   
+
+    const messageRef = sRef(db, 'booktour');
+    onValue(messageRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data != null){
+   
+        let setToList = [new Set(data)];
+        
+        for(let i = 0; i < data.length; i++){
+            if(data[i].timestamp != null){
+                displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+            }  
+          }
+        }       
+    });
+
+    // A loading image URL.
+    var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
+
+    // Events for image upload.
+    imageButtonElement.addEventListener('click', function (e) {
+    e.preventDefault();
+    mediaCaptureElement.click();
+    });
+    mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+
+    // Triggered when a file is selected via the media picker.
+    function onMediaFileSelected(event) {
+    event.preventDefault();
+    var file = event.target.files[0];
+   
+
+    // Clear the selection in the file picker input.
+    imageFormElement.reset();
+
+    // Check if the file is an image.
+    if (!file.type.match('image.*')) {
+        var data = {
+        message: 'You can only share images',
+        timeout: 2000,
+        };
+        signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
+        return;
+    }
+    // Check if the user is signed-in
+    if (checkSignedInWithMessage()) {
+        saveImageMessage(file);
+    }
+    }
+
 
     
    
