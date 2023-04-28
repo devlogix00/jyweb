@@ -443,7 +443,7 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, bookingId+'/booktourusers'), {
+                                        setDoc(doc(fs, bookingId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
                                             email: user.email
@@ -452,7 +452,7 @@
                                         
                                         const recentuserQuery = query(collection(getFirestore(), bookingId));
                                         onSnapshot(recentuserQuery, function(snapshot) {
-                                    
+                                         
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
                                         users.push(user);
                                         set(sRef(db, 'booktourusers/'+bookingId), users);
