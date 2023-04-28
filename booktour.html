@@ -141,13 +141,26 @@
                                                                     const recentMessageQuery = query(collection(getFirestore(), bookingId), orderBy('timestamp', 'desc'), limit(12));
 
                                                                     // Saves a new message on the Cloud Firestore.
-                                    async function saveMessage(messageText) {
+                                                                    async function saveMessage(messageText) {
                                         addDoc(collection(getFirestore(), bookingId), {
                                             name: getUserName(),
                                             profilePicUrl: getProfilePicUrl(),
                                             text: messageText,
                                             timestamp: timestamp
                                         });
+
+                            // Triggered when the send new message form is submitted.
+                            function onMessageFormSubmit(e) {
+                                    e.preventDefault();
+                                    // Check that the user entered a message and is signed in.
+                                    if (messageInputElement.value && checkSignedInWithMessage()) {
+                                        saveMessage(messageInputElement.value).then(function () {
+                                        // Clear message text field and re-enable the SEND button.
+                                        resetMaterialTextfield(messageInputElement);
+                                        toggleButton();
+                                        });
+                                    }
+                                    }
 
                                     
                                         onSnapshot(recentMessageQuery, function(snapshot) {
@@ -634,18 +647,7 @@
                                     }
                                     }
 
-                            // Triggered when the send new message form is submitted.
-                            function onMessageFormSubmit(e) {
-                                    e.preventDefault();
-                                    // Check that the user entered a message and is signed in.
-                                    if (messageInputElement.value && checkSignedInWithMessage()) {
-                                        saveMessage(messageInputElement.value).then(function () {
-                                        // Clear message text field and re-enable the SEND button.
-                                        resetMaterialTextfield(messageInputElement);
-                                        toggleButton();
-                                        });
-                                    }
-                                    }
+                                    
 
                                     
 
