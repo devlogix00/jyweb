@@ -132,7 +132,7 @@
                                                         let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
                                                         onValue(trSearchUrl, (snapshot) => {
                                                             let trsearchData = snapshot.val();
-                                                            tourRef = sRef(db, 'tours/'+listingData[i].listingName);
+                                                    
                                                             if(trsearchData != null ){
                                                                 if(trsearchData.currentUser === user.uid){
                                                                     let bookingurl = trsearchData.bookingUrl;
@@ -146,7 +146,7 @@
                                             }
                                         });
 
-                                        const recentMessageQuery = query(collection(getFirestore(), 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
+                                        const recentMessageQuery = query(collection(getFirestore(), bookingId), orderBy('timestamp', 'desc'), limit(12));
                                  // Signs-in BookMe.
                                 async function signIn() {
                                 var provider = new GoogleAuthProvider();
@@ -242,7 +242,7 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(getFirestore(), 'booktour/'+bookingId), {
+                                        addDoc(collection(getFirestore(), bookingId), {
                                             name: getUserName(),
                                             profilePicUrl: getProfilePicUrl(),
                                             text: messageText,
@@ -465,13 +465,13 @@
                                             }
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
-                                            addDoc(collection(getFirestore(), 'booktour/'+bookingId), {
+                                            addDoc(collection(getFirestore(), bookingId), {
                                                     name: getUserName(),
                                                     profilePicUrl: getProfilePicUrl(),
                                                     imageUrl: downloadURL,
                                                     timestamp: timestamp
                                             });
-                                            addDoc(collection(getFirestore(), 'imagePost/'+bookingId), {
+                                            addDoc(collection(getFirestore(), bookingId), {
                                                 name: getUserName(),
                                                 profilePicUrl: getProfilePicUrl(),
                                                 imageUrl: downloadURL,
@@ -479,7 +479,7 @@
                                             });
                                             });
                                             let messages = [];
-                                            const recentMessageQuery = query(collection(getFirestore(), 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
+                                            const recentMessageQuery = query(collection(getFirestore(), bookingId), orderBy('timestamp', 'desc'), limit(12));
                                             onSnapshot(recentMessageQuery, function(snapshot) {
                                                 snapshot.docChanges().forEach(function(change) {
                                                     if(change.type === 'removed') {
@@ -557,7 +557,7 @@
                                         });
 
                                         
-                                        const recentuserQuery = query(collection(getFirestore(), 'booktourusers/'+bookingId));
+                                        const recentuserQuery = query(collection(getFirestore(), bookingId));
                                         onSnapshot(recentuserQuery, function(snapshot) {
                                     
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
