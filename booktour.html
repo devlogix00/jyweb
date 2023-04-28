@@ -443,15 +443,15 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        // setDoc(doc(fs, bookingId+'/booktourusers'), {
-                                        //     username: userName,
-                                        //     profile_picture : profilePicUrl,
-                                        //     email: user.email,
+                                        setDoc(doc(fs, 'booktourusers/'+bookingId+'/user'), {
+                                            username: userName,
+                                            profile_picture : profilePicUrl,
+                                            email: user.email,
                                             
-                                        // });
+                                        });
 
                                         
-                                        const recentuserQuery = query(collection(getFirestore(), bookingId+'/booktourusers'));
+                                        const recentuserQuery = query(collection(getFirestore(), 'booktourusers/'+bookingId+'/user'));
                                         onSnapshot(recentuserQuery, function(snapshot) {
                                          
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
