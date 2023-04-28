@@ -223,13 +223,29 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(getFirestore(), 'booktour'), {
-                                            name: getUserName(),
-                                            profilePicUrl: getProfilePicUrl(),
-                                            text: messageText,
-                                            timestamp: timestamp
-                                        });
-
+                                        let tourList = sRef(db, 'users/userAccount/'+user.uid+'/tourdata');
+                                        onValue(tourList, (snapshot) => {
+                                            const tourData = snapshot.val();
+                                            if(tourData != null){
+                                                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
+                                                onValue(trSearchUrl, (snapshot) => {
+                                                    let trsearchData = snapshot.val();
+                                                    if(trsearchData != null ){
+                                                        if(trsearchData.currentUser === user.uid){
+                                                            let spliturl = trsearchData.bookingUrl.split('/');
+                                                            let bookingId = spliturl[3];
+                                                            addDoc(collection(getFirestore(), 'booktour'), {
+                                                                name: getUserName(),
+                                                                profilePicUrl: getProfilePicUrl(),
+                                                                text: messageText,
+                                                                bookingId: bookingId,
+                                                                timestamp: timestamp
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });  
                                     
                                         onSnapshot(recentMessageQuery, function(snapshot) {
                                             snapshot.docChanges().forEach(function(change) {
@@ -358,8 +374,7 @@
                                 onValue(messageRef, (snapshot) => {
                                 const data = snapshot.val();
                                 if(data != null){
-                        
-                                    
+
                                     for(let i = 0; i < data.length; i++){
                                         if(data[i].timestamp != null){
                                             displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
