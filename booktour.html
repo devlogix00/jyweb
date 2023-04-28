@@ -358,8 +358,7 @@
                                 onValue(messageRef, (snapshot) => {
                                 const data = snapshot.val();
                                 if(data != null){
-                            
-                                    let setToList = [new Set(data)];
+                        
                                     
                                     for(let i = 0; i < data.length; i++){
                                         if(data[i].timestamp != null){
