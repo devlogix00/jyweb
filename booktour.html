@@ -152,12 +152,12 @@
             measurementId: "G-0WDDDKD9ZL"
         };
 
-        initializeApp(firebaseConfig);
+        let app = initializeApp(firebaseConfig);
         const db = getDatabase();
-        const fs = getFirestore();
+        const fs = getFirestore(app);
         let timestamp = serverTimestamp();
         let messages = [];
-        const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+        const recentMessageQuery = query(collection(fs, 'booktour'), orderBy('timestamp', 'desc'), limit(12));
         // Signs-in BookMe.
         async function signIn() {
         var provider = new GoogleAuthProvider();
@@ -263,7 +263,7 @@
             
 
             
-            const recentuserQuery = query(collection(getFirestore(), 'booktourusers'));
+            const recentuserQuery = query(collection(fs, 'booktourusers'));
             onSnapshot(recentuserQuery, function(snapshot) {
            
                var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
@@ -391,7 +391,7 @@
 
         // Saves a new message on the Cloud Firestore.
         async function saveMessage(messageText) {
-            addDoc(collection(getFirestore(), 'booktour'), {
+            addDoc(collection(fs, 'booktour'), {
                 name: getUserName(),
                 profilePicUrl: getProfilePicUrl(),
                 text: messageText,
@@ -614,13 +614,13 @@
                 }
                 writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                
-                addDoc(collection(getFirestore(), 'booktour'), {
+                addDoc(collection(fs, 'booktour'), {
                         name: getUserName(),
                         profilePicUrl: getProfilePicUrl(),
                         imageUrl: downloadURL,
                         timestamp: timestamp
                 });
-                addDoc(collection(getFirestore(), 'imagePost'), {
+                addDoc(collection(fs, 'imagePost'), {
                     name: getUserName(),
                     profilePicUrl: getProfilePicUrl(),
                     imageUrl: downloadURL,
@@ -628,7 +628,7 @@
                 });
                 });
                 let messages = [];
-                const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                const recentMessageQuery = query(collection(fs, 'booktour'), orderBy('timestamp', 'desc'), limit(12));
                 onSnapshot(recentMessageQuery, function(snapshot) {
                     snapshot.docChanges().forEach(function(change) {
                         if(change.type === 'removed') {
