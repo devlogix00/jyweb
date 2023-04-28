@@ -151,8 +151,7 @@
                                 console.log(auth);
                                 let updates = {};
 
-                                onAuthStateChanged(auth, (user) => {
-                                    if(user){
+                                
  
                                         initFirebaseAuth();
                                         function authStateObserver(user){
@@ -684,10 +683,7 @@
                                                 
                                             }     
                                         });
-                                            }
-                                        };
-                                       
-                                    } else {
+                                            } else {
                                          // User is signed out!
                                         // Hide user's profile and sign-out button.
                                         userNameElement.setAttribute('hidden', 'true');
@@ -697,7 +693,10 @@
                                         // Show sign-in button.
                                         signInButtonElement.removeAttribute('hidden');
                                     }
-                                })
+                                        }
+                                       
+                                    
+                              
                                 document.getElementById('bookme').addEventListener('click', function(){
                                     window.location = "https://polar-scrubland-06961.herokuapp.com/userAccount.html";
                                 });
