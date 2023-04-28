@@ -172,17 +172,6 @@
                                     element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
                                     }
 
-                                    
-
-                                    // Enables or disables the submit button depending on the values of the input
-                                    // fields.
-                                    function toggleButton() {
-                                    if (messageInputElement.value) {
-                                        submitButtonElement.removeAttribute('disabled');
-                                    } else {
-                                        submitButtonElement.setAttribute('disabled', 'true');
-                                    }
-                                    }
 
                                     function createAndInsertMessage(id, timestamp) {
                                         const container = document.createElement('div');
@@ -634,6 +623,16 @@
                                 }
                                 return url;
                                 }
+
+                                // Enables or disables the submit button depending on the values of the input
+                                    // fields.
+                                    function toggleButton() {
+                                    if (messageInputElement.value) {
+                                        submitButtonElement.removeAttribute('disabled');
+                                    } else {
+                                        submitButtonElement.setAttribute('disabled', 'true');
+                                    }
+                                    }
 
                             // Triggered when the send new message form is submitted.
                             function onMessageFormSubmit(e) {
