@@ -566,7 +566,7 @@
                                                                     let spliturl = bookingurl.split('/');
                                                                     bookingId = spliturl[3];
 
-                                                                    setDoc(doc(fs, "booktourusers/"+bookingId), {
+                                                                    setDoc(doc(fs, "trusers/"+bookingId), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email
@@ -577,20 +577,20 @@
                                                                 
                                                                     var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
                                                                     users.push(user);
-                                                                    set(sRef(db, 'booktourusers/'+bookingId), users);
+                                                                    set(sRef(db, 'trusers/'+bookingId), users);
                                                                     });
                                                                 
-                                                                    const userCountRef = sRef(db, 'booktourusers/'+bookingId);
+                                                                    const userCountRef = sRef(db, 'trusers/'+bookingId);
 
                                                                     onValue(userCountRef, (snapshot) => {
                                                                     const data = snapshot.val();
                                                         
-                                                                    if(data !== null){
+                                                                    if(data != null){
                                                                         let userDiv = document.createElement('div');
                                                                         let userPic = document.createElement('img');
                                                                         let usernm = document.createElement('p');
                                                                         for(let i = 0; i < data.length; i++){
-                                                                            if(data[i] !== null){
+                                                                            if(data[i] != null){
                                                                                 userDiv.setAttribute('id', 'user'+i);
                                                                                 userPic.setAttribute('src', data[i].profile_picture.stringValue);
                                                                                 userPic.style.borderRadius = '30%';
