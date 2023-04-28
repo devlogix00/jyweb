@@ -570,7 +570,7 @@
                                                                     let spliturl = bookingurl.split('/');
                                                                     bookingId = spliturl[3];
 
-                                                                    setDoc(doc(fs, "booktourusers/"+bookingId, userId), {
+                                                                    setDoc(doc(fs, "booktourusers/"+bookingId), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email
