@@ -251,33 +251,6 @@
                     let splitUrl = trSearchData.bookingUrl.split('/');
                     let bookingId = splitUrl[3];
 
-                     // Saves a new message on the Cloud Firestore.
-                    async function saveMessage(messageText) {
-                        addDoc(collection(fs, 'booktour'), {
-                            name: getUserName(),
-                            profilePicUrl: getProfilePicUrl(),
-                            text: messageText,
-                            bookingId: bookingId,
-                            timestamp: timestamp
-                        });
-
-                    
-                        onSnapshot(recentMessageQuery, function(snapshot) {
-                            snapshot.docChanges().forEach(function(change) {
-                                if(change.type === 'removed') {
-                                    deleteMessage(change.doc.id);
-                            
-                                } else {
-                                    var message = change.doc.data();
-                                    messages.push(message);
-                                    set(sRef(db, 'booktour'), messages)
-                                // ref('allMessages/').set(messages);
-                                    //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                }
-                            })
-                        });
-                    }
-
                     setDoc(doc(fs, "booktourusers", bookingId), {
                         username: userName,
                         profile_picture : profilePicUrl,
@@ -388,7 +361,45 @@
                 }
 
             });
-           
+            // Saves a new message on the Cloud Firestore.
+            async function saveMessage(messageText) {
+                
+                onValue(tourRef, (snapshot) => {
+                    let tourData = snapshot.val();
+                    let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
+                    onValue(trSearchUrl, (snapshot) => {
+                        let trSearchData = snapshot.val();
+                        let splitUrl = trSearchData.bookingUrl.split('/');
+                        let bookingId = splitUrl[3];
+
+                        addDoc(collection(fs, 'booktour'), {
+                            name: getUserName(),
+                            profilePicUrl: getProfilePicUrl(),
+                            text: messageText,
+                            bookingId: bookingId,
+                            timestamp: timestamp
+                        });
+
+                    
+                    });
+                });
+                
+            
+                onSnapshot(recentMessageQuery, function(snapshot) {
+                    snapshot.docChanges().forEach(function(change) {
+                        if(change.type === 'removed') {
+                            deleteMessage(change.doc.id);
+                    
+                        } else {
+                            var message = change.doc.data();
+                            messages.push(message);
+                            set(sRef(db, 'booktour'), messages)
+                        // ref('allMessages/').set(messages);
+                            //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                        }
+                    })
+                });
+            }
         } else {
             // User is signed out!
             // Hide user's profile and sign-out button.
