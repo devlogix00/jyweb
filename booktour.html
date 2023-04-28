@@ -232,7 +232,7 @@
             var userName = getUserName();
             var userId = user.uid;
             let users = [];
-            let bookingId;
+
 
            
             let tourRef = sRef(db, 'users/userAccount/'+userId+'/tourdata');
@@ -242,16 +242,18 @@
                 onValue(trSearchUrl, (snapshot) => {
                     let trSearchData = snapshot.val();
                     let splitUrl = trSearchData.bookingUrl.split('/');
-                    bookingId = splitUrl[3];
+                    let bookingId = splitUrl[3];
+
+                    setDoc(doc(fs, "booktourusers"), {
+                        username: userName,
+                        profile_picture : profilePicUrl,
+                        email: user.email,
+                        bookingId: bookingId
+                    });
                 });
             });
 
-            setDoc(doc(fs, "booktourusers", userId), {
-                username: userName,
-                profile_picture : profilePicUrl,
-                email: user.email,
-                bookingId: bookingId
-            });
+            
 
             
             const recentuserQuery = query(collection(getFirestore(), 'booktourusers'));
