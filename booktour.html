@@ -104,7 +104,7 @@
                                 const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
-
+                                let bookingId;
 
                                 
                             
@@ -228,7 +228,7 @@
                                         });
 
                                         let listings = sRef(db, 'listings/listings');
-                                        let bookingId;
+                                  
                                         onValue(listings, (snapshot) => {
                                             const listingData = snapshot.val();
                                             if(listingData != null){
