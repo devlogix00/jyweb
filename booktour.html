@@ -79,7 +79,7 @@
     <div>
         <div id="img" style="display: flex; flex-direction: row;">
             <div id="bookingInfo" style="padding-left: 2em; padding-top: 1em;">
-                <button id="checkin" style="display: none; ">Check In</button>
+                <button id="start" style="display: none; ">Start Tour</button>
             </div>
         </div>
     </div> 
@@ -336,8 +336,27 @@
                     checkin.innerText = nwtourData.checkin;
                     document.getElementById('bookingInfo').appendChild(trNme);
                     document.getElementById('bookingInfo').appendChild(bookingDates);
-                    document.getElementById('bookingInfo').appendChild(checkin);
-                    document.getElementById('bookingInfo').appendChild(status);
+
+                    onValue(tourRef, (snapshot) => {
+                    let data = snapshot.val();
+                    
+                    if(data.currentUser == user.uid && data.checkedIn == null){
+                        document.getElementById('start').style.display = 'block';
+                    } else if(data.host == user.uid && data.checkedIn == 'True'){
+                        document.getElementById('bookingInfo').appendChild(status);
+                    } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                        document.getElementById('bookingInfo').appendChild(status);
+                    } 
+                    });
+                    document.getElementById('start').addEventListener('click', function(){
+                        console.log('tour started!');
+                        updates['tours/'+nwtourData.listingName+'/tourStarted'] = "True";
+                        update(sRef(db), updates);
+                        let startBtn = document.getElementById('start');
+                        startBtn.remove();
+                    
+                        document.getElementById('bookingInfo').appendChild(status);
+                    });
             
                 }
 
