@@ -443,7 +443,7 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, bookingId), {
+                                        setDoc(doc(fs, bookingId+'/booktourusers'), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
                                             email: user.email
