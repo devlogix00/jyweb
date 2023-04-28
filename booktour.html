@@ -104,7 +104,8 @@
                                 const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
-                                
+                                let bookingId;
+                                let listings = sRef(db, 'listings/listings');
 
                                // initFirebaseAuth();
                                 //authStateObserver(getAuth().currentUser);
@@ -216,8 +217,7 @@
                                     }
 
                                     console.log(getFirestore());
-                                    let bookingId;
-                                    let listings = sRef(db, 'listings/listings');
+                                   
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
                                         onValue(listings, (snapshot) => {
@@ -376,12 +376,9 @@
                                 onValue(messageRef, (snapshot) => {
                                 const data = snapshot.val();
                                 if(data != null){
-                            
-                                    let setToList = [new Set(data)];
-                                    
-                                    for(let i = 0; i < setToList.length; i++){
+                                    for(let i = 0; i < data.length; i++){
                                         if(setToList[i].timestamp != null){
-                                            displayMessage(i, setToList[i].timestamp, setToList[i].name, setToList[i].text, setToList[i].profilePicUrl, setToList[i].imageUrl);
+                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
                                         }  
                                     }
                                     }       
