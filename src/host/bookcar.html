@@ -34,7 +34,7 @@
                     <div>
                         <div id="img" style="display: flex; flex-direction: row;">
                             <div id="bookingInfo" style="padding-left: 2em; padding-top: 1em;">
-                                <button id="start" style="display: none;">Start Tour</button>
+                                <button id="checkin" style="display: none; ">Check In</button>
                             </div>
                             
                             
@@ -61,7 +61,9 @@
                                     </button>
                                 </form>
                                 </div>
-                               
+                                <div>
+                              
+                                </div>
                             </div>
                             <div id="userlist"></div>
 
@@ -105,58 +107,33 @@
                                 let timestamp = serverTimestamp();
                                 let messages = [];
 
-
-                                
-                            
-
-                               // initFirebaseAuth();
+                                //initFirebaseAuth();
                                 //authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/index.html';
+                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/bookings.html';
                                 });
 
                                 console.log(auth);
                                 let updates = {};
 
-                                onAuthStateChanged(auth, (user) => {
-                                    if(user){
-
-                                        let listings = sRef(db, 'listings/listings');
-                                        let bookingId;
-                                        onValue(listings, (snapshot) => {
-                                            const listingData = snapshot.val();
-                                            if(listingData != null){
-                                                for(let i = 0; i < listingData.length; i++){
-                                                    if(listingData[i].listingType === 'tour'){
-                                                        let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
-                                                        onValue(trSearchUrl, (snapshot) => {
-                                                            let trsearchData = snapshot.val();
-                                                            tourRef = sRef(db, 'tours/'+listingData[i].listingName);
-                                                            if(trsearchData != null ){
-                                                                if(trsearchData.currentUser === user.uid){
-                                                                    let bookingurl = trsearchData.bookingUrl;
-                                                                    let spliturl = bookingurl.split('/');
-                                                                    console.log(spliturl)
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                        const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
-                                 // Signs-in BookMe.
+                                // Signs-in BookMe.
                                 async function signIn() {
                                 var provider = new GoogleAuthProvider();
-                                signInWithPopup(getAuth(), provider);
+                                signInWithPopup(auth, provider);
                                 }
 
                                 // Signs-out of BookMe.
                                 function signOutUser() {
-                                signOut(getAuth());
+                                signOut(auth);
                                 }
+
+                                onAuthStateChanged(auth, (user) => {
+                                    if(user){
+                                        console.log(user)
+                                        /* Keep track of booking id for firestore access here */
+                                        const recentMessageQuery = query(collection(fs, 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
+                                 
 
                                 // Initiate firebase auth
                                 // function initFirebaseAuth() {
@@ -165,17 +142,17 @@
 
                                 // Returns the signed-in user's profile Pic URL.
                                 function getProfilePicUrl() {
-                                return getAuth().currentUser.photoURL;
+                                return user.photoURL;
                                 }
 
                                 // Returns the signed-in user's display name.
                                 function getUserName() {
-                                return getAuth().currentUser.displayName;
+                                return user.displayName;
                                 }
 
                                 // Returns true if a user is signed-in.
                                 function isUserSignedIn() {
-                                return !!getAuth().currentUser;
+                                return !!user;
                                 } 
 
                                 // Template for messages.
@@ -215,13 +192,11 @@
                                 return url;
                                 }
 
-                            
-
-                                    
-
                                 // Triggers when the auth state change for instance when the user signs-in or signs-out.
                                 // function authStateObserver(user) {
-                                
+                                // if (user) {
+                                    
+                                //     } 
                                 //     }
 
                                     // Returns true if user is signed-in. Otherwise false and displays a message.
@@ -242,9 +217,9 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(getFirestore(), 'booktour'), {
-                                            name: getUserName(),
-                                            profilePicUrl: getProfilePicUrl(),
+                                        addDoc(collection(fs, 'bookcar'), {
+                                            name: user.displayName,
+                                            profilePicUrl: user.photoURL,
                                             text: messageText,
                                             timestamp: timestamp
                                         });
@@ -258,7 +233,7 @@
                                                 } else {
                                                     var message = change.doc.data();
                                                     messages.push(message);
-                                                    set(sRef(db, 'booktour'), messages)
+                                                    set(sRef(db, 'bookcar'), messages)
                                                 // ref('allMessages/').set(messages);
                                                     //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                 }
@@ -373,7 +348,8 @@
                                 messageInputElement.focus();
                                 }
 
-                                const messageRef = sRef(db, 'booktour');
+                                // Keep track of booking id for realtime access here
+                                const messageRef = sRef(db, 'bookcar');
                                 onValue(messageRef, (snapshot) => {
                                 const data = snapshot.val();
                                 if(data != null){
@@ -458,28 +434,29 @@
                                             
                                             function writeUserData(name, email, imageUrl) {
                                             set(sRef(db, 'messages/'), {
-                                                name: getUserName(),
+                                                name: user.displayName,
                                                 imageUrl: downloadURL,
-                                                profilePicUrl: getProfilePicUrl()
+                                                profilePicUrl: user.photoURL
                                             });
                                             }
                                             writeUserData(getUserName(), downloadURL, getProfilePicUrl);
                                         
-                                            addDoc(collection(getFirestore(), 'booktour'), {
-                                                    name: getUserName(),
-                                                    profilePicUrl: getProfilePicUrl(),
+                                            // Use booking id here
+                                            addDoc(collection(fs, 'bookcar'), {
+                                                    name: user.displayName,
+                                                    profilePicUrl: user.photoURL,
                                                     imageUrl: downloadURL,
                                                     timestamp: timestamp
                                             });
-                                            addDoc(collection(getFirestore(), 'imagePost'), {
-                                                name: getUserName(),
-                                                profilePicUrl: getProfilePicUrl(),
+                                            addDoc(collection(fs, 'imagePost'), {
+                                                name: user.displayName,
+                                                profilePicUrl: user.photoURL,
                                                 imageUrl: downloadURL,
                                                 timestamp: timestamp
                                             });
                                             });
                                             let messages = [];
-                                            const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                            const recentMessageQuery = query(collection(fs, 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
                                             onSnapshot(recentMessageQuery, function(snapshot) {
                                                 snapshot.docChanges().forEach(function(change) {
                                                     if(change.type === 'removed') {
@@ -489,7 +466,8 @@
                                                         var message = change.doc.data();
                                                         messages = [];
                                                         messages.push(message);
-                                                        set(sRef(db, 'booktour'), messages)
+                                                        // Use booking id here
+                                                        set(sRef(db, 'bookcar'), messages)
                                                         // ref('allMessages/').set(messages);
                                                         //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
                                                     }
@@ -514,7 +492,7 @@
                                             // Saving the Device Token to Real-Time Database.
                                             const updates = {};
                                             updates['messages/fcmTokens'] = currentToken;
-                                            update(sRef(db), updates);
+                                            update(ref(db), updates);
 
                                             // This will fire when a message is received while the app is in the foreground.
                                             // When the app is in the background, firebase-messaging-sw.js will receive the message instead.
@@ -541,34 +519,35 @@
                                     
                                     }
                                 }
-
                                         console.log(user);
                                         // User is signed in!
                                         // Get the signed-in user's profile pic and name.
-                                        var profilePicUrl = getProfilePicUrl();
-                                        var userName = getUserName();
+                                        var profilePicUrl = user.photoURL;
+                                        var userName = user.displayName;
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, "booktourusers", userId), {
+                                        // Use booking id here
+
+                                        setDoc(doc(fs, "bookcarusers", userId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
                                             email: user.email
                                         });
 
-                                        
-                                        const recentuserQuery = query(collection(getFirestore(), 'booktourusers'));
+                                        const recentuserQuery = query(collection(fs, 'bookcarusers'));
                                         onSnapshot(recentuserQuery, function(snapshot) {
-                                    
+                                        console.log(snapshot);
                                         var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
                                         users.push(user);
-                                        set(sRef(db, 'booktourusers'), users);
+                                        set(sRef(db, 'bookcarusers'), users);
                                         });
                                     
-                                        const userCountRef = sRef(db, 'booktourusers/');
+                                        const userCountRef = sRef(db, 'bookcarusers/');
                                         onValue(userCountRef, (snapshot) => {
                                         const data = snapshot.val();
                             
+                                    
                                         if(data !== null){
                                             let userDiv = document.createElement('div');
                                             let userPic = document.createElement('img');
@@ -610,62 +589,51 @@
                                         // We save the Firebase Messaging Device token and enable notifications.
                                         // saveMessagingDeviceToken();
                                         let status = document.createElement('h2');
-                                        status.innerText = 'Tour Started';
-                                        let tourRef;
+                                        status.innerText = 'Checked In';
+                                        let carRef;
                                         
-                                        let tourList = sRef(db, 'users/userAccount/'+user.uid+'/tourdata');
-                                        onValue(tourList, (snapshot) => {
-                                            const tourData = snapshot.val();
-                                            if(tourData != null){
-                                                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
-                                                onValue(trSearchUrl, (snapshot) => {
-                                                    let trsearchData = snapshot.val();
-                                                    tourRef = sRef(db, 'tours/'+tourData.tour);
-                                                    if(trsearchData != null ){
-                                                        if(trsearchData.currentUser === user.uid){
-                                                            let trImg = document.createElement('img');
-                                                            trImg.setAttribute('src', trsearchData.listingImg);
-                                                            trImg.style.width = '400px';
-                                                            trImg.style.height = '400px';
-                                                            trImg.style.borderRadius = '100px';
-                                                            trImg.style.paddingTop = '1em';
-                                                            trImg.style.paddingLeft = '1em';
-                                                            document.getElementById('img').appendChild(trImg);
-                                                            let trNme = document.createElement('h1');
-                                                            trNme.innerText = trsearchData.listingName;
-                                                            let bookingDates = document.createElement('h3');
-                                                            if(trsearchData.tourDates.length === 2){
-                                                                bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
-                                                            } else {
-                                                                bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
+                                        let listings = sRef(db, 'listings/listings');
+                                        onValue(listings, (snapshot) => {
+                                            const listingData = snapshot.val();
+                                            if(listingData != null){
+                                                for(let i = 0; i < listingData.length; i++){
+                                                    if(listingData[i].listingType === 'car'){
+                                                        let crSearchUrl = sRef(db, 'cars/'+listingData[i].listingName);
+                                                        onValue(crSearchUrl, (snapshot) => {
+                                                            let crsearchData = snapshot.val();
+                                                            carRef = sRef(db, 'cars/'+listingData[i].listingName);
+                                                            if(crsearchData != null ){
+                                                                if(crsearchData.host === userId){
+                                                                    let crImg = document.createElement('img');
+                                                                    crImg.setAttribute('src', crsearchData.img);
+                                                                    crImg.style.width = '400px';
+                                                                    crImg.style.height = '400px';
+                                                                    crImg.style.borderRadius = '100px';
+                                                                    crImg.style.paddingTop = '1em';
+                                                                    crImg.style.paddingLeft = '1em';
+                                                                    document.getElementById('img').appendChild(crImg);
+                                                                    let crNme = document.createElement('h1');
+                                                                    crNme.innerText = crsearchData.listingName;
+                                                                    let bookingDates = document.createElement('h3');
+                                                                    if(crsearchData.carDates.length === 2){
+                                                                        bookingDates.innerText = 'Booking Dates: '+crsearchData.carDates[0]+' - '+crsearchData.carDates[1];
+                                                                    } else {
+                                                                        bookingDates.innerText = 'Booking Date: '+crsearchData.carDates[0];
+                                                                    }
+                                                                    let checkin = document.createElement('h3');
+                                                                    checkin.innerText = crsearchData.checkin;
+                                                                    document.getElementById('bookingInfo').appendChild(crNme);
+                                                                    document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                                    document.getElementById('bookingInfo').appendChild(checkin);
+                                                                    document.getElementById('bookingInfo').appendChild(status);
+                                                         
+                                                                }
+                                                                
                                                             }
-                                                            document.getElementById('bookingInfo').appendChild(trNme);
-                                                            document.getElementById('bookingInfo').appendChild(bookingDates);
-
-                                                            onValue(tourRef, (snapshot) => {
-                                                            let data = snapshot.val();
-                                                            
-                                                            if(data.currentUser == user.uid && data.checkedIn == null){
-                                                                document.getElementById('start').style.display = 'block';
-                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
-                                                                document.getElementById('bookingInfo').appendChild(status);
-                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                                                                document.getElementById('bookingInfo').appendChild(status);
-                                                            } 
-                                                            });
-                                                            document.getElementById('start').addEventListener('click', function(){
-                                                                console.log('Tour started!');
-                                                                updates['tours/'+trsearchData.listingName+'/tourStarted'] = "True";
-                                                                update(sRef(db), updates);
-                                                                let tourSrtdBtn = document.getElementById('start');
-                                                                tourSrtdBtn.remove();
-                                                                document.getElementById('bookingInfo').appendChild(status);
-                                                            });
-                                                        }
-                                                        
+                                                        }); 
                                                     }
-                                                }); 
-                                                    
+                                                }
+                                                
                                                 
                                             }     
                                         });
@@ -681,9 +649,9 @@
                                         // Show sign-in button.
                                         signInButtonElement.removeAttribute('hidden');
                                     }
-                                })
+                                });
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = "https://polar-scrubland-06961.herokuapp.com/userAccount.html";
+                                    window.location = "https://polar-scrubland-06961.herokuapp.com/bookings.html";
                                 });
                             </script>
                             <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
