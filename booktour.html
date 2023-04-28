@@ -104,14 +104,13 @@
                                 const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
-                                let bookingId;
-                                let listings = sRef(db, 'listings/listings');
+                                
 
                                // initFirebaseAuth();
                                 //authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/src/host/UserAccount.html';
+                                    window.location = 'https://polar-scrubland-06961.herokuapp.com/UserAccount.html';
                                 });
 
                                 console.log(auth);
@@ -217,7 +216,8 @@
                                     }
 
                                     console.log(getFirestore());
-
+                                    let bookingId;
+                                    let listings = sRef(db, 'listings/listings');
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
                                         onValue(listings, (snapshot) => {
