@@ -311,7 +311,8 @@
             // We save the Firebase Messaging Device token and enable notifications.
             // saveMessagingDeviceToken();
 
-        
+            let status = document.createElement('h2');
+            status.innerText = 'Tour Started';
             onValue(tourRef, (snapshot) => {
                 let nwtourData = snapshot.val();
                 if(nwtourData != null){
