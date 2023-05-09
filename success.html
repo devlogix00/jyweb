@@ -79,6 +79,7 @@
               if(dbRead.itemType == 'room'){
                 const roomRef = ref(db, 'users/userAccount/'+userId+'/roomdata'+today);
                 let roomRead;
+                let bookingId = generateId(16);
                 onValue(roomRef, (snapshot) => {
                   const data = snapshot.val();
                   roomRead = data;
@@ -87,6 +88,7 @@
                   updates['users/userAccount/'+userId+'/roomdata'+today+'/roomStatus'] = 'paid';
                   updates['users/userAccount/'+userId+'/roomdata'+today+'/bookingDate'] = today;
                   updates['users/userAccount/'+userId+'/roomdata/userName'] = userName;
+                  updates['users/userAccount/'+userId+'/roomdata/bookingId'] = bookingId;
                   updates['users/userAccount/'+userId+'/bookingdata/bookingDate'] = today;
                   updates['users/userAccount/'+userId+'/bookingdata/datesLength'] = roomRead.datesLength;
                   updates['users/userAccount/'+userId+'/bookingdata/img'] = roomRead.img;
@@ -95,12 +97,17 @@
                   updates['users/userAccount/'+userId+'/bookingdata/itemStatus'] = 'paid';
                   updates['users/userAccount/'+userId+'/bookingdata/userName'] = userName;
                   updates['users/userAccount/'+userId+'/bookingdata/itemType'] = 'room';
+                  updates['hosts/hostAccount/'+roomRead.host+'/rooms/'+dbRead.item+'/bookingDate'] = today;
+                  updates['hosts/hostAccount/'+roomRead.host+'/rooms/'+dbRead.item+'/currentUser'] = userId;
+                  updates['hosts/hostAccount/'+roomRead.host+'/rooms/'+dbRead.item+'/roomDates'] = roomRead.roomDates;
+                  updates['hosts/hostAccount/'+roomRead.host+'/rooms/'+dbRead.item+'/userName'] = userName;
+                  updates['hosts/hostAccount/'+roomRead.host+'/rooms/'+dbRead.item+'/checkedIn'] = null;
+                  updates['hosts/hostAccount/'+roomRead.host+'/rooms/'+dbRead.item+'/bookingId'] = bookingId;
                   updates['rooms/'+dbRead.item+'/bookingDate'] = today;
                   updates['rooms/'+dbRead.item+'/currentUser'] = userId;
                   updates['rooms/'+dbRead.item+'/roomDates'] = roomRead.roomDates;
                   updates['rooms/'+dbRead.item+'/userName'] = userName;
                   updates['rooms/'+dbRead.item+'/checkedIn'] = null;
-                  updates['rooms/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                   update(ref(db), updates);
                  window.location = "UserAccount.html";
                 });
@@ -109,6 +116,7 @@
                } else if(dbRead.itemType == 'car'){
                   const carRef = ref(db, 'users/userAccount/'+userId+'/cardata'+today);
                   let carRead;
+                  let bookingId = generateId(16);
                   onValue(carRef, (snapshot) => {
                     const data = snapshot.val();
                     carRead = data;                 
@@ -117,6 +125,7 @@
                     updates['users/userAccount/'+userId+'/cardata'+today+'/carStatus'] = 'paid';
                     updates['users/userAccount/'+userId+'/cardata'+today+'/bookingDate'] = today;
                     updates['users/userAccount/'+userId+'/cardata/userName'] = userName;
+                    updates['users/userAccount/'+userId+'/cardata/bookingId'] = bookingId;
                     updates['users/userAccount/'+userId+'/bookingdata/bookingDate'] = today;
                     updates['users/userAccount/'+userId+'/bookingdata/datesLength'] = carRead.datesLength;
                     updates['users/userAccount/'+userId+'/bookingdata/img'] = carRead.img;
@@ -125,12 +134,17 @@
                     updates['users/userAccount/'+userId+'/bookingdata/itemStatus'] = 'paid';
                     updates['users/userAccount/'+userId+'/bookingdata/userName'] = userName;
                     updates['users/userAccount/'+userId+'/bookingdata/itemType'] = 'car';
+                    updates['hosts/hostAccount/'+carRead.host+'/cars/'+dbRead.item+'/bookingDate'] = today;
+                    updates['hosts/hostAccount/'+carRead.host+'/cars/'+dbRead.item+'/currentUser'] = userId;
+                    updates['hosts/hostAccount/'+carRead.host+'/cars/'+dbRead.item+'/carDates'] = carRead.carDates;
+                    updates['hosts/hostAccount/'+carRead.host+'/cars/'+dbRead.item+'/userName'] = userName;
+                    updates['hosts/hostAccount/'+carRead.host+'/cars/'+dbRead.item+'/pickedUp'] = null;
+                    updates['hosts/hostAccount/'+carRead.host+'/cars/'+dbRead.item+'/bookingId'] = bookingId;
                     updates['cars/'+dbRead.item+'/bookingDate'] = today;
                     updates['cars/'+dbRead.item+'/currentUser'] = userId;
                     updates['cars/'+dbRead.item+'/carDates'] = carRead.carDates;
                     updates['cars/'+dbRead.item+'/userName'] = userName;
                     updates['cars/'+dbRead.item+'/pickedUp'] = null;
-                    updates['cars/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                    update(ref(db), updates);
                    window.location = "UserAccount.html";
                  });
@@ -139,6 +153,7 @@
                } else if(dbRead.itemType == 'tour'){
                   const tourRef = ref(db, 'users/userAccount/'+userId+'/tourdata'+today);
                   let tourRead;
+                  let bookingId = generateId(16);
                   onValue(tourRef, (snapshot) => {
                     const data = snapshot.val();
                     tourRead = data;                 
@@ -147,6 +162,7 @@
                     updates['users/userAccount/'+userId+'/tourdata'+today+'/tourStatus'] = 'paid';
                     updates['users/userAccount/'+userId+'/tourdata'+today+'/bookingDate'] = today;
                     updates['users/userAccount/'+userId+'/tourdata/userName'] = userName;
+                    updates['users/userAccount/'+userId+'/tourdata/bookingId'] = bookingId;
                     updates['users/userAccount/'+userId+'/bookingdata/bookingDate'] = today;
                     updates['users/userAccount/'+userId+'/bookingdata/datesLength'] = tourRead.datesLength;
                     updates['users/userAccount/'+userId+'/bookingdata/img'] = tourRead.img;
@@ -155,12 +171,17 @@
                     updates['users/userAccount/'+userId+'/bookingdata/itemStatus'] = 'paid';
                     updates['users/userAccount/'+userId+'/bookingdata/userName'] = userName;
                     updates['users/userAccount/'+userId+'/bookingdata/itemType'] = 'tour';
+                    updates['hosts/hostAccount/'+tourRead.host+'/tours/'+dbRead.item+'/bookingDate'] = today;
+                    updates['hosts/hostAccount/'+tourRead.host+'/tours/'+dbRead.item+'/currentUser'] = userId;
+                    updates['hosts/hostAccount/'+tourRead.host+'/tours/'+dbRead.item+'/tourDates'] = tourRead.tourDates;
+                    updates['hosts/hostAccount/'+tourRead.host+'/tours/'+dbRead.item+'/userName'] = userName;
+                    updates['hosts/hostAccount/'+tourRead.host+'/tours/'+dbRead.item+'/tourStarted'] = null;
+                    updates['hosts/hostAccount/'+tourRead.host+'/tours/'+dbRead.item+'/bookingId'] = bookingId;
                     updates['tours/'+dbRead.item+'/bookingDate'] = today;
                     updates['tours/'+dbRead.item+'/currentUser'] = userId;
                     updates['tours/'+dbRead.item+'/tourDates'] = tourRead.tourDates;
                     updates['tours/'+dbRead.item+'/userName'] = userName;
                     updates['tours/'+dbRead.item+'/tourStarted'] = null;
-                    updates['tours/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
                     update(ref(db), updates);
                     window.location = "UserAccount.html";
                   });
@@ -169,6 +190,7 @@
                } else if(dbRead.itemType == 'driver'){
                   const driverRef = ref(db, 'users/userAccount/'+userId+'/bookingdata'+today);
                   let driverRead;
+                  let bookingId = generateId(16);
                   onValue(driverRef, (snapshot) => {
                     const data = snapshot.val();
                     driverRead = data;                 
@@ -178,13 +200,14 @@
                     updates['users/userAccount/'+userId+'/driverdata'+today+'/bookingDate'] = today;
                     updates['users/userAccount/'+userId+'/driverdata/userName'] = userName;
                     updates['users/userAccount/'+userId+'/driverdata/driverDates'] = driverRead.itemDates;
+                    updates['users/userAccount/'+userId+'/driverdata/bookingId'] = bookingId;
                     updates['bookedDrivers/'+dbRead.item+'/bookingDate'] = today;
                     updates['bookedDrivers/'+dbRead.item+'/currentUser'] = userId;
                     updates['bookedDrivers/'+dbRead.item+'/driverDates'] = driverRead.itemDates;
                     updates['bookedDrivers/'+dbRead.item+'/userName'] = userName;
                     updates['bookedDrivers/'+dbRead.item+'/driverName'] = data.item;
                     updates['bookedDrivers/'+dbRead.item+'/driverPresent'] = null;
-                    updates['bookedDrivers/'+dbRead.item+'/bookingUrl'] = 'https://polar-scrubland-06961.herokuapp.com/'+generateId(16);
+                    updates['bookedDrivers/'+dbRead.item+'/bookingId'] = bookingId;
                     update(ref(db), updates);
                     window.location = "UserAccount.html";
                   });

@@ -452,7 +452,7 @@
                   listing.host = userId;
 
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
-
+                  updates['hosts/hostAccount/'+userId+'/tours/'+listing.listingName] = listing;
                   updates['listing/'] = listing;
 
                   updates['tours/'+listing.listingName] = listing;
@@ -477,6 +477,8 @@
                   listing.listingImg = image;
                   listing.host = userId;
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
+                  updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
+                  updates['hosts/hostAccount/'+userId+'/cars/'+listing.listingName] = listing;
                   updates['listing/'] = listing;
                   update(ref(db), updates);
                   if(listing.listingType == 'room'){
