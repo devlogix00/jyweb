@@ -383,7 +383,7 @@
               const formData = new FormData();
               formData.append("file", file);
 
-              fetch("https://polar-scrubland-06961.herokuapp.com/upload_files", {
+              fetch("https://buorgoldengreenresorts.homes/upload_files", {
                 method: 'POST',
                 body: formData
               })
@@ -515,7 +515,7 @@
                   cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
 
                   let cardImg = document.createElement('img');
-                  cardImg.setAttribute('src', 'https://polar-scrubland-06961.herokuapp.com/'+newdata.listingImg);
+                  cardImg.setAttribute('src', 'https://buorgoldengreenresorts.homes/'+newdata.listingImg);
                   cardImg.style.width = '300px';
 
                   let front = document.createElement('div');

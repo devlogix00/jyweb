@@ -20,21 +20,8 @@
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       </head>
-      <script>
-    
-       
-        async function getAnalytics(){
-          fetch("https://buorgoldengreenresorts.homes/analytics", {
-              method: 'POST',
-              body: ''
-          })
-          .then((res) => console.log(res))
-          .then((err) => console.error(err));
-        }
-      getAnalytics()
-      
-  </script>
-      <body class="sidebar-collapse" onload="getAnalytics()">        
+
+      <body class="sidebar-collapse">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
           <div class="container">
             <div class="navbar-translate" ></div>          
@@ -45,7 +32,7 @@
             <div>
                 <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
                     <div class="container navbar-translate" style="display: flex; justify-content: space-between;">
-                          <a style="color: black;" class="navbar-brand" href="home.html">
+                          <a style="color: black;" class="navbar-brand" href="./drive.html">
                             BookMe</a>
                              
                     </div>
@@ -61,8 +48,8 @@
         <div style="padding: 2em;">
           <h3>Login to Access Your Payments Dashboard</h3>
           <div id="setup">
-            <!-- <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8080/host/analytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a> -->
-            <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://buorgoldengreenresorts.homes/host/analytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a>
+            <!-- <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8080/host/drvanalytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a> -->
+            <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://buorgoldengreenresorts.homes/host/drvanalytics.html&client_id=ca_M29ha94ugP0Nwb9ZxuijL8Xk3a75KRHu&state={STATE_VALUE}">Setup your payments account</a>
           </div>
           <div id="login">
 
@@ -118,7 +105,7 @@
           import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
           import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
           import { initializeAuth,getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
-          import { getDatabase, update, ref, set, onValue, push, child, orderByChild} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+          import { getDatabase, ref, set, onValue, push, child, orderByChild, update} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
           import {getFirestore, collection, addDoc, doc, getDoc, enableIndexedDbPersistence} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
           // TODO: Add SDKs for Firebase products that you want to use
           // https://firebase.google.com/docs/web/setup#available-libraries
@@ -167,20 +154,19 @@
               document.cookie = 'analyticsUID='+userId;
               console.log(userName);
 
-              // let stripeUrl = window.location.href;
-              // if(stripeUrl.includes('?')){
-              //   console.log('parameterized url');
-              //   let url1 = stripeUrl.split('&');
-              //   let url2 = url1[0].split('?');
-              //   let url3 = url2[1].split('=');
-              //   let code = url3[1];
-                
-              //   let updates = {};
-              //   updates['hosts/hostAccount/'+userId+'/stripe/code'] = code;
-              //   update(ref(db), updates);
-              // }
+              let stripeUrl = window.location.href;
+              if(stripeUrl.includes('?')){
+                console.log('parameterized url');
+                let url1 = stripeUrl.split('&');
+                let url2 = url1[0].split('?');
+                let url3 = url2[1].split('=');
+                let code = url3[1];
+                let updates = {};
+                updates['hosts/hostAccount/'+userId+'/stripe/code'] = code;
+                update(ref(db), updates);
+              }
               
-              const loginRef = ref(db, 'hosts/hostAccount/'+userId+'/stripe/login');
+              const loginRef = ref(db, 'drivers/driverAccount/'+userId+'/stripe/login');
               onValue(loginRef, (snapshot) => {
                   const data = snapshot.val();
                   if(data != null){
@@ -195,10 +181,7 @@
                         window.location.href = data;
                     })
                   }
-              }
-              );
-
-              
+              });
                
             } else {
               // User is signed out
@@ -208,7 +191,31 @@
           });
 
         </script> 
-        
+        <script type="module">
+              let stripeUrl = window.location.href;
+              if(stripeUrl.includes('?')){
+                try {
+                  const response = axios.post('/drvanalytics');
+                  console.log('What is going on? ', response);
+                } catch (error){
+                  console.error(error);
+                }
+              }
+
+                // fetch("https://polar-scrubland-06961.herokuapp.com/", {
+                //     method: 'POST',
+                //     body: ''
+                // })
+                // .then((res) => console.log(res))
+                // .then((err) => console.error(err));
+                // fetch("http://localhost:8080/host/drvanalytics", {
+                //     method: 'POST',
+                //     body: ''
+                // })
+                // .then((res) => console.log(res))
+                // .then((err) => console.error(err));
+
+        </script>
         <!-- <script src="https://js.stripe.com/v3/">
             let clientSecret = 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC';
             var stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd');
