@@ -636,8 +636,8 @@ app.post('/create-checkout-session', async (req, res) => {
             mode: 'payment',
             //success_url: 'http://localhost:8080/success.html',
             //cancel_url: 'http://localhost:8080/cancel.html',
-             success_url: 'https://buorgoldengreenresorts.homes/success.html',
-            cancel_url: 'https://buorgoldengreenresorts.homes/cancel.html',
+             success_url: 'https://www.buorgoldengreenresorts.homes/success.html',
+            cancel_url: 'https://www.buorgoldengreenresorts.homes/cancel.html',
             payment_intent_data: {
                 application_fee_amount: app_fee,
                 transfer_data: {
