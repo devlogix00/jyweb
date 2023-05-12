@@ -60,10 +60,7 @@ const db = getDatabase();
 
 let itemName;
 let userId;
-//let dates;
-//let img;
 let datesLength;
-//let stat;
 let itemPrice;
 let app_fee;
 let itemId = uuidv4();
@@ -71,13 +68,6 @@ let accid;
 let code;
 let serveUrl;
 let newData;
-//let imgSrc;
-//let rmName;
-//let crName;
-//let trName;
-//let roomDates;
-//let checkinInfo;
-//let rmSearchUrl;
 let regList;
 let deletedId;
 
