@@ -385,9 +385,8 @@
           const db = getDatabase();
           const storage = getStorage();
           const database = getFirestore();
-          const roomlistingDb = collection(database, 'listings/rooms');
-          const carlistingDb = collection(database, 'listings/cars');
-          const tourlistingDb = collection(database, 'listings/tours');
+          const listingDb = collection(database, 'listings');
+          
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -497,7 +496,7 @@
                   updates['tours/'+listing.listingName] = listing;
                   updates['tours/listing'] = listing;
                   update(ref(db), updates);
-                  const listingsRef = doc(collection(tourslistingDb, listing.listingName));
+                  const listingsRef = doc(collection(listingDb));
                     listingsRef.get().then((docSnapshot) => {
                         if(listing != null && !docSnapshot.exists){
                         listingDb.doc(listing.listingName).set({
@@ -533,7 +532,7 @@
                     updates['rooms/'+listing.listingName] = listing;
                     updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
                     update(ref(db), updates);
-                    const listingsRef = doc(collection(roomslistingDb, listing.listingName));
+                    const listingsRef = doc(collection(listingDb));
                     listingsRef.get().then((docSnapshot) => {
                         if(listing != null && !docSnapshot.exists){
                         listingDb.doc(listing.listingName).set({
@@ -551,7 +550,7 @@
                     updates['cars/'+listing.listingName] = listing;
                     updates['hosts/hostAccount/'+userId+'/cars/'+listing.listingName] = listing;
                     update(ref(db), updates);
-                    const listingsRef = doc(collection(carslistingDb, listing.listingName));
+                    const listingsRef = doc(collection(listingDb));
                     listingsRef.get().then((docSnapshot) => {
                         if(listing != null && !docSnapshot.exists){
                         listingDb.doc(listing.listingName).set({
