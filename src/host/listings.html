@@ -507,6 +507,7 @@
                   const listingRef = ref(db, 'listings/listings/');
                   onValue(listingRef, (snapshot) => {
                     const data = snapshot.val();
+                    let dataLen = data.length;
                     if(dataLen != null){
                         updates['listings/listings/'+dataLen] = listing;
                         update(ref(db), updates);
@@ -566,6 +567,7 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
+                      let dataLen = data.length;
                       if(dataLen != null){
                         updates['listings/listings/'+dataLen] = listing;
                         update(ref(db), updates);
@@ -603,6 +605,7 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
+                      let dataLen = data.length;
                       if(dataLen != null){
                         updates['listings/listings/'+dataLen] = listing;
                         update(ref(db), updates);
