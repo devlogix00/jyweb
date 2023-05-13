@@ -246,26 +246,6 @@
              e.preventDefault();
            });
 
-           document.getElementById('calcRC').addEventListener('click', e => {
-             e.preventDefault();
-             if(navigator.geolocation){
-                 navigator.geolocation.getCurrentPosition(
-                   (position) => {
-                     const pos = {
-                       lat: position.coords.latitude,
-                       lng: position.coords.longitude
-                     };
-                
-                             
-                     listing.location = pos;
-                     console.log(listing.location);
-
-                 
-                   }
-                 );
-               }
-           });
-
            function calcDist(){
             let orig;
             let dest;
@@ -520,13 +500,33 @@
                   //   });
                  
                  } else {
-                  document.getElementById('calcRC').addEventListener('click', function(){
-                    updates['rooms/'+listing.listingName+'/location'] = listing.location;
-                    updates['rooms/listing/location'] = listing.location;
-                    updates['cars/'+listing.listingName+'/location'] = listing.location;
-                    updates['cars/listing/location'] = listing.location;
-                    update(ref(db), updates);
+                  document.getElementById('calcRC').addEventListener('click', e => {
+                    e.preventDefault();
+                    if(navigator.geolocation){
+                        navigator.geolocation.getCurrentPosition(
+                          (position) => {
+                            const pos = {
+                              lat: position.coords.latitude,
+                              lng: position.coords.longitude
+                            };
+                        
+                                    
+                            listing.location = pos;
+                            console.log(listing.location);
+
+                        
+                          }
+                        );
+                        updates['rooms/'+listing.listingName+'/location'] = listing.location;
+                        updates['rooms/listing/location'] = listing.location;
+                        updates['cars/'+listing.listingName+'/location'] = listing.location;
+                        updates['cars/listing/location'] = listing.location;
+                        update(ref(db), updates);
+                      }
                   });
+                  // document.getElementById('calcRC').addEventListener('click', function(){
+                    
+                  // });
                   
                   let name = document.getElementById('name').value;
                   listing.listingName = name;
