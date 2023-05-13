@@ -35,7 +35,7 @@
           <div class="container">
             <div class="row">
                 <div class="widget-content">
-                    <form id="image-form">
+                    <form id="image-form" action="#" method="POST">
                         <input id="type" type="text" placeholder="room, car, tour" onblur="getType()"/>
                         <label>Listing Type:</label>
                         <div id="tourForm" style="display: none;">
@@ -244,6 +244,26 @@
 
            document.getElementById('calc').addEventListener('click', e => {
              e.preventDefault();
+           });
+
+           document.getElementById('calcRC').addEventListener('click', e => {
+             e.preventDefault();
+             if(navigator.geolocation){
+                 navigator.geolocation.getCurrentPosition(
+                   (position) => {
+                     const pos = {
+                       lat: position.coords.latitude,
+                       lng: position.coords.longitude
+                     };
+                
+                             
+                     listing.location = pos;
+                     console.log(listing.location);
+
+                 
+                   }
+                 );
+               }
            });
 
            function calcDist(){
@@ -501,32 +521,28 @@
                  
                  } else {
                   document.getElementById('calcRC').addEventListener('click', function(){
-                    
                     if(navigator.geolocation){
-                        navigator.geolocation.getCurrentPosition(
-                          (position) => {
-                            const pos = {
-                              lat: position.coords.latitude,
-                              lng: position.coords.longitude
-                            };
-                        
-                                    
-                            listing.location = pos;
-                            console.log(listing.location);
+                      navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                          const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                          };
+                      
+                                  
+                          listing.location = pos;
+                          console.log(listing.location);
 
-                        
-                          }
-                        );
-                        updates['rooms/'+listing.listingName+'/location'] = listing.location;
-                        updates['rooms/listing/location'] = listing.location;
-                        updates['cars/'+listing.listingName+'/location'] = listing.location;
-                        updates['cars/listing/location'] = listing.location;
-                        update(ref(db), updates);
-                      }
+                      
+                        }
+                      );
+                    }
+                    updates['rooms/'+listing.listingName+'/location'] = listing.location;
+                    updates['rooms/listing/location'] = listing.location;
+                    updates['cars/'+listing.listingName+'/location'] = listing.location;
+                    updates['cars/listing/location'] = listing.location;
+                    update(ref(db), updates);
                   });
-                  // document.getElementById('calcRC').addEventListener('click', function(){
-                    
-                  // });
                   
                   let name = document.getElementById('name').value;
                   listing.listingName = name;
@@ -652,19 +668,19 @@
                   
                   back.appendChild(dltIcn);
 
-                //   dltIcn.addEventListener('click', function(){
-                //     document.getElementById('listing'+i).remove();
-                //     document.cookie = 'deletedId='+data[i].itemId;
-                //     remove(ref(db, 'listings/listings/'+i));
-                //     fetch("https://www.buorgoldengreenresorts.homes/src/host/listings", {
-                //     method: 'POST',
-                //     body: ''
+                  dltIcn.addEventListener('click', function(){
+                    document.getElementById('listing'+i).remove();
+                    document.cookie = 'deletedId='+data[i].itemId;
+                    remove(ref(db, 'listings/listings/'+i));
+                    fetch("https://www.buorgoldengreenresorts.homes/src/host/listings", {
+                    method: 'POST',
+                    body: ''
                     
-                // })
-                // .then((res) => res)
-                // .then((err) => err);
+                })
+                .then((res) => res)
+                .then((err) => err);
 
-                //   });
+                  });
 
                 }
               }
