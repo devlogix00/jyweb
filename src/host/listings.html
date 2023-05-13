@@ -388,12 +388,9 @@
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
-              userName = user.displayName;
+              let userName = user.displayName;
               let userId = user.uid;
               let updates = {};
-
-
-              let userName;
 
               let mediaCaptureElement = document.getElementById('mediaCapture');
               let imageButtonElement = document.getElementById('submitImage');
