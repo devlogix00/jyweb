@@ -542,7 +542,7 @@
                     updates['rooms/'+listing.listingName] = listing;
                     updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
                     update(ref(db), updates);
-                    addDoc(doc(database, 'listings', listing.listingName), {
+                    addDoc(doc(database, 'listings'), {
                       host: listing.host,
                       listingImg: listing.listingImg,
                       listingName: listing.listingName,
