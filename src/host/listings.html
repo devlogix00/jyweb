@@ -536,8 +536,9 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
-                        updates['listings/listings/'+data.length] = listing.location;
-                        update(ref(db), updates);
+                      let dataLen = data.length;
+                      updates['listings/listings/'+dataLen] = listing;
+                      update(ref(db), updates);
                     });
                   });
                   
@@ -557,8 +558,9 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
-                        updates['listings/listings/'+data.length] = listing;
-                        update(ref(db), updates);
+                      let dataLen = data.length;
+                      updates['listings/listings/'+dataLen] = listing;
+                      update(ref(db), updates);
                     });
                     // setDoc(doc(database, 'listings', 'rooms'), {
                     //   host: listing.host,
@@ -590,8 +592,9 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
-                        updates['listings/listings/'+data.length] = listing;
-                        update(ref(db), updates);
+                      let dataLen = data.length;
+                      updates['listings/listings/'+dataLen] = listing;
+                      update(ref(db), updates);
                     });
                     // setDoc(doc(database, 'listings', 'cars'), {
                     //   host: listing.host,
