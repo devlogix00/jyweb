@@ -507,9 +507,13 @@
                   const listingRef = ref(db, 'listings/listings/');
                   onValue(listingRef, (snapshot) => {
                     const data = snapshot.val();
-                      updates['listing/listing/'+data.length] = listing;
-                      update(ref(db), updates);
-                  });
+                    if(dataLen != null){
+                        updates['listings/listings/'+dataLen] = listing;
+                        update(ref(db), updates);
+                      }
+                  },{
+                        onlyOnce: true
+                    });
                   // const listingsRef = doc(collection('listings'));
                   // listingsRef.get().then((docSnapshot) => {
                   //     if(listing != null && !docSnapshot.exists){
@@ -537,8 +541,12 @@
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
                       let dataLen = data.length;
-                      updates['listings/listings/'+dataLen] = listing;
-                      update(ref(db), updates);
+                      if(dataLen != null){
+                        updates['listings/listings/'+dataLen] = listing;
+                        update(ref(db), updates);
+                      }
+                    },{
+                        onlyOnce: true
                     });
                   });
                   
@@ -558,9 +566,12 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
-                      let dataLen = data.length;
-                      updates['listings/listings/'+dataLen] = listing;
-                      update(ref(db), updates);
+                      if(dataLen != null){
+                        updates['listings/listings/'+dataLen] = listing;
+                        update(ref(db), updates);
+                      }
+                    },{
+                        onlyOnce: true
                     });
                     // setDoc(doc(database, 'listings', 'rooms'), {
                     //   host: listing.host,
@@ -592,9 +603,12 @@
                     const listingRef = ref(db, 'listings/listings/');
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
-                      let dataLen = data.length;
-                      updates['listings/listings/'+dataLen] = listing;
-                      update(ref(db), updates);
+                      if(dataLen != null){
+                        updates['listings/listings/'+dataLen] = listing;
+                        update(ref(db), updates);
+                      }
+                    },{
+                        onlyOnce: true
                     });
                     // setDoc(doc(database, 'listings', 'cars'), {
                     //   host: listing.host,
