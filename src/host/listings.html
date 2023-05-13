@@ -361,6 +361,7 @@
           import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
           import { getDatabase, update, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
           import { ref as sRef, getStorage, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js";
+          import { addDoc, collection, getFirestore, Timestamp, orderBy, limit, onSnapshot, query, serverTimestamp, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
           // TODO: Add SDKs for Firebase products that you want to use
           // https://firebase.google.com/docs/web/setup#available-libraries
         
@@ -383,6 +384,8 @@
           const auth = getAuth();
           const db = getDatabase();
           const storage = getStorage();
+          const database = getFirestore();
+          const listingDb = collection(database, 'listings');
           
 
           onAuthStateChanged(auth, (user) => {
