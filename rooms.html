@@ -187,7 +187,7 @@
                   cardButton.setAttribute('id', data[i].listingName);
                   cardButton.innerText = 'BookMe';
                   
-                 // allCoords.push(data[i].location);
+                  allCoords.push(data[i].location);
 
                   cardTitle.appendChild(cardButton);
                   back.appendChild(cardTitle);
@@ -201,7 +201,7 @@
                   document.getElementById('roomsContainer').appendChild(cardOuter);
                   
                   document.getElementById(data[i].listingName+'-back').addEventListener('click', function(){
-                   // coord.locCoord = data[i].location;
+                    coord.locCoord = data[i].location;
                     createMarker();
                   });
 
@@ -237,46 +237,46 @@
 
             });
 
-            // let rmLocs = ref(db, 'lstLocations/locList');
-            // onValue(rmLocs, (snapshot) => {
-            //   const locData = snapshot.val();
-            //   if(locData != null){
-            //     for(let i = 0; i < locData.length; i++){
-            //       if(locData[i] !== 'undefined' ){
-            //         coordList.push(locData[i]);
-            //       }
-            //     }
-            //   //   for(let i = 0; i < coordList.length; i++){
-            //   //     if(coordList[i].locType === "room"){
-            //   //       let position = coordList[i].loc;
-            //   //       const map = new google.maps.Map(document.getElementById("map"), {
-            //   //           zoom: 2,
-            //   //           center: {lat: 8.090440925828062, lng: -1.6977176080814078}
-            //   //       });
+            let rmLocs = ref(db, 'lstLocations/locList');
+            onValue(rmLocs, (snapshot) => {
+              const locData = snapshot.val();
+              if(locData != null){
+                for(let i = 0; i < locData.length; i++){
+                  if(locData[i] !== 'undefined' ){
+                    coordList.push(locData[i]);
+                  }
+                }
+                for(let i = 0; i < coordList.length; i++){
+                  if(coordList[i].locType === "room"){
+                    let position = coordList[i].loc;
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 2,
+                        center: {lat: 8.090440925828062, lng: -1.6977176080814078}
+                    });
 
-            //   //       var marker = new google.maps.Marker({
-            //   //         map: map,
-            //   //         position: position
-            //   //       });
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      position: position
+                    });
 
-            //   //       marker.addListener('click', flipCard);
+                    marker.addListener('click', flipCard);
 
-            //   //       function flipCard(){
+                    function flipCard(){
 
-            //   //         let itemCard = document.getElementById(coordList[i].itemId);
-            //   //         let itemPos = itemCard.getBoundingClientRect()
-            //   //         let itemPosX = itemPos.x;
-            //   //         let itemPosY = itemPos.y;
-            //   //         window.scrollTo(itemPosX, itemPosY);
-            //   //         itemCard.classList.toggle("rotating-card-container");
-            //   //         document.getElementById('roomsContainer').scrollLeft = itemPos.left;
-            //   //       }
-            //   //   }
+                      let itemCard = document.getElementById(coordList[i].itemId);
+                      let itemPos = itemCard.getBoundingClientRect()
+                      let itemPosX = itemPos.x;
+                      let itemPosY = itemPos.y;
+                      window.scrollTo(itemPosX, itemPosY);
+                      itemCard.classList.toggle("rotating-card-container");
+                      document.getElementById('roomsContainer').scrollLeft = itemPos.left;
+                    }
+                }
                 
-            //   // }
-            // }
+              }
+            }
               
-            // });
+            });
 
               } else {
                 // User is signed out
