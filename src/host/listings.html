@@ -499,21 +499,18 @@
                   listing.listingName = name;
                   let price = document.getElementById('price').value;
                   listing.listingPrice = price;
-                  // let image = document.getElementById('mediaCapture').value;
-                  // listing.listingImg = image;
                   listing.host = userId;
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
                   updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
-                  updates['hosts/hostAccount/'+userId+'/cars/'+listing.listingName] = listing;
                   updates['listing/'] = listing;
                   update(ref(db), updates);
                   if(listing.listingType == 'room'){
                     updates['rooms/'+listing.listingName] = listing;
-                    //updates['rooms/listing'] = listing;
+                    updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
                     update(ref(db), updates);
                   } else if(listing.listingType == 'car'){
                     updates['cars/'+listing.listingName] = listing;
-                    //updates['cars/listing'] = listing;
+                    updates['hosts/hostAccount/'+userId+'/cars/'+listing.listingName] = listing;
                     update(ref(db), updates);
                   }
                  }
