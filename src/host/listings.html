@@ -500,8 +500,8 @@
                   //   });
                  
                  } else {
-                  document.getElementById('calcRC').addEventListener('click', e => {
-                    e.preventDefault();
+                  document.getElementById('calcRC').addEventListener('click', function(){
+                    
                     if(navigator.geolocation){
                         navigator.geolocation.getCurrentPosition(
                           (position) => {
