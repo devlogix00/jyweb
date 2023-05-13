@@ -652,19 +652,19 @@
                   
                   back.appendChild(dltIcn);
 
-                  dltIcn.addEventListener('click', function(){
-                    document.getElementById('listing'+i).remove();
-                    document.cookie = 'deletedId='+data[i].itemId;
-                    remove(ref(db, 'listings/listings/'+i));
-                    fetch("https://www.buorgoldengreenresorts.homes/src/host/listings", {
-                    method: 'POST',
-                    body: ''
+                //   dltIcn.addEventListener('click', function(){
+                //     document.getElementById('listing'+i).remove();
+                //     document.cookie = 'deletedId='+data[i].itemId;
+                //     remove(ref(db, 'listings/listings/'+i));
+                //     fetch("https://www.buorgoldengreenresorts.homes/src/host/listings", {
+                //     method: 'POST',
+                //     body: ''
                     
-                })
-                .then((res) => res)
-                .then((err) => err);
+                // })
+                // .then((res) => res)
+                // .then((err) => err);
 
-                  });
+                //   });
 
                 }
               }
