@@ -520,13 +520,13 @@
                   //   });
                  
                  } else {
-                  // document.getElementById('calcRC').addEventListener('click', function(){
-                  //   updates['rooms/'+listing.listingName+'/location'] = listing.location;
-                  //   updates['rooms/listing/location'] = listing.location;
-                  //   updates['cars/'+listing.listingName+'/location'] = listing.location;
-                  //   updates['cars/listing/location'] = listing.location;
-                  //   update(ref(db), updates);
-                  // });
+                  document.getElementById('calcRC').addEventListener('click', function(){
+                    updates['rooms/'+listing.listingName+'/location'] = listing.location;
+                    updates['rooms/listing/location'] = listing.location;
+                    updates['cars/'+listing.listingName+'/location'] = listing.location;
+                    updates['cars/listing/location'] = listing.location;
+                    update(ref(db), updates);
+                  });
                   let name = document.getElementById('name').value;
                   listing.listingName = name;
                   let price = document.getElementById('price').value;
