@@ -352,44 +352,7 @@
             });
            }
 
-            let userId;
-            let userName;
-
-            let mediaCaptureElement = document.getElementById('mediaCapture');
-            let imageButtonElement = document.getElementById('submitImage');
-            let imageFormElement = document.getElementById('image-form');
-
-            imageButtonElement.addEventListener('click', function (e) {
-              e.preventDefault();
-              mediaCaptureElement.click();
-            });
-
-            mediaCaptureElement.addEventListener('change', onMediaFileSelected);
-            function onMediaFileSelected(e){
-              e.preventDefault();
-              let file = e.target.files[0];
-              //imageFormElement.reset();
-              if(!file.type.match('image.*')){
-                let data = {
-                  message: 'You can only share images',
-                  timeout: 2000
-                };
-                return;
-              }
-              saveImage(file);
-            }
-
-            async function saveImage(file){
-              const formData = new FormData();
-              formData.append("file", file);
-
-              fetch("https://www.buorgoldengreenresorts.homes/upload_files", {
-                method: 'POST',
-                body: formData
-              })
-              .then((res) => console.log(res))
-              .then((err) => ("Error occured ", err));
-            }
+            
         </script>
         <script type="module">
           // Import the functions you need from the SDKs you need
@@ -397,6 +360,7 @@
           import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
           import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
           import { getDatabase, update, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+          import { ref as sRef, getStorage, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js";
           // TODO: Add SDKs for Firebase products that you want to use
           // https://firebase.google.com/docs/web/setup#available-libraries
         
@@ -418,13 +382,81 @@
           const analytics = getAnalytics(app);
           const auth = getAuth();
           const db = getDatabase();
+          const storage = getStorage();
+          
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
               userName = user.displayName;
-              userId = user.uid;
+              let userId = user.uid;
               let updates = {};
+
+
+              let userName;
+
+              let mediaCaptureElement = document.getElementById('mediaCapture');
+              let imageButtonElement = document.getElementById('submitImage');
+              let imageFormElement = document.getElementById('image-form');
+
+              imageButtonElement.addEventListener('click', function (e) {
+                e.preventDefault();
+                mediaCaptureElement.click();
+              });
+
+              mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+              function onMediaFileSelected(e){
+                e.preventDefault();
+                let file = e.target.files[0];
+                //imageFormElement.reset();
+                if(!file.type.match('image.*')){
+                  let data = {
+                    message: 'You can only share images',
+                    timeout: 2000
+                  };
+                  return;
+                }
+                saveImage(file);
+              }
+
+              async function saveImage(file){
+                const storageRef = sRef(storage, 'images/'+ file.name);
+                const uploadTask = uploadBytesResumable(storageRef, file);
+
+                uploadTask.on('state_changed', 
+                  (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    
+                    switch (snapshot.state) {
+                    case 'paused':
+                        
+                        break;
+                    case 'running':
+                        
+                        break;
+                    }
+                  },
+                  (error) => {
+                    // Handle unsuccessful uploads
+                  },
+                  () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                      listing.listingImg = downloadURL;
+                    })
+                  }
+                )
+                // const formData = new FormData();
+                // formData.append("file", file);
+
+                // fetch("https://www.buorgoldengreenresorts.homes/upload_files", {
+                //   method: 'POST',
+                //   body: formData
+                // })
+                // .then((res) => console.log(res))
+                // .then((err) => ("Error occured ", err));
+              }
 
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
@@ -446,9 +478,6 @@
                   let price = document.getElementById('price').value;
                   listing.listingPrice = price;
 
-                  let image = document.getElementById('mediaCapture').value;
-                  listing.listingImg = image;
-              
                   listing.host = userId;
 
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
@@ -473,8 +502,8 @@
                   listing.listingName = name;
                   let price = document.getElementById('price').value;
                   listing.listingPrice = price;
-                  let image = document.getElementById('mediaCapture').value;
-                  listing.listingImg = image;
+                  // let image = document.getElementById('mediaCapture').value;
+                  // listing.listingImg = image;
                   listing.host = userId;
                   updates['hosts/hostAccount/'+userId+'/listing'] = listing;
                   updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
@@ -515,7 +544,7 @@
                   cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
 
                   let cardImg = document.createElement('img');
-                  cardImg.setAttribute('src', 'https://www.buorgoldengreenresorts.homes/'+newdata.listingImg);
+                  cardImg.setAttribute('src', newdata.listingImg);
                   cardImg.style.width = '300px';
 
                   let front = document.createElement('div');
@@ -554,7 +583,7 @@
                     document.getElementById('listing'+i).remove();
                     document.cookie = 'deletedId='+data[i].itemId;
                     remove(ref(db, 'listings/listings/'+i));
-                    fetch("http://localhost:8080/src/host/listings", {
+                    fetch("https://www.buorgoldengreenresorts.homes/src/host/listings", {
                     method: 'POST',
                     body: ''
                     
