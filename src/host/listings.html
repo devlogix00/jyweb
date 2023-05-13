@@ -521,22 +521,7 @@
                  
                  } else {
                   document.getElementById('calcRC').addEventListener('click', function(){
-                    if(navigator.geolocation){
-                      navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                          const pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                          };
-                      
-                                  
-                          listing.location = pos;
-                          console.log(listing.location);
-
-                      
-                        }
-                      );
-                    }
+                    
                     updates['rooms/'+listing.listingName+'/location'] = listing.location;
                     updates['rooms/listing/location'] = listing.location;
                     updates['cars/'+listing.listingName+'/location'] = listing.location;
