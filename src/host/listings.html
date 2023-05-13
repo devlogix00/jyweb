@@ -496,20 +496,29 @@
                   updates['tours/'+listing.listingName] = listing;
                   updates['tours/listing'] = listing;
                   update(ref(db), updates);
-                  const listingsRef = doc(collection('listings'));
-                  listingsRef.get().then((docSnapshot) => {
-                      if(listing != null && !docSnapshot.exists){
-                        setDoc(listingsRef, {
-                            host: listing.host,
-                            listingImg: listing.listingImg,
-                            listingName: listing.listingName,
-                            listingPrice: listing.listingPrice,
-                            listingType: listing.listingType,
-                            itemId: generateId(16),
-                            location: listing.location
-                        })
-                        } 
-                    });
+                  setDoc(doc(database, 'listings', 'tours'), {
+                    host: listing.host,
+                    listingImg: listing.listingImg,
+                    listingName: listing.listingName,
+                    listingPrice: listing.listingPrice,
+                    listingType: listing.listingType,
+                    itemId: generateId(16),
+                    location: listing.location
+                  });
+                  // const listingsRef = doc(collection('listings'));
+                  // listingsRef.get().then((docSnapshot) => {
+                  //     if(listing != null && !docSnapshot.exists){
+                  //       setDoc(listingsRef, {
+                  //           host: listing.host,
+                  //           listingImg: listing.listingImg,
+                  //           listingName: listing.listingName,
+                  //           listingPrice: listing.listingPrice,
+                  //           listingType: listing.listingType,
+                  //           itemId: generateId(16),
+                  //           location: listing.location
+                  //       })
+                  //       } 
+                  //   });
                  
                  } else {
                   document.getElementById('calcRC').addEventListener('click', function(){
@@ -532,38 +541,56 @@
                     updates['rooms/'+listing.listingName] = listing;
                     updates['hosts/hostAccount/'+userId+'/rooms/'+listing.listingName] = listing;
                     update(ref(db), updates);
-                    const listingsRef = doc(collection('listings'));
-                    listingsRef.get().then((docSnapshot) => {
-                        if(listing != null && !docSnapshot.exists){
-                          setDoc(listingsRef, {
-                              host: listing.host,
-                              listingImg: listing.listingImg,
-                              listingName: listing.listingName,
-                              listingPrice: listing.listingPrice,
-                              listingType: listing.listingType,
-                              itemId: generateId(16),
-                              location: listing.location
-                          })
-                          } 
-                      });
+                    setDoc(doc(database, 'listings', 'rooms'), {
+                      host: listing.host,
+                      listingImg: listing.listingImg,
+                      listingName: listing.listingName,
+                      listingPrice: listing.listingPrice,
+                      listingType: listing.listingType,
+                      itemId: generateId(16),
+                      location: listing.location
+                    });
+                    // const listingsRef = doc(collection('listings'));
+                    // listingsRef.get().then((docSnapshot) => {
+                    //     if(listing != null && !docSnapshot.exists){
+                    //       setDoc(listingsRef, {
+                    //           host: listing.host,
+                    //           listingImg: listing.listingImg,
+                    //           listingName: listing.listingName,
+                    //           listingPrice: listing.listingPrice,
+                    //           listingType: listing.listingType,
+                    //           itemId: generateId(16),
+                    //           location: listing.location
+                    //       })
+                    //       } 
+                    //   });
                   } else if(listing.listingType == 'car'){
                     updates['cars/'+listing.listingName] = listing;
                     updates['hosts/hostAccount/'+userId+'/cars/'+listing.listingName] = listing;
                     update(ref(db), updates);
-                    const listingsRef = doc(collection('listings'));
-                    listingsRef.get().then((docSnapshot) => {
-                        if(listing != null && !docSnapshot.exists){
-                          setDoc(listingsRef, {
-                              host: listing.host,
-                              listingImg: listing.listingImg,
-                              listingName: listing.listingName,
-                              listingPrice: listing.listingPrice,
-                              listingType: listing.listingType,
-                              itemId: generateId(16),
-                              location: listing.location
-                          })
-                          } 
-                      });
+                    setDoc(doc(database, 'listings', 'cars'), {
+                      host: listing.host,
+                      listingImg: listing.listingImg,
+                      listingName: listing.listingName,
+                      listingPrice: listing.listingPrice,
+                      listingType: listing.listingType,
+                      itemId: generateId(16),
+                      location: listing.location
+                    });
+                    // const listingsRef = doc(collection('listings'));
+                    // listingsRef.get().then((docSnapshot) => {
+                    //     if(listing != null && !docSnapshot.exists){
+                    //       setDoc(listingsRef, {
+                    //           host: listing.host,
+                    //           listingImg: listing.listingImg,
+                    //           listingName: listing.listingName,
+                    //           listingPrice: listing.listingPrice,
+                    //           listingType: listing.listingType,
+                    //           itemId: generateId(16),
+                    //           location: listing.location
+                    //       })
+                    //       } 
+                    //   });
                   }
                  }
 
