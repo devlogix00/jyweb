@@ -326,9 +326,9 @@ onValue(regList, (snapshot) => {
             } 
         }
        // console.log(locList);
-        set(ref(db, 'lstLocations/'), {
-            locList
-        });
+        // set(ref(db, 'lstLocations/'), {
+        //     locList
+        // });
     }
 }, {
     onlyOnce: true
@@ -346,9 +346,9 @@ onValue(profList, (snapshot) => {
             profLocList[i] = profLstObj; 
         }
       //  console.log(profLocList);
-        set(ref(db, 'profLocations/'), {
-            profLocList
-        });
+        // set(ref(db, 'profLocations/'), {
+        //     profLocList
+        // });
     }
 }, {
     onlyOnce: true
