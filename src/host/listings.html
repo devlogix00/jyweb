@@ -149,31 +149,6 @@
         <script src="./js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
         <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
         <script src="./js/plugins/nouislider.min.js" type="text/javascript"></script>
-        <!--  Google Maps Plugin    -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&libraries=places&callback=initMap&v=weekly" async>
-          function initMap(){
-             // Set map options
-             let LatLng = {lat: 8.090440925828062, lng: -1.6977176080814078};
-             let mapOptions = {
-               center: LatLng,
-               zoom: 7
-             };
-
-             map = new google.maps.Map(document.getElementById("map"), mapOptions);
-             
-             let directionsService = new google.maps.DirectionsService();
-             let directionsDisplay = new google.maps.DirectionsRenderer();
-             directionsDisplay.setMap();
-
-             var input1 = document.getElementById('origin');
-             var autocomplete1 = new google.maps.places.Autocomplete(input1);
-
-             var input2 = document.getElementById("destination");
-             var autocomplete2 = new google.maps.places.Autocomplete(input2);
-           
-            
-           }
-        </script>
         <!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap"></script> -->
         <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmEt3SHmnkBXHOc3YODYPNQrYIIeEjKNg&libraries=places&callback=initMap"></script> -->
         <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
@@ -244,7 +219,28 @@
             var address3;
             
 
-          
+          function initMap(){
+             // Set map options
+             let LatLng = {lat: 8.090440925828062, lng: -1.6977176080814078};
+             let mapOptions = {
+               center: LatLng,
+               zoom: 7
+             };
+
+             map = new google.maps.Map(document.getElementById("map"), mapOptions);
+             
+             let directionsService = new google.maps.DirectionsService();
+             let directionsDisplay = new google.maps.DirectionsRenderer();
+             directionsDisplay.setMap();
+
+             var input1 = document.getElementById('origin');
+             var autocomplete1 = new google.maps.places.Autocomplete(input1);
+
+             var input2 = document.getElementById("destination");
+             var autocomplete2 = new google.maps.places.Autocomplete(input2);
+           
+            
+           }
 
            document.getElementById('calc').addEventListener('click', e => {
              e.preventDefault();
@@ -683,7 +679,8 @@
        
 
         </script>
-        
+                <!--  Google Maps Plugin    -->
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&libraries=places&callback=initMap&v=weekly" async></script>
        
       </body>
 </html>
