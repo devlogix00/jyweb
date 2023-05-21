@@ -511,7 +511,10 @@
                     if(dataLen != null){
                         updates['listings/listings/'+dataLen] = listing;
                         update(ref(db), updates);
-                      }
+                    } else {
+                      updates['listings/listings/0'] = listing;
+                      update(ref(db), updates);
+                    }
                   },{
                         onlyOnce: true
                     });
@@ -545,6 +548,9 @@
                       if(dataLen != null){
                         updates['listings/listings/'+dataLen] = listing;
                         update(ref(db), updates);
+                      } else {
+                        updates['listings/listings/0'] = listing;
+                        update(ref(db), updates);
                       }
                     },{
                         onlyOnce: true
@@ -568,8 +574,11 @@
                     onValue(listingRef, (snapshot) => {
                       const data = snapshot.val();
                       let dataLen = data.length;
-                      if(dataLen != null){
+                      if(dataLen != null ){
                         updates['listings/listings/'+dataLen] = listing;
+                        update(ref(db), updates);
+                      } else {
+                        updates['listings/listings/0'] = listing;
                         update(ref(db), updates);
                       }
                     },{
@@ -608,6 +617,9 @@
                       let dataLen = data.length;
                       if(dataLen != null){
                         updates['listings/listings/'+dataLen] = listing;
+                        update(ref(db), updates);
+                      } else {
+                        updates['listings/listings/0'] = listing;
                         update(ref(db), updates);
                       }
                     },{
