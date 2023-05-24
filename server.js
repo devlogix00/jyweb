@@ -368,7 +368,7 @@ app.get('/src/host/analytics', async (req, res) => {
             grant_type: 'authorization_code',
             client_secret: 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC',
             code: code,
-            assert_capabilities: ['transfers', 'balances', 'ownership']
+            assert_capabilities: ['transfers']
         });
         
         var connected_account_id = await rsponse.stripe_user_id;
