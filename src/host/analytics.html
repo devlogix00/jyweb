@@ -48,21 +48,21 @@
         let code = url3[1];
         console.log(code);
         
-        stripe.createToken('account', {
+        stripe.oauth.createToken('account', {
           
           tos_shown_and_accepted: true,
         })
         .then(function(result) {
           console.log(result);
-          var connected_account_id = result.token.id;
-          if(connected_account_id != 'undefined'){
-            const link = stripe.createLoginLink(connected_account_id);
-            console.log(link);
-            // let updates = {};
-            // updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-            // updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-            // update(ref(db), updates);
-          }
+          // var connected_account_id = result.token.id;
+          // if(connected_account_id != 'undefined'){
+          //   const link = stripe.createLoginLink(connected_account_id);
+          //   console.log(link);
+          //   // let updates = {};
+          //   // updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+          //   // updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+          //   // update(ref(db), updates);
+          // }
         });
   
         // const rsponse = await stripe.oauth.token({
