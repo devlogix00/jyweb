@@ -20,7 +20,7 @@
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       </head>
-      <script>
+      <!-- <script>
     
        
         async function getAnalytics(){
@@ -33,8 +33,12 @@
         }
       getAnalytics()
       
+  </script> -->
+  <script src="https://js.stripe.com/v3/">
+    const stripe = Stripe('sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC'); 
+    console.log(stripe);
   </script>
-      <body class="sidebar-collapse" onload="getAnalytics()">        
+      <body class="sidebar-collapse">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
           <div class="container">
             <div class="navbar-translate" ></div>          
