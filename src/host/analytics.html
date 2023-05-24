@@ -50,7 +50,8 @@
             grant_type: 'authorization_code',
             code: code,
             assert_capabilities: ['transfers']
-        });
+      });
+      console.log(rsponse);
         
       var connected_account_id = await rsponse.stripe_user_id;
       if(connected_account_id != 'undefined'){
