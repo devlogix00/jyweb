@@ -44,6 +44,7 @@
       let url2 = url1[0].split('?');
       let url3 = url2[1].split('=');
       let code = url3[1];
+      console.log(code);
 
       const rsponse = await stripe.oauth.token({
             grant_type: 'authorization_code',
