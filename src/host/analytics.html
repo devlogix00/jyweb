@@ -56,7 +56,7 @@
           console.log(result);
           var connected_account_id = result.token.id;
           if(connected_account_id != 'undefined'){
-            const link = stripe.accounts.createLoginLink(connected_account_id);
+            const link = stripe.createLoginLink(connected_account_id);
             console.log(link);
             // let updates = {};
             // updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
