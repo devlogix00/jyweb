@@ -21,7 +21,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://js.stripe.com/v3/"></script>
       </head>
-      <script type="module">
+      <script>
         async function getAnalytics(){
           fetch("https://www.buorgoldengreenresorts.homes/src/host/analytics", {
               method: 'GET'
@@ -167,21 +167,21 @@
               document.cookie = 'analyticsUID='+userId;
               console.log(userName);
 
-              // let stripeUrl = window.location.href;
-              // if(stripeUrl.includes('?')){
-              //   console.log('parameterized url');
-              //   let url1 = stripeUrl.split('&');
-              //   let url2 = url1[0].split('?');
-              //   let url3 = url2[1].split('=');
-              //   let code = url3[1];
-                
-              //   let updates = {};
-              //   updates['hosts/hostAccount/'+userId+'/stripe/code'] = code;
-              //   update(ref(db), updates);
-              // }
-              
               const loginRef = ref(db, 'hosts/hostAccount/'+userId+'/stripe/login');
-              onValue(loginRef, (snapshot) => {
+
+              let stripeUrl = window.location.href;
+              if(stripeUrl.includes('?')){
+                onValue(loginRef, (snapshot) => {
+                  const data = snapshot.val();
+                  if(data != null){
+                    document.getElementById('setup').style.display = 'none';
+                    console.log(data);
+                    let successMsg = document.createElement('p');
+                    successMsg.innerText = 'Stripe account successfully created! Please return to your home page to access your stripe payments account.'
+                  }
+              });
+              } else {
+                onValue(loginRef, (snapshot) => {
                   const data = snapshot.val();
                   if(data != null){
                     document.getElementById('setup').style.display = 'none';
@@ -195,10 +195,8 @@
                         window.location.href = data;
                     })
                   }
+              });
               }
-              );
-
-              
                
             } else {
               // User is signed out
