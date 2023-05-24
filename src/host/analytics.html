@@ -37,6 +37,18 @@
   <script async type='module' src="https://js.stripe.com/v3/">
     const stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd'); 
     console.log(stripe);
+    stripe.collectBankAccountToken({
+      clientSecret: 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC'
+    })
+      .then(function(result) {
+        if (result.error) {
+          // Inform the customer that there was an error.
+          console.log(result.error.message);
+        } else if (result.token) {
+          // Use result.token to set your user's external payout account
+          console.log(result.token)
+        }
+      });
   </script>
       <body class="sidebar-collapse">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
