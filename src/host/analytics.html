@@ -21,12 +21,12 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://js.stripe.com/v3/"></script>
       </head>
-      <!-- <script>
+      <script>
     
        
         async function getAnalytics(){
           fetch("https://www.buorgoldengreenresorts.homes/src/host/analytics", {
-              method: 'POST',
+              method: 'GET',
               body: ''
           })
           .then((res) => console.log(res))
@@ -34,8 +34,8 @@
         }
       getAnalytics()
       
-  </script> -->
-  <script>
+  </script>
+  <!-- <script>
     async function getAnalytics(){
       const stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd'); 
       console.log(stripe);
@@ -55,7 +55,7 @@
         .then(function(result) {
           console.log(result);
           var connected_account_id = result.token.id;
-          const session = stripe.financialConnections.sessions.create({
+          const session = stripe.collectFinancialConnectionsAccounts({
             account_holder: {
               type: 'account',
               account: connected_account_id
@@ -107,7 +107,7 @@
         // update(ref(db), updates);
       }
     }
-  </script>
+  </script> -->
 
       <body class="sidebar-collapse" onload="getAnalytics()">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
