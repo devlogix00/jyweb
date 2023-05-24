@@ -48,8 +48,13 @@
         let code = url3[1];
         console.log(code);
         
-        let oauth = await stripe.oauth();
-        console.log(oauth);
+        stripe.createToken('account', {
+          
+          tos_shown_and_accepted: true,
+        })
+        .then(function(result) {
+          console.log(result);
+        });
   
         // const rsponse = await stripe.oauth.token({
         //       grant_type: 'authorization_code',
