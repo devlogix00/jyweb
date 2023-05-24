@@ -177,7 +177,8 @@
                     document.getElementById('setup').style.display = 'none';
                     console.log(data);
                     let successMsg = document.createElement('p');
-                    successMsg.innerText = 'Stripe account successfully created! Please return to your home page to access your stripe payments account.'
+                    successMsg.innerText = 'Stripe account successfully created! Please return to your home page to access your stripe payments account.';
+                    document.getElementById('login').appendChild(successMsg);
                   }
               });
               } else {
