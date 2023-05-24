@@ -19,6 +19,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://js.stripe.com/v3/"></script>
       </head>
       <!-- <script>
     
@@ -34,7 +35,7 @@
       getAnalytics()
       
   </script> -->
-  <script src="https://js.stripe.com/v3/">
+  <script>
     function getAnalytics(){
       const stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd'); 
       console.log(stripe);
