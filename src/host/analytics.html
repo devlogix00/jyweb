@@ -48,7 +48,7 @@
         let code = url3[1];
         console.log(code);
         
-        stripe.oauth.createToken('account', {
+        stripe.createToken('account', {
           
           tos_shown_and_accepted: true,
         })
