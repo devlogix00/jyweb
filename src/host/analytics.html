@@ -34,6 +34,38 @@
       getAnalytics()
       
   </script> -->
+  <script src="https://js.stripe.com/v3/">
+    async function getAnalytics(){
+      const stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd'); 
+      console.log(stripe);
+      let stripeUrl = window.location.href;
+      if(stripeUrl.includes('?')){
+        console.log('parameterized url');
+        let url1 = stripeUrl.split('&');
+        let url2 = url1[0].split('?');
+        let url3 = url2[1].split('=');
+        let code = url3[1];
+        console.log(code);
+  
+        const rsponse = await stripe.oauth.token({
+              grant_type: 'authorization_code',
+              code: code,
+              assert_capabilities: ['transfers']
+        });
+        console.log(rsponse);
+          
+        var connected_account_id = await rsponse.stripe_user_id;
+        if(connected_account_id != 'undefined'){
+            const link = await stripe.accounts.createLoginLink(connected_account_id);
+        }
+  
+        let updates = {};
+        updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+        updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+        update(ref(db), updates);
+      }
+    }
+  </script>
 
       <body class="sidebar-collapse" onload="getAnalytics()">        
         <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
@@ -209,38 +241,7 @@
           });
 
         </script> 
-          <script src="https://js.stripe.com/v3/">
-            async function getAnalytics(){
-              const stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd'); 
-              console.log(stripe);
-              let stripeUrl = window.location.href;
-              if(stripeUrl.includes('?')){
-                console.log('parameterized url');
-                let url1 = stripeUrl.split('&');
-                let url2 = url1[0].split('?');
-                let url3 = url2[1].split('=');
-                let code = url3[1];
-                console.log(code);
-          
-                const rsponse = await stripe.oauth.token({
-                      grant_type: 'authorization_code',
-                      code: code,
-                      assert_capabilities: ['transfers']
-                });
-                console.log(rsponse);
-                  
-                var connected_account_id = await rsponse.stripe_user_id;
-                if(connected_account_id != 'undefined'){
-                    const link = await stripe.accounts.createLoginLink(connected_account_id);
-                }
-          
-                let updates = {};
-                updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
-                updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
-                update(ref(db), updates);
-              }
-            }
-          </script>
+         
         
         <!-- <script src="https://js.stripe.com/v3/">
             let clientSecret = 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC';
