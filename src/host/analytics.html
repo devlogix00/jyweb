@@ -54,6 +54,15 @@
         })
         .then(function(result) {
           console.log(result);
+          var connected_account_id = result.token.id;
+          if(connected_account_id != 'undefined'){
+            const link = await stripe.accounts.createLoginLink(connected_account_id);
+            console.log(link);
+            // let updates = {};
+            // updates['hosts/hostAccount/'+userId+'/stripe/login'] = link.url;
+            // updates['hosts/hostAccount/'+userId+'/stripe/accid'] = connected_account_id;
+            // update(ref(db), updates);
+          }
         });
   
         // const rsponse = await stripe.oauth.token({
