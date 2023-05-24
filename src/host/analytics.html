@@ -55,21 +55,30 @@
         .then(function(result) {
           console.log(result);
           var connected_account_id = result.token.id;
-          stripe.collectFinancialConnectionsAccounts({
-            clientSecret: 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC'
+          const session = stripe.financialConnections.sessions.create({
+            account_holder: {
+              type: 'account',
+              account: connected_account_id
+            },
+            permissions: ['balances', 'transactions', 'ownership']
+          }).then(function(result){
+            console.log(result);
           })
-            .then(function(result) {
-              if (result.error) {
-                // Inform the customer that there was an error.
-                console.log(result.error.message);
+          // stripe.collectFinancialConnectionsAccounts({
+          //   clientSecret: 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC'
+          // })
+          //   .then(function(result) {
+          //     if (result.error) {
+          //       // Inform the customer that there was an error.
+          //       console.log(result.error.message);
 
-              // Handle next step based on length of accounts array
-              } else if (result.financialConnectionsSession.accounts.length === 0) {
-                console.log('No accounts were linked');
-              } else {
-                console.log(result.financialConnectionsSession.accounts)
-              }
-            });
+          //     // Handle next step based on length of accounts array
+          //     } else if (result.financialConnectionsSession.accounts.length === 0) {
+          //       console.log('No accounts were linked');
+          //     } else {
+          //       console.log(result.financialConnectionsSession.accounts)
+          //     }
+          //   });
           // if(connected_account_id != 'undefined'){
           //   const link = stripe.createLoginLink(connected_account_id);
           //   console.log(link);
