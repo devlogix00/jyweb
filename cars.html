@@ -247,7 +247,8 @@
             const profilesRef = ref(db, 'profiles/profiles/');
             onValue(profilesRef, (snapshot) => {
               const data = snapshot.val();
-              for(let i = 0; i < data.length; i++){
+              if(data != null){
+                for(let i = 0; i < data.length; i++){
                 let name = document.createElement('h2');
                 name.innerText = data[i].Name;
                 licenseImg = document.createElement('img');
@@ -324,6 +325,7 @@
                 });
 
              
+              }
               }
             });
 

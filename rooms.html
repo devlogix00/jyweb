@@ -119,9 +119,9 @@
             if (user) {
               // User is signed in 
 
-              const q = query(collection(fs, "listings"), where("listingType", "==", 'room'));
+              // const q = query(collection(fs, "listings"), where("listingType", "==", 'room'));
 
-              const querySnapshot = getDocs(q);
+              // const querySnapshot = getDocs(q);
 
               var today = new Date();
               var dd = String(today.getDate()).padStart(2, '0');
