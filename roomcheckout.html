@@ -145,7 +145,7 @@
               onValue(dbroomImg, (snapshot) => {
                 const data = snapshot.val();
                 let crImg = document.createElement('img');
-                crImg.setAttribute('src', './'+data);
+                crImg.setAttribute('src', data);
                 crImg.setAttribute('width', '50%')
                 document.getElementById('checkout').appendChild(crImg);
               }); 
