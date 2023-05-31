@@ -320,7 +320,6 @@
                    */
                   directionsService.route(request, function (result, status) {
                     if (status == google.maps.DirectionsStatus.OK) {
-
                      
                       output.innerHTML = "<p>From:" + document.getElementById("origin").value + "</br>" +"To: " + document.getElementById("destination").value +
                       "</br>"+"Driving distance <i class='fas fa-road'></i> : " +
@@ -335,7 +334,6 @@
               
                     //map.setCenter(LatLng);
 
-                      
                     output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Could not retrieve driving distance.</div>";
                   }
                 });
@@ -383,7 +381,6 @@
           const storage = getStorage();
           const database = getFirestore();
           // const listingDb = collection(database, 'listings');
-          
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -460,7 +457,7 @@
                 for ( var i = 0; i < length; i++ ) {
                   result += characters.charAt(Math.floor(Math.random() * 
                   charactersLength));
-                    }
+                }
                     return result;
               }
 
