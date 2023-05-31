@@ -215,12 +215,15 @@
                         alert('Please select your dates first.');
                       }
                       else {
+                        updates['users/userAccount/'+userId+'/roomdata/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/roomdata/room'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/roomdata/img'] = data[i].listingImg;
                         updates['users/userAccount/'+userId+'/roomdata'+today+'/room'] = data[i].listingName;
+                        updates['users/userAccount/'+userId+'/roomdata'+today+'/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/roomdata'+today+'/img'] = data[i].listingImg;
                         updates['users/userAccount/'+userId+'/bookingdata/item'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/bookingdata/img'] = data[i].listingImg;
+                        updates['users/userAccount/'+userId+'/bookingdata/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/bookingdata/bookingType'] = 'room';
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/item'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemType'] = 'room';

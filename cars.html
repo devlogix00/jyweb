@@ -219,21 +219,21 @@
                         alert('Please select your dates first.');
                       }
                       else {
+                        updates['users/userAccount/'+userId+'/cardata/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/cardata/car'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/cardata/img'] = data[i].listingImg;
                         updates['users/userAccount/'+userId+'/cardata'+today+'/car'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/cardata'+today+'/img'] = data[i].listingImg;
+                        updates['users/userAccount/'+userId+'/cardata'+today+'/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/bookingdata/item'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/bookingdata/img'] = data[i].listingImg;
+                        updates['users/userAccount/'+userId+'/bookingdata/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/bookingdata/bookingType'] = 'car';
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/item'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemType'] = 'car';
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemPrice'] = data[i].listingPrice;
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemId'] = data[i].itemId;
                         updates['cars/'+data[i].listingName+'/listingImg'] = data[i].listingImg;
-                        // updates['listings/listings/'+i+'/currentUser'] = userId;
-                        // updates['listings/listings/'+i+'/bookingDates'] = newdata;
-                        // updates['listings/listings/'+i+'/userName'] = userName;
                         update(ref(db), updates);
                         window.location = './carcheckout.html';
                       }

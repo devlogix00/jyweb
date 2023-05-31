@@ -199,12 +199,15 @@
                         alert('Please select your dates first.');
                       }
                       else {
+                        updates['users/userAccount/'+userId+'/tourdata/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/tourdata/tour'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/tourdata/img'] = data[i].listingImg;
                         updates['users/userAccount/'+userId+'/tourdata'+today+'/tour'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/tourdata'+today+'/img'] =  data[i].listingImg;
+                        updates['users/userAccount/'+userId+'/tourdata'+today+'/host'] =  data[i].host;
                         updates['users/userAccount/'+userId+'/bookingdata/item'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/bookingdata/img'] = data[i].listingImg;
+                        updates['users/userAccount/'+userId+'/bookingdata/host'] = data[i].host;
                         updates['users/userAccount/'+userId+'/bookingdata/bookingType'] = 'tour';
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/item'] = data[i].listingName;
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemType'] = 'tour';
