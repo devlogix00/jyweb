@@ -467,6 +467,8 @@
                     return result;
               }
 
+              listing.itemId = generateId(16);
+
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
                 //let newListing = JSON.parse(localStorage.getItem('newListing'));
