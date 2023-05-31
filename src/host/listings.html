@@ -327,13 +327,11 @@
                         result.routes[0].legs[0].distance.text +"</br>"+
                         " Duration <i class='fas fa-clock'></i> : " +
                         result.routes[0].legs[0].duration.text + ".</p>";
-                     
       
                     directionsDisplay.setDirections(result);
                     } else {
               
                     directionsDisplay.setDirections({ routes: [] });
-
               
                     //map.setCenter(LatLng);
 
@@ -448,7 +446,6 @@
                 )
                 // const formData = new FormData();
                 // formData.append("file", file);
-
                 // fetch("https://www.buorgoldengreenresorts.homes/upload_files", {
                 //   method: 'POST',
                 //   body: formData
@@ -467,7 +464,7 @@
                     return result;
               }
 
-              listing.itemId = generateId(16);
+              listing.itemId = generateId(24);
 
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
