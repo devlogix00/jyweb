@@ -667,7 +667,6 @@
                                         status.innerText = 'Picked Up';
                                         let carRef;
                                         
-                                        let listings = sRef(db, 'listings/listings');
                                         onValue(listings, (snapshot) => {
                                             const listingData = snapshot.val();
                                             if(listingData != null){
