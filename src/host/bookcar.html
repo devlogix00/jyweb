@@ -239,11 +239,17 @@
                                                                                     });
                                                                                 } else {
                                                                                     let msgDataLen = msgData.length;
-                                                                                    set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
-                                                                                        name: user.displayName,
-                                                                                        text: messageText,
-                                                                                        profilePicUrl: user.photoURL
-                                                                                    });
+                                                                                    for(let i = 0; i < msgDataLen; i++){
+                                                                                        if(msgData[i].text != messageText && msgData[i].name != user.displayName){
+                                                                                            set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
+                                                                                                name: user.displayName,
+                                                                                                text: messageText,
+                                                                                                profilePicUrl: user.photoURL
+                                                                                            });
+                                                                                        }
+                                                                                       
+                                                                                    }
+                                                                                    
                                                                                 }
                                                                             });
                                                                         }
@@ -490,11 +496,16 @@
                                                                                     });
                                                                                 } else {
                                                                                     let msgDataLen = msgData.length;
-                                                                                    set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
-                                                                                        name: user.displayName,
-                                                                                        imageUrl: downloadURL,
-                                                                                        profilePicUrl: user.photoURL
-                                                                                    });
+                                                                                    for(let i = 0; i < msgDataLen; i++){
+                                                                                        if(msgData[i].text != messageText && msgData[i].name != user.displayName){
+                                                                                            set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
+                                                                                                name: user.displayName,
+                                                                                                imageUrl: downloadURL,
+                                                                                                profilePicUrl: user.photoURL
+                                                                                            });
+                                                                                        }
+                                                                                       
+                                                                                    }
                                                                                 }
                                                                             });
                                                                         }
