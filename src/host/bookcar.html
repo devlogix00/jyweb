@@ -602,14 +602,14 @@
                                                                         let data = snapshot.val(); 
                                                                         console.log(data); 
                                                                         if(data == null){
-                                                                            set(sRef(db, usersRef+'/0'), {
+                                                                            set(sRef(db, 'bookcarusers/'+crsearchData.bookingId+'/0'), {
                                                                                 username: userName,
                                                                                 profile_picture : profilePicUrl,
                                                                                 email: user.email,
                                                                                 userId: userId
                                                                             });
                                                                         } else {
-                                                                            set(sRef(db, usersRef+'/1'), {
+                                                                            set(sRef(db, 'bookcarusers/'+crsearchData.bookingId+'/1'), {
                                                                                 username: userName,
                                                                                 profile_picture : profilePicUrl,
                                                                                 email: user.email,
