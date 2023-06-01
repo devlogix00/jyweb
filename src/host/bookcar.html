@@ -609,12 +609,14 @@
                                                                                 userId: userId
                                                                             });
                                                                         } else {
-                                                                            set(sRef(db, 'bookcarusers/'+crsearchData.bookingId+'/1'), {
+                                                                            if(data[0].userId != userId){
+                                                                                set(sRef(db, 'bookcarusers/'+crsearchData.bookingId+'/1'), {
                                                                                 username: userName,
                                                                                 profile_picture : profilePicUrl,
                                                                                 email: user.email,
                                                                                 userId: userId
                                                                             });
+                                                                            }
                                                                         }
                                                                     },{
                                                                         onlyOnce: true
