@@ -240,7 +240,7 @@
                                                                                 } else {
                                                                                     let msgDataLen = msgData.length;
                                                                                     for(let i = 0; i < msgDataLen; i++){
-                                                                                        if(msgData[i].text != messageText && msgData[i].name != user.displayName){
+                                                                                        if(msgData[i].text != messageText ){
                                                                                             set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
                                                                                                 name: user.displayName,
                                                                                                 text: messageText,
@@ -518,7 +518,7 @@
                                                                                 } else {
                                                                                     let msgDataLen = msgData.length;
                                                                                     for(let i = 0; i < msgDataLen; i++){
-                                                                                        if(msgData[i].imageUrl != downloadURL  && msgData[i].name != user.displayName){
+                                                                                        if(msgData[i].imageUrl != downloadURL ){
                                                                                             set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
                                                                                                 name: user.displayName,
                                                                                                 imageUrl: downloadURL,
