@@ -535,9 +535,9 @@
                                         setDoc(doc(fs, "bookcarusers", userId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
-                                            email: user.email
+                                            email: user.email,
+                                            userId: userId
                                         });
-
                                     
                                         const recentuserQuery = query(collection(getFirestore(), 'bookcarusers'));
                                         onSnapshot(recentuserQuery, function(snapshot) {

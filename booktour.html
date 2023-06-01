@@ -239,8 +239,6 @@
             var userName = getUserName();
             var userId = user.uid;
             let users = [];
-
-
            
             let tourRef = sRef(db, 'users/userAccount/'+userId+'/tourdata');
             onValue(tourRef, (snapshot) => {
@@ -251,21 +249,17 @@
                     let splitUrl = trSearchData.bookingUrl.split('/');
                     let bookingId = splitUrl[3];
 
-                    setDoc(doc(fs, "booktourusers", bookingId), {
+                    setDoc(doc(fs, "booktourusers", userId), {
                         username: userName,
                         profile_picture : profilePicUrl,
                         email: user.email,
-                        bookingId: bookingId
+                        userId: userId
                     });
                 });
             });
-
-            
-
             
             const recentuserQuery = query(collection(fs, 'booktourusers'));
             onSnapshot(recentuserQuery, function(snapshot) {
-           
                var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
                users.push(user);
                set(sRef(db, 'booktourusers'), users);
@@ -290,10 +284,6 @@
                 document.getElementById('userlist').appendChild(userDiv);
             }
             });
-
-            
-     
-            
 
             // Set the user's profile pic and name.
             userPicElement.style.backgroundImage =
@@ -428,8 +418,6 @@
         signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
         return false;
         }
-
-        
 
         // Resets the given MaterialTextField.
         function resetMaterialTextfield(element) {

@@ -530,7 +530,8 @@
                                         setDoc(doc(fs, "bookroomusers", userId), {
                                             username: userName,
                                             profile_picture : profilePicUrl,
-                                            email: user.email
+                                            email: user.email,
+                                            userId: userId
                                         });
 
                                         const recentuserQuery = query(collection(fs, 'bookroomusers'));

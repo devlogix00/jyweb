@@ -529,24 +529,23 @@
 
                                         // Use booking id here
 
-                                        setDoc(doc(fs, "bookcarusers", userId), {
-                                            username: userName,
-                                            profile_picture : profilePicUrl,
-                                            email: user.email
-                                        });
+                                        // setDoc(doc(fs, "bookcarusers", userId), {
+                                        //     username: userName,
+                                        //     profile_picture : profilePicUrl,
+                                        //     email: user.email
+                                        // });
 
-                                        const recentuserQuery = query(collection(fs, 'bookcarusers'));
-                                        onSnapshot(recentuserQuery, function(snapshot) {
-                                        console.log(snapshot);
-                                        var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        users.push(user);
-                                        set(sRef(db, 'bookcarusers'), users);
-                                        });
+                                        // const recentuserQuery = query(collection(fs, 'bookcarusers'));
+                                        // onSnapshot(recentuserQuery, function(snapshot) {
+                                        // console.log(snapshot);
+                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
+                                        // users.push(user);
+                                        // set(sRef(db, 'bookcarusers'), users);
+                                        // });
                                     
                                         const userCountRef = sRef(db, 'bookcarusers/');
                                         onValue(userCountRef, (snapshot) => {
                                         const data = snapshot.val();
-                            
                                     
                                         if(data !== null){
                                             let userDiv = document.createElement('div');
@@ -568,10 +567,6 @@
                                         }
                                         }
                                         });
-
-                                        
-                                
-                                        
 
                                         // Set the user's profile pic and name.
                                         userPicElement.style.backgroundImage =
