@@ -217,28 +217,64 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(fs, 'bookcar'), {
-                                            name: user.displayName,
-                                            profilePicUrl: user.photoURL,
-                                            text: messageText,
-                                            timestamp: timestamp
-                                        });
+                                        let listings = sRef(db, 'listings/listings');
+                                                onValue(listings, (snapshot) => {
+                                                    const listingData = snapshot.val();
+                                                    if(listingData != null){
+                                                        for(let i = 0; i < listingData.length; i++){
+                                                            if(listingData[i].listingType === 'car'){
+                                                                let crSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
+                                                                onValue(crSearchUrl, (snapshot) => {
+                                                                    let crsearchData = snapshot.val();
+                                                                    if(crsearchData != null ){
+                                                                        if(crsearchData.host === userId){
+                                                                            let msgRef = sRef(db, 'bookcar/'+crsearchData.bookingId);
+                                                                            onValue(msgRef, (snapshot) => {
+                                                                                let msgData = snapshot.val();
+                                                                                if(msgData == null){
+                                                                                    set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/0'), {
+                                                                                        name: user.displayName,
+                                                                                        text: messageText,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                } else {
+                                                                                    let msgDataLen = msgData.length;
+                                                                                    set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
+                                                                                        name: user.displayName,
+                                                                                        text: messageText,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                        // addDoc(collection(fs, 'bookcar'), {
+                                        //     name: user.displayName,
+                                        //     profilePicUrl: user.photoURL,
+                                        //     text: messageText,
+                                        //     timestamp: timestamp
+                                        // });
 
                                     
-                                        onSnapshot(recentMessageQuery, function(snapshot) {
-                                            snapshot.docChanges().forEach(function(change) {
-                                                if(change.type === 'removed') {
-                                                    deleteMessage(change.doc.id);
+                                        // onSnapshot(recentMessageQuery, function(snapshot) {
+                                        //     snapshot.docChanges().forEach(function(change) {
+                                        //         if(change.type === 'removed') {
+                                        //             deleteMessage(change.doc.id);
                                             
-                                                } else {
-                                                    var message = change.doc.data();
-                                                    messages.push(message);
-                                                    set(sRef(db, 'bookcar'), messages)
-                                                // ref('allMessages/').set(messages);
-                                                    //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                                }
-                                            })
-                                        });
+                                        //         } else {
+                                        //             var message = change.doc.data();
+                                        //             messages.push(message);
+                                        //             set(sRef(db, 'bookcar'), messages)
+                                        //         // ref('allMessages/').set(messages);
+                                        //             //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                                        //         }
+                                        //     })
+                                        // });
                                     }
 
                                     // Resets the given MaterialTextField.
@@ -431,50 +467,87 @@
                                             // Handle successful uploads on complete
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                            
-                                            function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'), {
-                                                name: user.displayName,
-                                                imageUrl: downloadURL,
-                                                profilePicUrl: user.photoURL
-                                            });
-                                            }
-                                            writeUserData(getUserName(), downloadURL, getProfilePicUrl);
-                                        
-                                            // Use booking id here
-                                            addDoc(collection(fs, 'bookcar'), {
-                                                    name: user.displayName,
-                                                    profilePicUrl: user.photoURL,
-                                                    imageUrl: downloadURL,
-                                                    timestamp: timestamp
-                                            });
-                                            addDoc(collection(fs, 'imagePost'), {
-                                                name: user.displayName,
-                                                profilePicUrl: user.photoURL,
-                                                imageUrl: downloadURL,
-                                                timestamp: timestamp
-                                            });
-                                            });
-                                            let messages = [];
-                                            const recentMessageQuery = query(collection(fs, 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
-                                            onSnapshot(recentMessageQuery, function(snapshot) {
-                                                snapshot.docChanges().forEach(function(change) {
-                                                    if(change.type === 'removed') {
-                                                        deleteMessage(change.doc.id);
-                                                    
-                                                    } else {
-                                                        var message = change.doc.data();
-                                                        messages = [];
-                                                        messages.push(message);
-                                                        // Use booking id here
-                                                        set(sRef(db, 'bookcar'), messages)
-                                                        // ref('allMessages/').set(messages);
-                                                        //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+
+                                                let listings = sRef(db, 'listings/listings');
+                                                onValue(listings, (snapshot) => {
+                                                    const listingData = snapshot.val();
+                                                    if(listingData != null){
+                                                        for(let i = 0; i < listingData.length; i++){
+                                                            if(listingData[i].listingType === 'car'){
+                                                                let crSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
+                                                                onValue(crSearchUrl, (snapshot) => {
+                                                                    let crsearchData = snapshot.val();
+                                                                    if(crsearchData != null ){
+                                                                        if(crsearchData.host === userId){
+                                                                            let msgRef = sRef(db, 'bookcar/'+crsearchData.bookingId);
+                                                                            onValue(msgRef, (snapshot) => {
+                                                                                let msgData = snapshot.val();
+                                                                                if(msgData == null){
+                                                                                    set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/0'), {
+                                                                                        name: user.displayName,
+                                                                                        imageUrl: downloadURL,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                } else {
+                                                                                    let msgDataLen = msgData.length;
+                                                                                    set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
+                                                                                        name: user.displayName,
+                                                                                        imageUrl: downloadURL,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
                                                     }
-                                                })
+                                                });
+                                            
+                                            // function writeUserData(name, email, imageUrl) {
+                                            // set(sRef(db, 'messages/'), {
+                                            //     name: user.displayName,
+                                            //     imageUrl: downloadURL,
+                                            //     profilePicUrl: user.photoURL
+                                            // });
+                                            // }
+                                            // writeUserData(getUserName(), downloadURL, getProfilePicUrl);
+                                        
+                                            // // Use booking id here
+                                            // addDoc(collection(fs, 'bookcar'), {
+                                            //         name: user.displayName,
+                                            //         profilePicUrl: user.photoURL,
+                                            //         imageUrl: downloadURL,
+                                            //         timestamp: timestamp
+                                            // });
+                                            // addDoc(collection(fs, 'imagePost'), {
+                                            //     name: user.displayName,
+                                            //     profilePicUrl: user.photoURL,
+                                            //     imageUrl: downloadURL,
+                                            //     timestamp: timestamp
+                                            // });
+
+                                            // let messages = [];
+                                            // const recentMessageQuery = query(collection(fs, 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
+                                            // onSnapshot(recentMessageQuery, function(snapshot) {
+                                            //     snapshot.docChanges().forEach(function(change) {
+                                            //         if(change.type === 'removed') {
+                                            //             deleteMessage(change.doc.id);
+                                                    
+                                            //         } else {
+                                            //             var message = change.doc.data();
+                                            //             messages = [];
+                                            //             messages.push(message);
+                                            //             // Use booking id here
+                                            //             set(sRef(db, 'bookcar'), messages)
+                                            //             // ref('allMessages/').set(messages);
+                                            //             //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                                            //         }
+                                            //     })
+                                            // });
                                             });
-                                            
-                                            
+
                                             }
                                         );
 
