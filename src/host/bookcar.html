@@ -542,6 +542,28 @@
                                         // users.push(user);
                                         // set(sRef(db, 'bookcarusers'), users);
                                         // });
+
+                                        let usersRef = sRef(db, 'bookcarusers/');
+                                        onValue(usersRef, (snapshot) => {
+                                            let data = snapshot.val(); 
+                                            console.log(data); 
+                                            let dataLen = data.length;
+                                            if(data == null){
+                                                set(sRef(db, 'bookcarusers/0'), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                            } else {
+                                                set(sRef(db, 'bookcarusers/'+dataLen), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                            }
+                                        });
                                     
                                         const userCountRef = sRef(db, 'bookcarusers/');
                                         onValue(userCountRef, (snapshot) => {

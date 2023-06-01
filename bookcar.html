@@ -619,7 +619,7 @@
                                         status.innerText = 'Picked Up';
                                         let carRef;
                                         
-                                        let carList = sRef(db, 'users/userAccount/'+user.uid+'/cardata');
+                                        let carList = sRef(db, 'user/userAccount/'+user.uid+'/cardata');
                                         onValue(carList, (snapshot) => {
                                             const carData = snapshot.val();
                                             if(carData != null){

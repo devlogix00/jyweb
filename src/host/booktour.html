@@ -554,18 +554,40 @@
 
                                         // Use booking id here
 
-                                        setDoc(doc(fs, "booktourusers", userId), {
-                                            username: userName,
-                                            profile_picture : profilePicUrl,
-                                            email: user.email
-                                        });
+                                        // setDoc(doc(fs, "booktourusers", userId), {
+                                        //     username: userName,
+                                        //     profile_picture : profilePicUrl,
+                                        //     email: user.email
+                                        // });
 
-                                        const recentuserQuery = query(collection(fs, 'booktourusers'));
-                                        onSnapshot(recentuserQuery, function(snapshot) {
-                                        console.log(snapshot);
-                                        var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        users.push(user);
-                                        set(sRef(db, 'booktourusers'), users);
+                                        // const recentuserQuery = query(collection(fs, 'booktourusers'));
+                                        // onSnapshot(recentuserQuery, function(snapshot) {
+                                        // console.log(snapshot);
+                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
+                                        // users.push(user);
+                                        // set(sRef(db, 'booktourusers'), users);
+                                        // });
+
+                                        let usersRef = sRef(db, 'booktourusers/');
+                                        onValue(usersRef, (snapshot) => {
+                                            let data = snapshot.val(); 
+                                            console.log(data); 
+                                            let dataLen = data.length;
+                                            if(data == null){
+                                                set(sRef(db, 'booktourusers/0'), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                            } else {
+                                                set(sRef(db, 'booktourusers/'+dataLen), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                            }
                                         });
                                     
                                         const userCountRef = sRef(db, 'booktourusers/');
