@@ -547,8 +547,8 @@
                                         onValue(usersRef, (snapshot) => {
                                             let data = snapshot.val(); 
                                             console.log(data); 
-                                            let dataLen = data.length;
                                             if(data == null){
+                                                let dataLen = data.length;
                                                 set(sRef(db, 'bookroomusers/0'), {
                                                     username: userName,
                                                     profile_picture : profilePicUrl,
