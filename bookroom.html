@@ -542,7 +542,7 @@
                                         // set(sRef(db, 'bookroomusers'), users);
                                         // });
 
-                                        let usersRef = sRef(db, 'bookroomusers');
+                                        let usersRef = sRef(db, 'bookroomusers/');
                                         onValue(usersRef, (snapshot) => {
                                             let data = snapshot.val();
                                             let dataLen = data.length;
