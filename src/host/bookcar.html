@@ -240,7 +240,7 @@
                                                                                 } else {
                                                                                     let msgDataLen = msgData.length;
                                                                                     for(let i = 0; i < msgDataLen; i++){
-                                                                                        if(msgData[i].text != messageText ){
+                                                                                        if(msgData[i].name != user.displayName && msgData[i].text != messageText && msgData.profilePicUrl != user.photoURL){
                                                                                             set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
                                                                                                 name: user.displayName,
                                                                                                 text: messageText,
@@ -408,8 +408,8 @@
                                                                 if(data != null){
                                                                    // let setToList = [new Set(data)];
                                                                     for(let i = 0; i < data.length; i++){
-                                                                        if(data[i].timestamp != null){
-                                                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                                        if(data[i] != null){
+                                                                            displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
                                                                         }  
                                                                     }
                                                                 }  
@@ -518,7 +518,7 @@
                                                                                 } else {
                                                                                     let msgDataLen = msgData.length;
                                                                                     for(let i = 0; i < msgDataLen; i++){
-                                                                                        if(msgData[i].imageUrl != downloadURL ){
+                                                                                        if(msgData[i].name != user.displayName && msgData[i].imageUrl != downloadURL && msgData.profilePicUrl != user.photoURL){
                                                                                             set(sRef(db, 'bookcar/'+crsearchData.bookingId+'/'+msgDataLen), {
                                                                                                 name: user.displayName,
                                                                                                 imageUrl: downloadURL,
