@@ -391,20 +391,41 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                const messageRef = sRef(db, 'bookcar');
-                                onValue(messageRef, (snapshot) => {
-                                const data = snapshot.val();
-                                if(data != null){
-                            
-                                    let setToList = [new Set(data)];
-                                    
-                                    for(let i = 0; i < data.length; i++){
-                                        if(data[i].timestamp != null){
-                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                        }  
+                                let listings = sRef(db, 'listings/listings');
+                                onValue(listings, (snapshot) => {
+                                    const listingData = snapshot.val();
+                                    if(listingData != null){
+                                        for(let i = 0; i < listingData.length; i++){
+                                            if(listingData[i].listingType === 'car'){
+                                                let crSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
+                                                onValue(crSearchUrl, (snapshot) => {
+                                                    let crsearchData = snapshot.val();
+                                                    if(crsearchData != null ){
+                                                        if(crsearchData.host === userId){
+                                                            let messageRef = sRef(db, 'bookcar/'+crsearchData.bookingId);
+                                                            onValue(messageRef, (snapshot) => {
+                                                                const data = snapshot.val();
+                                                                if(data != null){
+                                                                   // let setToList = [new Set(data)];
+                                                                    for(let i = 0; i < data.length; i++){
+                                                                        if(data[i].timestamp != null){
+                                                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                                        }  
+                                                                    }
+                                                                }  
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
                                     }
-                                    }       
                                 });
+
+                                // const messageRef = sRef(db, 'bookcar');
+                                // onValue(messageRef, (snapshot) => {
+                                     
+                                // });
 
                                 // A loading image URL.
                                 var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
