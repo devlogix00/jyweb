@@ -589,7 +589,7 @@
                                         // We save the Firebase Messaging Device token and enable notifications.
                                         // saveMessagingDeviceToken();
                                         let status = document.createElement('h2');
-                                        status.innerText = 'Checked In';
+                                        status.innerText = 'Picked Up';
                                         let carRef;
                                         
                                         let listings = sRef(db, 'listings/listings');
@@ -598,10 +598,10 @@
                                             if(listingData != null){
                                                 for(let i = 0; i < listingData.length; i++){
                                                     if(listingData[i].listingType === 'car'){
-                                                        let crSearchUrl = sRef(db, 'cars/'+listingData[i].listingName);
+                                                        let crSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
                                                         onValue(crSearchUrl, (snapshot) => {
                                                             let crsearchData = snapshot.val();
-                                                            carRef = sRef(db, 'cars/'+listingData[i].listingName);
+                                                            carRef = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
                                                             if(crsearchData != null ){
                                                                 if(crsearchData.host === userId){
                                                                     let crImg = document.createElement('img');
@@ -651,7 +651,7 @@
                                     }
                                 });
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = "https://buorgoldengreenresorts.homes/bookings.html";
+                                    window.location = "https://bourgoldengreenresorts.herokuapp.com/src/host/bookings.html";
                                 });
                             </script>
                             <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
