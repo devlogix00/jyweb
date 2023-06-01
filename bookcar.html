@@ -532,26 +532,46 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        setDoc(doc(fs, "bookcarusers", userId), {
-                                            username: userName,
-                                            profile_picture : profilePicUrl,
-                                            email: user.email,
-                                            userId: userId
-                                        });
+
+                                        // setDoc(doc(fs, "bookcarusers", userId), {
+                                        //     username: userName,
+                                        //     profile_picture : profilePicUrl,
+                                        //     email: user.email,
+                                        //     userId: userId
+                                        // });
                                     
-                                        const recentuserQuery = query(collection(getFirestore(), 'bookcarusers'));
-                                        onSnapshot(recentuserQuery, function(snapshot) {
+                                        // const recentuserQuery = query(collection(getFirestore(), 'bookcarusers'));
+                                        // onSnapshot(recentuserQuery, function(snapshot) {
                                     
-                                        var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        users.push(user);
-                                        set(sRef(db, 'bookcarusers'), users);
+                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
+                                        // users.push(user);
+                                        
+                                        // });
+                                        let usersRef = sRef(db, 'bookcarusers');
+                                        onValue(usersRef, (snapshot) => {
+                                            let data = snapshot.val();
+                                            let dataLen = data.length;
+                                            if(data == null){
+                                                set(sRef(db, 'bookcarusers/0'), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                            } else {
+                                                set(sRef(db, 'bookcarusers/'+dataLen), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                            }
                                         });
                                     
                                         const userCountRef = sRef(db, 'bookcarusers/');
                                         onValue(userCountRef, (snapshot) => {
                                         const data = snapshot.val();
                         
-                                   
                                         if(data !== null){
                                             let userDiv = document.createElement('div');
                                             let userPic = document.createElement('img');
