@@ -123,9 +123,9 @@
           const db = getDatabase(); 
           const database = getFirestore(app);
 
-          console.log(auth);
-          console.log(db);
-          console.log(database);
+        //  console.log(auth);
+         // console.log(db);
+        //  console.log(database);
 
           var today = new Date();
           var dd = String(today.getDate()).padStart(2, '0');
@@ -133,7 +133,7 @@
           var yyyy = today.getFullYear();
 
           today = mm + '-' + dd + '-' + yyyy;
-          console.log(mm);
+         // console.log(mm);
           
           let status;
 
@@ -142,22 +142,22 @@
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
-              console.log(user);  
+           //   console.log(user);  
               userName = user.displayName;
               userId = user.uid;
               document.cookie = 'uid='+userId;
-              console.log(userName);
+           //   console.log(userName);
   
               const listingRef = ref(db, 'listings/listings/');
               onValue(listingRef, (snapshot) => {
                   const data = snapshot.val();
-                  console.log(data);
+                //  console.log(data);
                  for(let i = 0; i < data.length; i++){
                   let img = data[i].listingImg;
                   const roombookingRef = ref(db, 'rooms/'+data[i].listingName);
                   onValue(roombookingRef, (snapshot) => {
                     const data = snapshot.val();
-                    console.log(data);
+                 //   console.log(data);
                     if(data != null && data.host == userId && data.currentUser != null){
                     let listingimg = data.listingImg.slice(12,data.listingImg.length);
                     let cardOuter = document.createElement('div');
@@ -204,7 +204,7 @@
                   const carbookingRef = ref(db, 'cars/'+data[i].listingName);
                   onValue(carbookingRef, (snapshot) => {
                     const data = snapshot.val();
-                    console.log(data);
+                 //   console.log(data);
                     if(data != null && data.host == userId && data.currentUser != null){
                     let listingimg = data.listingImg.slice(12,data.listingImg.length);
                     let cardOuter = document.createElement('div');
@@ -253,7 +253,7 @@
                   const tourbookingRef = ref(db, 'tours/'+data[i].listingName);
                   onValue(tourbookingRef, (snapshot) => {
                     const data = snapshot.val();
-                    console.log(data);
+                 //   console.log(data);
                     if(data != null && data.host == userId && data.currentUser != null){
                   
                     let cardOuter = document.createElement('div');
@@ -307,7 +307,7 @@
                
             } else {
               // User is signed out
-              console.log('Not signed in');
+          //    console.log('Not signed in');
             }
 
           });

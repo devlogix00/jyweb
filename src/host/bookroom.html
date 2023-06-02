@@ -114,7 +114,7 @@
                                     window.location = 'https://bourgoldengreenresorts.herokuapp.com/src/host/bookings.html';
                                 });
 
-                                console.log(auth);
+                               // console.log(auth);
                                 let updates = {};
 
                                 // Signs-in BookMe.
@@ -130,7 +130,7 @@
 
                                 onAuthStateChanged(auth, (user) => {
                                     if(user){
-                                        console.log(user)
+                                      //  console.log(user)
                                         /* Keep track of booking id for firestore access here */
                                         const recentMessageQuery = query(collection(fs, 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
                                  
@@ -519,7 +519,7 @@
                                     
                                     }
                                 }
-                                        console.log(user);
+                                       // console.log(user);
                                         // User is signed in!
                                         // Get the signed-in user's profile pic and name.
                                         var profilePicUrl = user.photoURL;
@@ -602,7 +602,7 @@
                                                                     let usersRef = sRef(db, 'bookroomusers/'+rmsearchData.bookingId);
                                                                     onValue(usersRef, (snapshot) => {
                                                                         let data = snapshot.val(); 
-                                                                        console.log(data); 
+                                                                      //  console.log(data); 
                                                                         if(data == null){
                                                                             set(sRef(db, 'bookroomusers/'+rmsearchData.bookingId+'/0'), {
                                                                                 username: userName,

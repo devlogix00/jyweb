@@ -360,7 +360,7 @@
                     } 
                     });
                     document.getElementById('start').addEventListener('click', function(){
-                        console.log('tour started!');
+                     //   console.log('tour started!');
                         updates['tours/'+nwtourData.listingName+'/tourStarted'] = "True";
                         update(sRef(db), updates);
                         let startBtn = document.getElementById('start');
