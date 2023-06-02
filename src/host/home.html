@@ -176,9 +176,9 @@
           const db = getDatabase(); 
           const database = getFirestore(app);
 
-          console.log(auth);
-          console.log(db);
-          console.log(database);
+         // console.log(auth);
+          // console.log(db);
+          // console.log(database);
 
           var today = new Date();
           var dd = String(today.getDate()).padStart(2, '0');
@@ -186,22 +186,22 @@
           var yyyy = today.getFullYear();
 
           today = mm + '-' + dd + '-' + yyyy;
-          console.log(mm);
+          // console.log(mm);
           
           let status;
 
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
-              console.log(user);  
+              // console.log(user);  
               userName = user.displayName;
               userId = user.uid;
               document.cookie = 'uid='+userId;
-              console.log(userName);
+              // console.log(userName);
               document.getElementById('welcome').innerHTML = 'Welcome '+ userName;
             } else {
               // User is signed out
-              console.log('Not signed in');
+              // console.log('Not signed in');
             }
 
           });
