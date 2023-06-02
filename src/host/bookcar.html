@@ -349,9 +349,10 @@
                                     }
 
                                 // Displays a Message in the UI.
-                                function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
+                                function displayMessage(id, name, text, picUrl, imageUrl) {
                                 var div =
-                                    document.getElementById(id) || createAndInsertMessage(timestamp);
+                                    document.getElementById(id);
+                                    //|| createAndInsertMessage(timestamp);
 
                                 // profile picture
                                 if (picUrl) {
@@ -517,7 +518,7 @@
                                                                                         name: user.displayName,
                                                                                         imageUrl: downloadURL,
                                                                                         profilePicUrl: user.photoURL,
-                                                                                        timestamp: timestamp
+                                                                                       // timestamp: timestamp
                                                                                     });
                                                                                 }
                                                                             },{
