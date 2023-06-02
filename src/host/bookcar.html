@@ -308,7 +308,7 @@
                                     }
                                     }
 
-                                    function createAndInsertMessage(id, timestamp) {
+                                    function createAndInsertMessage(id) {
                                         const container = document.createElement('div');
                                         container.innerHTML = MESSAGE_TEMPLATE;
                                         const div = container.firstChild;
@@ -316,8 +316,8 @@
 
                                         // If timestamp is null, assume we've gotten a brand new message.
                                         // https://stackoverflow.com/a/47781432/4816918
-                                        timestamp = timestamp ? timestamp.toMillis() : Date.now();
-                                        div.setAttribute('timestamp', timestamp);
+                                        //timestamp = timestamp ? timestamp.toMillis() : Date.now();
+                                        div.setAttribute('msgId', id);
 
                                         // figure out where to insert new message
                                         const existingMessages = messageListElement.children;
@@ -327,15 +327,15 @@
                                             let messageListNode = existingMessages[0];
 
                                             while (messageListNode) {
-                                            const messageListNodeTime = messageListNode.getAttribute('timestamp');
+                                            const messageListNodeId = messageListNode.getAttribute('msgId');
 
-                                            if (!messageListNodeTime) {
+                                            if (!messageListNodeId) {
                                                 throw new Error(
-                                                `Child ${messageListNode.id} has no 'timestamp' attribute`
+                                                `Child ${messageListNode.id} has no 'id' attribute`
                                                 );
                                             }
 
-                                            if (messageListNodeTime > timestamp) {
+                                            if (messageListNodeId > id) {
                                                 break;
                                             }
 
@@ -351,8 +351,7 @@
                                 // Displays a Message in the UI.
                                 function displayMessage(id, name, text, picUrl, imageUrl) {
                                 var div =
-                                    document.getElementById(id);
-                                    //|| createAndInsertMessage(timestamp);
+                                    document.getElementById(id) || createAndInsertMessage(id);
 
                                 // profile picture
                                 if (picUrl) {
