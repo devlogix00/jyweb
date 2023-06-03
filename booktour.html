@@ -578,7 +578,7 @@
                                                             let data = snapshot.val();
                                                             
                                                             if(data.currentUser == user.uid && data.checkedIn == null){
-                                                                document.getElementById('pickup').style.display = 'block';
+                                                                document.getElementById('start').style.display = 'block';
                                                             } else if(data.host == user.uid && data.checkedIn == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
@@ -601,8 +601,8 @@
                                                 let usersRef = sRef(db, 'booktourusers/'+tourData.bookingId);
                                                 onValue(usersRef, (snapshot) => {
                                                     
-                                                // console.log(data); 
-                                                    let dataLen = data.length;
+                                                    let data = snapshot.val();
+                                                   
                                                     if(data == null){
                                                         set(sRef(db, 'booktourusers/'+tourData.bookingId+'/0'), {
                                                             username: userName,
