@@ -562,7 +562,7 @@
                                                             trImg.style.paddingLeft = '1em';
                                                             document.getElementById('img').appendChild(trImg);
                                                             let trNme = document.createElement('h1');
-                                                            trNme.innerText = crsearchData.listingName;
+                                                            trNme.innerText = trsearchData.listingName;
                                                             let bookingDates = document.createElement('h3');
                                                             if(trsearchData.tourDates.length === 2){
                                                                 bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
@@ -587,7 +587,7 @@
                                                             });
                                                             document.getElementById('start').addEventListener('click', function(){
                                                              //   console.log('picked up!');
-                                                                updates['tours/'+crsearchData.listingName+'/tourStarted'] = "True";
+                                                                updates['tours/'+trsearchData.listingName+'/tourStarted'] = "True";
                                                                 update(sRef(db), updates);
                                                                 let pickupBtn = document.getElementById('start');
                                                                 pickupBtn.remove();
