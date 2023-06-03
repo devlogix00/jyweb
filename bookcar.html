@@ -568,9 +568,11 @@
                                                             } else {
                                                                 bookingDates.innerText = 'Booking Date: '+crsearchData.carDates[0];
                                                             }
+                                                            let pickup = document.createElement('h3');
+                                                            pickup.innerText = crsearchData.pickup;
                                                             document.getElementById('bookingInfo').appendChild(crNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
-
+                                                            document.getElementById('bookingInfo').appendChild(pickup);
                                                             
 
                                                             onValue(carRef, (snapshot) => {
@@ -578,9 +580,9 @@
                                                             
                                                             if(data.currentUser == userId && data.checkedIn == null){
                                                                 document.getElementById('pickup').style.display = 'block';
-                                                            } else if(data.host == userId && data.checkedIn == 'True'){
+                                                            } else if(data.host == userId && data.pickedUp == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
-                                                            } else if(data.currentUser == userId && data.checkedIn == 'True'){
+                                                            } else if(data.currentUser == userId && data.pickedUp == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             } 
                                                             });

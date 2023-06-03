@@ -569,19 +569,21 @@
                                                             } else {
                                                                 bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
                                                             }
+                                                            let start = document.createElement('h3');
+                                                            start.innerText = trsearchData.starttour;
                                                             document.getElementById('bookingInfo').appendChild(trNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
-
+                                                            document.getElementById('bookingInfo').appendChild(start);
                                                             
 
                                                             onValue(tourRef, (snapshot) => {
                                                             let data = snapshot.val();
                                                             
-                                                            if(data.currentUser == user.uid && data.checkedIn == null){
+                                                            if(data.currentUser == user.uid && data.tourStarted == null){
                                                                 document.getElementById('start').style.display = 'block';
-                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
+                                                            } else if(data.host == user.uid && data.tourStarted == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
-                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                                                            } else if(data.currentUser == user.uid && data.tourStarted == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             } 
                                                             });
@@ -589,8 +591,8 @@
                                                              //   console.log('picked up!');
                                                                 updates['tours/'+trsearchData.listingName+'/tourStarted'] = "True";
                                                                 update(sRef(db), updates);
-                                                                let pickupBtn = document.getElementById('start');
-                                                                pickupBtn.remove();
+                                                                let startBtn = document.getElementById('start');
+                                                                startBtn.remove();
                                                             
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });
