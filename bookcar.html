@@ -542,16 +542,17 @@
                                         status.innerText = 'Picked Up';
                                         let carRef;
                                         
-                                        let carList = sRef(db, 'user/userAccount/'+user.uid+'/cardata');
+                                        let carList = sRef(db, 'user/userAccount/'+userId+'/cardata');
                                         onValue(carList, (snapshot) => {
                                             const carData = snapshot.val();
                                             if(carData != null){
                                                 let crSearchUrl = sRef(db, 'cars/'+carData.car);
                                                 onValue(crSearchUrl, (snapshot) => {
                                                     let crsearchData = snapshot.val();
+                                                    console.log(crsearchData);
                                                     carRef = sRef(db, 'cars/'+carData.car);
                                                     if(crsearchData != null ){
-                                                        if(crsearchData.currentUser === user.uid){
+                                                        if(crsearchData.currentUser === userId){
                                                             let crImg = document.createElement('img');
                                                             crImg.setAttribute('src', crsearchData.listingImg);
                                                             crImg.style.width = '400px';
@@ -576,11 +577,11 @@
                                                             onValue(carRef, (snapshot) => {
                                                             let data = snapshot.val();
                                                             
-                                                            if(data.currentUser == user.uid && data.checkedIn == null){
+                                                            if(data.currentUser == userId && data.checkedIn == null){
                                                                 document.getElementById('pickup').style.display = 'block';
-                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
+                                                            } else if(data.host == userId && data.checkedIn == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
-                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                                                            } else if(data.currentUser == userId && data.checkedIn == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             } 
                                                             });
@@ -600,7 +601,7 @@
                                                 let usersRef = sRef(db, 'bookcarusers/'+carData.bookingId);
                                                 onValue(usersRef, (snapshot) => {
                                                     let data = snapshot.val(); 
-                                                // console.log(data); 
+                                                    console.log(data); 
                                                     
                                                     if(data == null){
                                                         set(sRef(db, 'bookcarusers/'+carData.bookingId+'/0'), {
