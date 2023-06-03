@@ -118,6 +118,15 @@
 
                                 onAuthStateChanged(auth, (user) => {
                                     if(user){
+                                              // console.log(user);
+
+                                        // User is signed in!
+                                      //  console.log(user);
+                                        // Get the signed-in user's profile pic and name.
+                                        var profilePicUrl = getProfilePicUrl();
+                                        var userName = getUserName();
+                                        var userId = user.uid;
+                                        let users = [];
 
                                         const recentMessageQuery = query(collection(getFirestore(), 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
                                  // Signs-in BookMe.
@@ -512,21 +521,6 @@
                                     
                                     }
                                 }
-                                       // console.log(user);
-
-                                        // User is signed in!
-                                      //  console.log(user);
-                                        // Get the signed-in user's profile pic and name.
-                                        var profilePicUrl = getProfilePicUrl();
-                                        var userName = getUserName();
-                                        var userId = user.uid;
-                                        let users = [];
-
-                                        
-
-                                    
-                            
-                                    
 
                                         // Set the user's profile pic and name.
                                         userPicElement.style.backgroundImage =
