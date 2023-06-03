@@ -366,7 +366,7 @@
                                         let messageRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
                                         onValue(messageRef, (snapshot) => {
                                             const data = snapshot.val();
-                                            console.log(data);
+                                            //console.log(data);
                                             if(data != null){
                                                 // let setToList = [new Set(data)];
                                                 for(let i = 0; i < data.length; i++){
