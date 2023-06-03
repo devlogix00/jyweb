@@ -607,7 +607,7 @@
                                                 onValue(usersRef, (snapshot) => {
                                                     let data = snapshot.val(); 
                                                 // console.log(data); 
-                                                    let dataLen = data.length;
+                                                    
                                                     if(data == null){
                                                         set(sRef(db, 'bookcarusers/'+carData.bookingId+'/0'), {
                                                             username: userName,

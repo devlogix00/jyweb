@@ -605,7 +605,7 @@
                                                 }); 
                                                 let usersRef = sRef(db, 'booktourusers/'+tourData.bookingId);
                                                 onValue(usersRef, (snapshot) => {
-                                                    let data = snapshot.val(); 
+                                                    
                                                 // console.log(data); 
                                                     let dataLen = data.length;
                                                     if(data == null){
