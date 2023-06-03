@@ -586,7 +586,7 @@
                                                             let rmsearchData = snapshot.val();
                                                             roomRef = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+listingData[i].listingName);
                                                             if(rmsearchData != null ){
-                                                                if(rmsearchData.host === userId && bookingId != null){
+                                                                if(rmsearchData.host === userId && rmsearchData.bookingId != null){
                                                                     let rmImg = document.createElement('img');
                                                                     rmImg.setAttribute('src', rmsearchData.listingImg);
                                                                     rmImg.style.width = '400px';
