@@ -575,7 +575,7 @@
                                                             onValue(carRef, (snapshot) => {
                                                             let data = snapshot.val();
                                                             
-                                                            if(data.currentUser == userId && data.checkedIn == null){
+                                                            if(data.currentUser == userId && data.pickedUp == null){
                                                                 document.getElementById('pickup').style.display = 'block';
                                                             } else if(data.host == userId && data.pickedUp == 'True'){
                                                                 document.getElementById('bookingInfo').appendChild(status);
