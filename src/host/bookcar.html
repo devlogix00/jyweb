@@ -215,7 +215,7 @@
                                     return false;
                                     }
 
-                                    // Saves a new message on the Cloud Firestore.
+                                    // Saves a new message in Realtime.
                                     async function saveMessage(messageText) {
                                         let listings = sRef(db, 'listings/listings');
                                                 onValue(listings, (snapshot) => {
@@ -255,28 +255,7 @@
                                                         }
                                                     }
                                                 });
-                                        // addDoc(collection(fs, 'bookcar'), {
-                                        //     name: user.displayName,
-                                        //     profilePicUrl: user.photoURL,
-                                        //     text: messageText,
-                                        //     timestamp: timestamp
-                                        // });
-
-                                    
-                                        // onSnapshot(recentMessageQuery, function(snapshot) {
-                                        //     snapshot.docChanges().forEach(function(change) {
-                                        //         if(change.type === 'removed') {
-                                        //             deleteMessage(change.doc.id);
-                                            
-                                        //         } else {
-                                        //             var message = change.doc.data();
-                                        //             messages.push(message);
-                                        //             set(sRef(db, 'bookcar'), messages)
-                                        //         // ref('allMessages/').set(messages);
-                                        //             //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                        //         }
-                                        //     })
-                                        // });
+             
                                     }
 
                                     // Resets the given MaterialTextField.
@@ -417,11 +396,6 @@
                                     }
                                 });
 
-                                // const messageRef = sRef(db, 'bookcar');
-                                // onValue(messageRef, (snapshot) => {
-                                     
-                                // });
-
                                 // A loading image URL.
                                 var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
 
@@ -530,47 +504,7 @@
                                                     }
                                                 });
                                             
-                                            // function writeUserData(name, email, imageUrl) {
-                                            // set(sRef(db, 'messages/'), {
-                                            //     name: user.displayName,
-                                            //     imageUrl: downloadURL,
-                                            //     profilePicUrl: user.photoURL
-                                            // });
-                                            // }
-                                            // writeUserData(getUserName(), downloadURL, getProfilePicUrl);
-                                        
-                                            // // Use booking id here
-                                            // addDoc(collection(fs, 'bookcar'), {
-                                            //         name: user.displayName,
-                                            //         profilePicUrl: user.photoURL,
-                                            //         imageUrl: downloadURL,
-                                            //         timestamp: timestamp
-                                            // });
-                                            // addDoc(collection(fs, 'imagePost'), {
-                                            //     name: user.displayName,
-                                            //     profilePicUrl: user.photoURL,
-                                            //     imageUrl: downloadURL,
-                                            //     timestamp: timestamp
-                                            // });
-
-                                            // let messages = [];
-                                            // const recentMessageQuery = query(collection(fs, 'bookcar'), orderBy('timestamp', 'desc'), limit(12));
-                                            // onSnapshot(recentMessageQuery, function(snapshot) {
-                                            //     snapshot.docChanges().forEach(function(change) {
-                                            //         if(change.type === 'removed') {
-                                            //             deleteMessage(change.doc.id);
-                                                    
-                                            //         } else {
-                                            //             var message = change.doc.data();
-                                            //             messages = [];
-                                            //             messages.push(message);
-                                            //             // Use booking id here
-                                            //             set(sRef(db, 'bookcar'), messages)
-                                            //             // ref('allMessages/').set(messages);
-                                            //             //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                            //         }
-                                            //     })
-                                            // });
+                                          
                                             });
 
                                             }
@@ -624,22 +558,6 @@
                                         var userName = user.displayName;
                                         var userId = user.uid;
                                         let users = [];
-
-                                        // Use booking id here
-
-                                        // setDoc(doc(fs, "bookcarusers", userId), {
-                                        //     username: userName,
-                                        //     profile_picture : profilePicUrl,
-                                        //     email: user.email
-                                        // });
-
-                                        // const recentuserQuery = query(collection(fs, 'bookcarusers'));
-                                        // onSnapshot(recentuserQuery, function(snapshot) {
-                                        // console.log(snapshot);
-                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        // users.push(user);
-                                        // set(sRef(db, 'bookcarusers'), users);
-                                        // });
 
                                         // Set the user's profile pic and name.
                                         userPicElement.style.backgroundImage =

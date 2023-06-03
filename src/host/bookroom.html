@@ -111,7 +111,7 @@
                                 //authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://bourgoldengreenresorts.herokuapp.com/src/host/bookings.html';
+                                    window.location = 'https://www.buorgoldengreenresorts.homes/src/host/bookings.html';
                                 });
 
                                // console.log(auth);
@@ -158,7 +158,7 @@
                                 // Template for messages.
                                 var MESSAGE_TEMPLATE =
                                 '<div class="message-container">' +
-                                '<div class="spacing"><div class="pic"></div></div>' +
+                                '<img class="pic"/>' +
                                 '<div class="message"></div>' +
                                 '<div class="name"></div>' +
                                 '</div>';
@@ -215,30 +215,47 @@
                                     return false;
                                     }
 
-                                    // Saves a new message on the Cloud Firestore.
+                                    // Saves a new message in Realtime.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(fs, 'bookroom'), {
-                                            name: user.displayName,
-                                            profilePicUrl: user.photoURL,
-                                            text: messageText,
-                                            timestamp: timestamp
-                                        });
-
-                                    
-                                        onSnapshot(recentMessageQuery, function(snapshot) {
-                                            snapshot.docChanges().forEach(function(change) {
-                                                if(change.type === 'removed') {
-                                                    deleteMessage(change.doc.id);
-                                            
-                                                } else {
-                                                    var message = change.doc.data();
-                                                    messages.push(message);
-                                                    set(sRef(db, 'bookroom'), messages)
-                                                // ref('allMessages/').set(messages);
-                                                    //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                                }
-                                            })
-                                        });
+                                        let listings = sRef(db, 'listings/listings');
+                                                onValue(listings, (snapshot) => {
+                                                    const listingData = snapshot.val();
+                                                    if(listingData != null){
+                                                        for(let i = 0; i < listingData.length; i++){
+                                                            if(listingData[i].listingType === 'room'){
+                                                                let rmSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+listingData[i].listingName);
+                                                                onValue(rmSearchUrl, (snapshot) => {
+                                                                    let rmsearchData = snapshot.val();
+                                                                    if(rmsearchData != null ){
+                                                                        if(rmsearchData.host === userId){
+                                                                            let msgRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
+                                                                            onValue(msgRef, (snapshot) => {
+                                                                                let msgData = snapshot.val();
+                                                                                if(msgData == null){
+                                                                                    set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/0'), {
+                                                                                        name: user.displayName,
+                                                                                        text: messageText,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                } else {
+                                                                                    let msgDataLen = msgData.length;
+                                                                                    set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/'+msgDataLen), {
+                                                                                        name: user.displayName,
+                                                                                        text: messageText,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                }
+                                                                            },{
+                                                                                onlyOnce: true
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                        
                                     }
 
                                     // Resets the given MaterialTextField.
@@ -270,7 +287,7 @@
                                     }
                                     }
 
-                                    function createAndInsertMessage(id, timestamp) {
+                                    function createAndInsertMessage(id) {
                                         const container = document.createElement('div');
                                         container.innerHTML = MESSAGE_TEMPLATE;
                                         const div = container.firstChild;
@@ -278,8 +295,8 @@
 
                                         // If timestamp is null, assume we've gotten a brand new message.
                                         // https://stackoverflow.com/a/47781432/4816918
-                                        timestamp = timestamp ? timestamp.toMillis() : Date.now();
-                                        div.setAttribute('timestamp', timestamp);
+                                        //timestamp = timestamp ? timestamp.toMillis() : Date.now();
+                                        div.setAttribute('msgId', id);
 
                                         // figure out where to insert new message
                                         const existingMessages = messageListElement.children;
@@ -289,15 +306,15 @@
                                             let messageListNode = existingMessages[0];
 
                                             while (messageListNode) {
-                                            const messageListNodeTime = messageListNode.getAttribute('timestamp');
+                                            const messageListNodeId = messageListNode.getAttribute('msgId');
 
-                                            if (!messageListNodeTime) {
+                                            if (!messageListNodeId) {
                                                 throw new Error(
-                                                `Child ${messageListNode.id} has no 'timestamp' attribute`
+                                                `Child ${messageListNode.id} has no 'id' attribute`
                                                 );
                                             }
 
-                                            if (messageListNodeTime > timestamp) {
+                                            if (messageListNodeId > id) {
                                                 break;
                                             }
 
@@ -311,14 +328,13 @@
                                     }
 
                                 // Displays a Message in the UI.
-                                function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
+                                function displayMessage(id, name, text, picUrl, imageUrl) {
                                 var div =
-                                    document.getElementById(id) || createAndInsertMessage(timestamp);
+                                    document.getElementById(id) || createAndInsertMessage(id);
 
                                 // profile picture
                                 if (picUrl) {
-                                    div.querySelector('.pic').style.backgroundImage =
-                                    'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
+                                    div.querySelector('.pic').setAttribute('src', addSizeToGoogleProfilePic(picUrl));
                                 }
 
                                 div.querySelector('.name').textContent = name;
@@ -349,19 +365,35 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                const messageRef = sRef(db, 'bookroom');
-                                onValue(messageRef, (snapshot) => {
-                                const data = snapshot.val();
-                                if(data != null){
-                            
-                                    let setToList = [new Set(data)];
-                                    
-                                    for(let i = 0; i < data.length; i++){
-                                        if(data[i].timestamp != null){
-                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                        }  
+                                let listings = sRef(db, 'listings/listings');
+                                onValue(listings, (snapshot) => {
+                                    const listingData = snapshot.val();
+                                    if(listingData != null){
+                                        for(let i = 0; i < listingData.length; i++){
+                                            if(listingData[i].listingType === 'room'){
+                                                let rmSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+listingData[i].listingName);
+                                                onValue(rmSearchUrl, (snapshot) => {
+                                                    let rmsearchData = snapshot.val();
+                                                    if(rmsearchData != null ){
+                                                        if(rmsearchData.host === userId){
+                                                            let messageRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
+                                                            onValue(messageRef, (snapshot) => {
+                                                                const data = snapshot.val();
+                                                                if(data != null){
+                                                                   // let setToList = [new Set(data)];
+                                                                    for(let i = 0; i < data.length; i++){
+                                                                        if(data[i] != null){
+                                                                            displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                                        }  
+                                                                    }
+                                                                }  
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
                                     }
-                                    }       
                                 });
 
                                 // A loading image URL.
@@ -431,50 +463,48 @@
                                             // Handle successful uploads on complete
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                            
-                                            function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'), {
-                                                name: user.displayName,
-                                                imageUrl: downloadURL,
-                                                profilePicUrl: user.photoURL
-                                            });
-                                            }
-                                            writeUserData(getUserName(), downloadURL, getProfilePicUrl);
-                                        
-                                            // Use booking id here
-                                            addDoc(collection(fs, 'bookroom'), {
-                                                    name: user.displayName,
-                                                    profilePicUrl: user.photoURL,
-                                                    imageUrl: downloadURL,
-                                                    timestamp: timestamp
-                                            });
-                                            addDoc(collection(fs, 'imagePost'), {
-                                                name: user.displayName,
-                                                profilePicUrl: user.photoURL,
-                                                imageUrl: downloadURL,
-                                                timestamp: timestamp
-                                            });
-                                            });
-                                            let messages = [];
-                                            const recentMessageQuery = query(collection(fs, 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
-                                            onSnapshot(recentMessageQuery, function(snapshot) {
-                                                snapshot.docChanges().forEach(function(change) {
-                                                    if(change.type === 'removed') {
-                                                        deleteMessage(change.doc.id);
-                                                    
-                                                    } else {
-                                                        var message = change.doc.data();
-                                                        messages = [];
-                                                        messages.push(message);
-                                                        // Use booking id here
-                                                        set(sRef(db, 'bookroom'), messages)
-                                                        // ref('allMessages/').set(messages);
-                                                        //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                                                let listings = sRef(db, 'listings/listings');
+                                                onValue(listings, (snapshot) => {
+                                                    const listingData = snapshot.val();
+                                                    if(listingData != null){
+                                                        for(let i = 0; i < listingData.length; i++){
+                                                            if(listingData[i].listingType === 'room'){
+                                                                let rmSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+listingData[i].listingName);
+                                                                onValue(rmSearchUrl, (snapshot) => {
+                                                                    let rmsearchData = snapshot.val();
+                                                                    if(rmsearchData != null ){
+                                                                        if(rmsearchData.host === userId){
+                                                                            let msgRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
+                                                                            onValue(msgRef, (snapshot) => {
+                                                                                let msgData = snapshot.val();
+                                                                                if(msgData == null){
+                                                                                    set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/0'), {
+                                                                                        name: user.displayName,
+                                                                                        imageUrl: downloadURL,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                } else {
+                                                                                    let msgDataLen = msgData.length;
+                                                                                    set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/'+msgDataLen), {
+                                                                                        name: user.displayName,
+                                                                                        imageUrl: downloadURL,
+                                                                                        profilePicUrl: user.photoURL,
+                                                                                       // timestamp: timestamp
+                                                                                    });
+                                                                                }
+                                                                            },{
+                                                                                onlyOnce: true
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
                                                     }
-                                                })
+                                                });
+                                            
                                             });
-                                            
-                                            
+
                                             }
                                         );
 
@@ -527,24 +557,6 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        // Use booking id here
-
-                                        // setDoc(doc(fs, "bookroomusers", userId), {
-                                        //     username: userName,
-                                        //     profile_picture : profilePicUrl,
-                                        //     email: user.email
-                                        // });
-
-                                        // const recentuserQuery = query(collection(fs, 'bookroomusers'));
-                                        // onSnapshot(recentuserQuery, function(snapshot) {
-                                        // console.log(snapshot);
-                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        // users.push(user);
-                                        // set(sRef(db, 'bookroomusers'), users);
-                                        // });
-
-                                        
-
                                         // Set the user's profile pic and name.
                                         userPicElement.style.backgroundImage =
                                         'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
@@ -564,7 +576,6 @@
                                         status.innerText = 'Checked In';
                                         let roomRef;
                                         
-                                        let listings = sRef(db, 'listings/listings');
                                         onValue(listings, (snapshot) => {
                                             const listingData = snapshot.val();
                                             if(listingData != null){
@@ -585,15 +596,15 @@
                                                                     rmImg.style.paddingLeft = '1em';
                                                                     document.getElementById('img').appendChild(rmImg);
                                                                     let rmNme = document.createElement('h1');
-                                                                    rmNme.innerText = rmsearchData.listingName;
+                                                                    rmNme.innerText = crsearchData.listingName;
                                                                     let bookingDates = document.createElement('h3');
-                                                                    if(rmsearchData.roomDates.length === 2){
+                                                                    if(rmsearchData.carDates.length === 2){
                                                                         bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
                                                                     } else {
                                                                         bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
                                                                     }
                                                                     // let checkin = document.createElement('h3');
-                                                                    // checkin.innerText = rmsearchData.checkin;
+                                                                    // checkin.innerText = crsearchData.checkin;
                                                                     document.getElementById('bookingInfo').appendChild(rmNme);
                                                                     document.getElementById('bookingInfo').appendChild(bookingDates);
                                                                    // document.getElementById('bookingInfo').appendChild(checkin);
@@ -648,17 +659,15 @@
                                                                             }
                                                                         }
                                                                     });
-                                                         
-                                                                }
-                                                                
-                                                            }
-                                                        }); 
-                                                    }
-                                                }
-                                                
-                                                
-                                            }     
-                                        });
+                                                                                    
+                                                                                            }
+                                                                                            
+                                                                                        }
+                                                                                    }); 
+                                                                                }
+                                                                            }
+                                                                        }     
+                                                                    });
 
                                         
                                     }else {
@@ -673,7 +682,7 @@
                                     }
                                 });
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://bourgoldengreenresorts.herokuapp.com/src/host/bookings.html';
+                                    window.location = 'https://www.buorgoldengreenresorts.homes/src/host/bookings.html';
                                 });
                             </script>
                             <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>

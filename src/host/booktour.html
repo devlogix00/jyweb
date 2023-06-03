@@ -111,10 +111,10 @@
                                 //authStateObserver(getAuth().currentUser);
 
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://buorgoldengreenresorts.homes/src/host/bookings.html';
+                                    window.location = 'https://www.buorgoldengreenresorts.homes/src/host/bookings.html';
                                 });
 
-                             //   console.log(auth);
+                                //  console.log(auth);
                                 let updates = {};
 
                                 // Signs-in BookMe.
@@ -131,30 +131,6 @@
                                 onAuthStateChanged(auth, (user) => {
                                     if(user){
                                      //   console.log(user)
-
-                                        let listings = sRef(db, 'listings/listings');
-                                        let bookingId;
-                                        onValue(listings, (snapshot) => {
-                                            const listingData = snapshot.val();
-                                            if(listingData != null){
-                                                for(let i = 0; i < listingData.length; i++){
-                                                    if(listingData[i].listingType === 'tour'){
-                                                        let trSearchUrl = sRef(db, 'tours/'+listingData[i].listingName);
-                                                        onValue(trSearchUrl, (snapshot) => {
-                                                            let trsearchData = snapshot.val();
-                                                            tourRef = sRef(db, 'tours/'+listingData[i].listingName);
-                                                            if(trsearchData != null ){
-                                                                if(trsearchData.host === userId){
-                                                                    let bookingurl = trsearchData.bookingUrl;
-                                                                    let spliturl = bookingurl.split('/');
-                                                                    bookingId = spliturl[3];
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        });
 
                                         /* Keep track of booking id for firestore access here */
                                         const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
@@ -183,7 +159,7 @@
                                 // Template for messages.
                                 var MESSAGE_TEMPLATE =
                                 '<div class="message-container">' +
-                                '<div class="spacing"><div class="pic"></div></div>' +
+                                '<img class="pic"/>' +
                                 '<div class="message"></div>' +
                                 '<div class="name"></div>' +
                                 '</div>';
@@ -240,30 +216,46 @@
                                     return false;
                                     }
 
-                                    // Saves a new message on the Cloud Firestore.
+                                    // Saves a new message in Realtime.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(fs, 'booktour/'+bookingId), {
-                                            name: user.displayName,
-                                            profilePicUrl: user.photoURL,
-                                            text: messageText,
-                                            timestamp: timestamp
-                                        });
-
-                                    
-                                        onSnapshot(recentMessageQuery, function(snapshot) {
-                                            snapshot.docChanges().forEach(function(change) {
-                                                if(change.type === 'removed') {
-                                                    deleteMessage(change.doc.id);
-                                            
-                                                } else {
-                                                    var message = change.doc.data();
-                                                    messages.push(message);
-                                                    set(sRef(db, 'booktour/'+bookingId), messages)
-                                                // ref('allMessages/').set(messages);
-                                                    //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                                }
-                                            })
-                                        });
+                                        let listings = sRef(db, 'listings/listings');
+                                                onValue(listings, (snapshot) => {
+                                                    const listingData = snapshot.val();
+                                                    if(listingData != null){
+                                                        for(let i = 0; i < listingData.length; i++){
+                                                            if(listingData[i].listingType === 'tour'){
+                                                                let trSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+listingData[i].listingName);
+                                                                onValue(trSearchUrl, (snapshot) => {
+                                                                    let trsearchData = snapshot.val();
+                                                                    if(trsearchData != null ){
+                                                                        if(trsearchData.host === userId){
+                                                                            let msgRef = sRef(db, 'booktour/'+trsearchData.bookingId);
+                                                                            onValue(msgRef, (snapshot) => {
+                                                                                let msgData = snapshot.val();
+                                                                                if(msgData == null){
+                                                                                    set(sRef(db, 'booktour/'+trsearchData.bookingId+'/0'), {
+                                                                                        name: user.displayName,
+                                                                                        text: messageText,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                } else {
+                                                                                    let msgDataLen = msgData.length;
+                                                                                    set(sRef(db, 'booktour/'+trsearchData.bookingId+'/'+msgDataLen), {
+                                                                                        name: user.displayName,
+                                                                                        text: messageText,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                }
+                                                                            },{
+                                                                                onlyOnce: true
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    }
+                                                });
                                     }
 
                                     // Resets the given MaterialTextField.
@@ -295,7 +287,7 @@
                                     }
                                     }
 
-                                    function createAndInsertMessage(id, timestamp) {
+                                    function createAndInsertMessage(id) {
                                         const container = document.createElement('div');
                                         container.innerHTML = MESSAGE_TEMPLATE;
                                         const div = container.firstChild;
@@ -303,8 +295,8 @@
 
                                         // If timestamp is null, assume we've gotten a brand new message.
                                         // https://stackoverflow.com/a/47781432/4816918
-                                        timestamp = timestamp ? timestamp.toMillis() : Date.now();
-                                        div.setAttribute('timestamp', timestamp);
+                                        //timestamp = timestamp ? timestamp.toMillis() : Date.now();
+                                        div.setAttribute('msgId', id);
 
                                         // figure out where to insert new message
                                         const existingMessages = messageListElement.children;
@@ -314,15 +306,15 @@
                                             let messageListNode = existingMessages[0];
 
                                             while (messageListNode) {
-                                            const messageListNodeTime = messageListNode.getAttribute('timestamp');
+                                            const messageListNodeId = messageListNode.getAttribute('msgId');
 
-                                            if (!messageListNodeTime) {
+                                            if (!messageListNodeId) {
                                                 throw new Error(
                                                 `Child ${messageListNode.id} has no 'timestamp' attribute`
                                                 );
                                             }
 
-                                            if (messageListNodeTime > timestamp) {
+                                            if (messageListNodeId > id) {
                                                 break;
                                             }
 
@@ -336,14 +328,13 @@
                                     }
 
                                 // Displays a Message in the UI.
-                                function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
+                                function displayMessage(id, name, text, picUrl, imageUrl) {
                                 var div =
-                                    document.getElementById(id) || createAndInsertMessage(timestamp);
+                                    document.getElementById(id) || createAndInsertMessage(id);
 
                                 // profile picture
                                 if (picUrl) {
-                                    div.querySelector('.pic').style.backgroundImage =
-                                    'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
+                                    div.querySelector('.pic').setAttribute('src', addSizeToGoogleProfilePic(picUrl));
                                 }
 
                                 div.querySelector('.name').textContent = name;
@@ -374,19 +365,35 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                const messageRef = sRef(db, 'booktour/'+bookingId);
-                                onValue(messageRef, (snapshot) => {
-                                const data = snapshot.val();
-                                if(data != null){
-                            
-                                    let setToList = [new Set(data)];
-                                    
-                                    for(let i = 0; i < data.length; i++){
-                                        if(data[i].timestamp != null){
-                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                        }  
+                                let listings = sRef(db, 'listings/listings');
+                                onValue(listings, (snapshot) => {
+                                    const listingData = snapshot.val();
+                                    if(listingData != null){
+                                        for(let i = 0; i < listingData.length; i++){
+                                            if(listingData[i].listingType === 'tour'){
+                                                let trSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+listingData[i].listingName);
+                                                onValue(trSearchUrl, (snapshot) => {
+                                                    let trsearchData = snapshot.val();
+                                                    if(trsearchData != null ){
+                                                        if(trsearchData.host === userId){
+                                                            let messageRef = sRef(db, 'booktour/'+trsearchData.bookingId);
+                                                            onValue(messageRef, (snapshot) => {
+                                                                const data = snapshot.val();
+                                                                if(data != null){
+                                                                   // let setToList = [new Set(data)];
+                                                                    for(let i = 0; i < data.length; i++){
+                                                                        if(data[i] != null){
+                                                                            displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                                        }  
+                                                                    }
+                                                                }  
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
                                     }
-                                    }       
                                 });
 
                                 // A loading image URL.
@@ -457,47 +464,47 @@
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
-                                            function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'+bookingId), {
-                                                name: user.displayName,
-                                                imageUrl: downloadURL,
-                                                profilePicUrl: user.photoURL
-                                            });
-                                            }
-                                            writeUserData(getUserName(), downloadURL, getProfilePicUrl);
-                                        
-                                            // Use booking id here
-                                            addDoc(collection(fs, 'booktour/'+bookingId), {
-                                                    name: user.displayName,
-                                                    profilePicUrl: user.photoURL,
-                                                    imageUrl: downloadURL,
-                                                    timestamp: timestamp
-                                            });
-                                            addDoc(collection(fs, 'imagePost/'+bookingId), {
-                                                name: user.displayName,
-                                                profilePicUrl: user.photoURL,
-                                                imageUrl: downloadURL,
-                                                timestamp: timestamp
-                                            });
-                                            });
-                                            let messages = [];
-                                            const recentMessageQuery = query(collection(fs, 'booktour/'+bookingId), orderBy('timestamp', 'desc'), limit(12));
-                                            onSnapshot(recentMessageQuery, function(snapshot) {
-                                                snapshot.docChanges().forEach(function(change) {
-                                                    if(change.type === 'removed') {
-                                                        deleteMessage(change.doc.id);
-                                                    
-                                                    } else {
-                                                        var message = change.doc.data();
-                                                        messages = [];
-                                                        messages.push(message);
-                                                        // Use booking id here
-                                                        set(sRef(db, 'booktour/'+bookingId), messages)
-                                                        // ref('allMessages/').set(messages);
-                                                        //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                                                let listings = sRef(db, 'listings/listings');
+                                                onValue(listings, (snapshot) => {
+                                                    const listingData = snapshot.val();
+                                                    if(listingData != null){
+                                                        for(let i = 0; i < listingData.length; i++){
+                                                            if(listingData[i].listingType === 'tour'){
+                                                                let trSearchUrl = sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+listingData[i].listingName);
+                                                                onValue(trSearchUrl, (snapshot) => {
+                                                                    let trsearchData = snapshot.val();
+                                                                    if(trsearchData != null ){
+                                                                        if(trsearchData.host === userId){
+                                                                            let msgRef = sRef(db, 'booktour/'+trsearchData.bookingId);
+                                                                            onValue(msgRef, (snapshot) => {
+                                                                                let msgData = snapshot.val();
+                                                                                if(msgData == null){
+                                                                                    set(sRef(db, 'booktour/'+trsearchData.bookingId+'/0'), {
+                                                                                        name: user.displayName,
+                                                                                        imageUrl: downloadURL,
+                                                                                        profilePicUrl: user.photoURL
+                                                                                    });
+                                                                                } else {
+                                                                                    let msgDataLen = msgData.length;
+                                                                                    set(sRef(db, 'booktour/'+trsearchData.bookingId+'/'+msgDataLen), {
+                                                                                        name: user.displayName,
+                                                                                        imageUrl: downloadURL,
+                                                                                        profilePicUrl: user.photoURL,
+                                                                                       // timestamp: timestamp
+                                                                                    });
+                                                                                }
+                                                                            },{
+                                                                                onlyOnce: true
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
                                                     }
-                                                })
+                                                });
                                             });
+                                            
                                             
                                             
                                             }
@@ -552,22 +559,6 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        // Use booking id here
-
-                                        // setDoc(doc(fs, "booktourusers", userId), {
-                                        //     username: userName,
-                                        //     profile_picture : profilePicUrl,
-                                        //     email: user.email
-                                        // });
-
-                                        // const recentuserQuery = query(collection(fs, 'booktourusers'));
-                                        // onSnapshot(recentuserQuery, function(snapshot) {
-                                        // console.log(snapshot);
-                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        // users.push(user);
-                                        // set(sRef(db, 'booktourusers'), users);
-                                        // });
-
                                         // Set the user's profile pic and name.
                                         userPicElement.style.backgroundImage =
                                         'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
@@ -587,7 +578,6 @@
                                         status.innerText = 'Tour Started';
                                         let tourRef;
                                         
-                                        let listings = sRef(db, 'listings/listings');
                                         onValue(listings, (snapshot) => {
                                             const listingData = snapshot.val();
                                             if(listingData != null){
@@ -615,8 +605,8 @@
                                                                     } else {
                                                                         bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
                                                                     }
-                                                                    // let pickUp = document.createElement('h3');
-                                                                    // pickUp.innerText = trsearchData.pickedUp;
+                                                                    // let checkin = document.createElement('h3');
+                                                                    // checkin.innerText = crsearchData.checkin;
                                                                     document.getElementById('bookingInfo').appendChild(trNme);
                                                                     document.getElementById('bookingInfo').appendChild(bookingDates);
                                                                    // document.getElementById('bookingInfo').appendChild(checkin);
@@ -647,6 +637,7 @@
                                                                         onlyOnce: true
                                                                     });
                                                                 
+                                                          
                                                                     onValue(usersRef, (snapshot) => {
                                                                         const data = snapshot.val();
                                                                     
@@ -670,17 +661,15 @@
                                                                             }
                                                                         }
                                                                     });
-                                                         
-                                                                }
-                                                                
-                                                            }
-                                                        }); 
-                                                    }
-                                                }
-                                                
-                                                
-                                            }     
-                                        });
+                                                                                    
+                                                                                            }
+                                                                                            
+                                                                                        }
+                                                                                    }); 
+                                                                                }
+                                                                            }
+                                                                        }     
+                                                                    });
 
                                         
                                     }else {
@@ -695,7 +684,7 @@
                                     }
                                 });
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://buorgoldengreenresorts.homes/src/host/bookings.html';
+                                    window.location = 'https://www.buorgoldengreenresorts.homes/src/host/bookings.html';
                                 });
                             </script>
                             <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
