@@ -588,7 +588,7 @@
                                                             let trsearchData = snapshot.val();
                                                             tourRef = sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+listingData[i].listingName);
                                                             if(trsearchData != null ){
-                                                                if(trsearchData.host === userId){
+                                                                if(trsearchData.host == userId && bookingId != null){
                                                                     let trImg = document.createElement('img');
                                                                     trImg.setAttribute('src', trsearchData.listingImg);
                                                                     trImg.style.width = '400px';

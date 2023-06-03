@@ -588,7 +588,7 @@
                                                             let crsearchData = snapshot.val();
                                                             carRef = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
                                                             if(crsearchData != null ){
-                                                                if(crsearchData.host === userId){
+                                                                if(crsearchData.host == userId && bookingId != null){
                                                                     let crImg = document.createElement('img');
                                                                     crImg.setAttribute('src', crsearchData.listingImg);
                                                                     crImg.style.width = '400px';

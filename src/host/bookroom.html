@@ -586,7 +586,7 @@
                                                             let rmsearchData = snapshot.val();
                                                             roomRef = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+listingData[i].listingName);
                                                             if(rmsearchData != null ){
-                                                                if(rmsearchData.host === userId){
+                                                                if(rmsearchData.host === userId && bookingId != null){
                                                                     let rmImg = document.createElement('img');
                                                                     rmImg.setAttribute('src', rmsearchData.listingImg);
                                                                     rmImg.style.width = '400px';
@@ -598,7 +598,7 @@
                                                                     let rmNme = document.createElement('h1');
                                                                     rmNme.innerText = rmsearchData.listingName;
                                                                     let bookingDates = document.createElement('h3');
-                                                                    if(rmsearchData.roomDates.length === 2){
+                                                                    if(rmsearchData.roomDates.length == 2){
                                                                         bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
                                                                     } else {
                                                                         bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
