@@ -594,8 +594,7 @@
                                                              //   console.log('checked in!');
                                                                 updates['rooms/'+rmsearchData.listingName+'/checkedIn'] = "True";
                                                                 update(sRef(db), updates);
-                                                                let checkinBtn = document.getElementById('checkin');
-                                                                checkinBtn.remove();
+                                                                let checkinBtn = document.getElementById('checkin').remove();
                                                             
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });

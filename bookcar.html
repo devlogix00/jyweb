@@ -587,8 +587,7 @@
                                                              //   console.log('picked up!');
                                                                 updates['cars/'+crsearchData.listingName+'/pickedUp'] = "True";
                                                                 update(sRef(db), updates);
-                                                                let pickupBtn = document.getElementById('pickup');
-                                                                pickupBtn.remove();
+                                                                document.getElementById('pickup').remove();
                                                             
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });

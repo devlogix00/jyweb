@@ -588,8 +588,7 @@
                                                              //   console.log('picked up!');
                                                                 updates['tours/'+trsearchData.listingName+'/tourStarted'] = "True";
                                                                 update(sRef(db), updates);
-                                                                let startBtn = document.getElementById('start');
-                                                                startBtn.remove();
+                                                                let startBtn = document.getElementById('start').remove();
                                                             
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });
