@@ -106,10 +106,6 @@
                                 const fs = getFirestore();
                                 let timestamp = serverTimestamp();
                                 let messages = [];
-     
-
-                                
-                            
 
                                 //initFirebaseAuth();
                                 //authStateObserver(getAuth().currentUser);
@@ -161,7 +157,7 @@
                                 // Template for messages.
                                 var MESSAGE_TEMPLATE =
                                 '<div class="message-container">' +
-                                '<div class="spacing"><div class="pic"></div></div>' +
+                                '<img class="pic"/>' +
                                 '<div class="message"></div>' +
                                 '<div class="name"></div>' +
                                 '</div>';
@@ -220,27 +216,32 @@
 
                                     // Saves a new message on the Cloud Firestore.
                                     async function saveMessage(messageText) {
-                                        addDoc(collection(fs, 'bookroom'), {
-                                            name: user.displayName,
-                                            profilePicUrl: user.photoURL,
-                                            text: messageText,
-                                            timestamp: timestamp
-                                        });
-
-                                    
-                                        onSnapshot(recentMessageQuery, function(snapshot) {
-                                            snapshot.docChanges().forEach(function(change) {
-                                                if(change.type === 'removed') {
-                                                    deleteMessage(change.doc.id);
-                                            
-                                                } else {
-                                                    var message = change.doc.data();
-                                                    messages.push(message);
-                                                    set(sRef(db, 'bookroom'), messages)
-                                                // ref('allMessages/').set(messages);
-                                                    //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                                                }
-                                            })
+                                        let rmSearchUrl = sRef(db, 'users/userAccount/'+userId+'/roomdata');
+                                        onValue(rmSearchUrl, (snapshot) => {
+                                            let rmsearchData = snapshot.val();
+                                            if(rmsearchData != null ){
+                                                let msgRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
+                                                onValue(msgRef, (snapshot) => {
+                                                    let msgData = snapshot.val();
+                                                    if(msgData == null){
+                                                        set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/0'), {
+                                                            name: user.displayName,
+                                                            text: messageText,
+                                                            profilePicUrl: user.photoURL
+                                                        });
+                                                    } else {
+                                                        let msgDataLen = msgData.length;
+                                                        set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/'+msgDataLen), {
+                                                            name: user.displayName,
+                                                            text: messageText,
+                                                            profilePicUrl: user.photoURL
+                                                        });
+                                                    }
+                                                },{
+                                                    onlyOnce: true
+                                                });
+                                                
+                                            }
                                         });
                                     }
 
@@ -273,7 +274,7 @@
                                     }
                                     }
 
-                                    function createAndInsertMessage(id, timestamp) {
+                                    function createAndInsertMessage(id) {
                                         const container = document.createElement('div');
                                         container.innerHTML = MESSAGE_TEMPLATE;
                                         const div = container.firstChild;
@@ -281,8 +282,8 @@
 
                                         // If timestamp is null, assume we've gotten a brand new message.
                                         // https://stackoverflow.com/a/47781432/4816918
-                                        timestamp = timestamp ? timestamp.toMillis() : Date.now();
-                                        div.setAttribute('timestamp', timestamp);
+                                       // timestamp = timestamp ? timestamp.toMillis() : Date.now();
+                                        div.setAttribute('msgId', id);
 
                                         // figure out where to insert new message
                                         const existingMessages = messageListElement.children;
@@ -292,15 +293,15 @@
                                             let messageListNode = existingMessages[0];
 
                                             while (messageListNode) {
-                                            const messageListNodeTime = messageListNode.getAttribute('timestamp');
+                                            const messageListNodeId = messageListNode.getAttribute('msgId');
 
-                                            if (!messageListNodeTime) {
+                                            if (!messageListNodeId) {
                                                 throw new Error(
-                                                `Child ${messageListNode.id} has no 'timestamp' attribute`
+                                                `Child ${messageListNode.id} has no 'id' attribute`
                                                 );
                                             }
 
-                                            if (messageListNodeTime > timestamp) {
+                                            if (messageListNodeId > id) {
                                                 break;
                                             }
 
@@ -314,14 +315,13 @@
                                     }
 
                                 // Displays a Message in the UI.
-                                function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
+                                function displayMessage(id, name, text, picUrl, imageUrl) {
                                 var div =
-                                    document.getElementById(id) || createAndInsertMessage(timestamp);
+                                    document.getElementById(id) || createAndInsertMessage(id);
 
                                 // profile picture
                                 if (picUrl) {
-                                    div.querySelector('.pic').style.backgroundImage =
-                                    'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
+                                    div.querySelector('.pic').setAttribute('src', addSizeToGoogleProfilePic(picUrl));
                                 }
 
                                 div.querySelector('.name').textContent = name;
@@ -351,19 +351,25 @@
                                 messageInputElement.focus();
                                 }
 
-                                const messageRef = sRef(db, 'bookroom');
-                                onValue(messageRef, (snapshot) => {
-                                const data = snapshot.val();
-                                if(data != null){
-                            
-                                    let setToList = [new Set(data)];
-                                    
-                                    for(let i = 0; i < data.length; i++){
-                                        if(data[i].timestamp != null){
-                                            displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                        }  
+                                // Keep track of booking id for realtime access here
+                                let rmSearchUrl = sRef(db, 'users/userAccount/'+userId+'/roomdata');
+                                onValue(rmSearchUrl, (snapshot) => {
+                                    let rmsearchData = snapshot.val();
+                                    if(rmsearchData != null ){
+                                        let messageRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
+                                        onValue(messageRef, (snapshot) => {
+                                            const data = snapshot.val();
+                                            if(data != null){
+                                                // let setToList = [new Set(data)];
+                                                for(let i = 0; i < data.length; i++){
+                                                    if(data[i] != null){
+                                                        displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                    }  
+                                                }
+                                            }  
+                                        });
+                                        
                                     }
-                                    }       
                                 });
 
                                 // A loading image URL.
@@ -433,46 +439,37 @@
                                             // Handle successful uploads on complete
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                            
-                                            function writeUserData(name, email, imageUrl) {
-                                            set(sRef(db, 'messages/'), {
-                                                name: user.displayName,
-                                                imageUrl: downloadURL,
-                                                profilePicUrl: user.photoURL
-                                            });
-                                            }
-                                            writeUserData(getUserName(), downloadURL, getProfilePicUrl);
-                                        
-                                            addDoc(collection(fs, 'bookroom'), {
-                                                    name: user.displayName,
-                                                    profilePicUrl: user.photoURL,
-                                                    imageUrl: downloadURL,
-                                                    timestamp: timestamp
-                                            });
-                                            addDoc(collection(fs, 'imagePost'), {
-                                                name: user.displayName,
-                                                profilePicUrl: user.photoURL,
-                                                imageUrl: downloadURL,
-                                                timestamp: timestamp
-                                            });
-                                            });
-                                            let messages = [];
-                                            const recentMessageQuery = query(collection(fs, 'bookroom'), orderBy('timestamp', 'desc'), limit(12));
-                                            onSnapshot(recentMessageQuery, function(snapshot) {
-                                                snapshot.docChanges().forEach(function(change) {
-                                                    if(change.type === 'removed') {
-                                                        deleteMessage(change.doc.id);
-                                                    
-                                                    } else {
-                                                        var message = change.doc.data();
-                                                        messages = [];
-                                                        messages.push(message);
-                                                        set(sRef(db, 'bookroom'), messages)
-                                                        // ref('allMessages/').set(messages);
-                                                        //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
+                                                let rmSearchUrl = sRef(db, 'users/userAccount/'+userId+'/roomdata');
+                                                onValue(rmSearchUrl, (snapshot) => {
+                                                    let rmsearchData = snapshot.val();
+                                                    if(rmsearchData != null ){
+                                                        let msgRef = sRef(db, 'bookroom/'+rmsearchData.bookingId);
+                                                        onValue(msgRef, (snapshot) => {
+                                                            let msgData = snapshot.val();
+                                                            if(msgData == null){
+                                                                set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/0'), {
+                                                                    name: user.displayName,
+                                                                    imageUrl: downloadURL,
+                                                                    profilePicUrl: user.photoURL
+                                                                });
+                                                            } else {
+                                                                let msgDataLen = msgData.length;
+                                                                set(sRef(db, 'bookroom/'+rmsearchData.bookingId+'/'+msgDataLen), {
+                                                                    name: user.displayName,
+                                                                    imageUrl: downloadURL,
+                                                                    profilePicUrl: user.photoURL,
+                                                                    // timestamp: timestamp
+                                                                });
+                                                            }
+                                                        },{
+                                                            onlyOnce: true
+                                                        });
+                                                        
                                                     }
-                                                })
+                                                });
+                                            
                                             });
+                                          
                                             
                                             
                                             }
@@ -527,71 +524,7 @@
                                         var userId = user.uid;
                                         let users = [];
 
-                                        // setDoc(doc(fs, "bookroomusers", userId), {
-                                        //     username: userName,
-                                        //     profile_picture : profilePicUrl,
-                                        //     email: user.email,
-                                        //     userId: userId
-                                        // });
-
-                                        // const recentuserQuery = query(collection(fs, 'bookroomusers'));
-                                        // onSnapshot(recentuserQuery, function(snapshot) {
-                                        // console.log(snapshot);
-                                        // var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-                                        // users.push(user);
-                                        // set(sRef(db, 'bookroomusers'), users);
-                                        // });
-
-                                        let usersRef = sRef(db, 'bookroomusers/');
-                                        onValue(usersRef, (snapshot) => {
-                                            let data = snapshot.val();
-                                            let dataLen = data.length;
-                                            if(data == null){
-                                                set(sRef(db, 'bookroomusers/0'), {
-                                                    username: userName,
-                                                    profile_picture : profilePicUrl,
-                                                    email: user.email,
-                                                    userId: userId
-                                                });
-                                            } else {
-                                                set(sRef(db, 'bookroomusers/'+dataLen), {
-                                                    username: userName,
-                                                    profile_picture : profilePicUrl,
-                                                    email: user.email,
-                                                    userId: userId
-                                                });
-                                            }
-                                        });
-                                    
-                                        const userCountRef = sRef(db, 'bookroomusers/');
-                                        onValue(userCountRef, (snapshot) => {
-                                        const data = snapshot.val();
-                            
-                                    
-                                        if(data !== null){
-                                            let userDiv = document.createElement('div');
-                                            let userPic = document.createElement('img');
-                                            let usernm = document.createElement('p');
-                                            for(let i = 0; i < data.length; i++){
-                                                if(data[i] !== null){
-                                                    userDiv.setAttribute('id', 'user'+i);
-                                                    userPic.setAttribute('src', data[i].profile_picture.stringValue);
-                                                    userPic.style.borderRadius = '30%';
-                                                    usernm.innerText = data[i].username.stringValue;
-
-                                                    userDiv.appendChild(userPic);
-                                                    userDiv.appendChild(usernm);
-
-                                                    document.getElementById('userlist').appendChild(userDiv);
-                                                }
-                                            
-                                        }
-                                        }
-                                        });
-
-                                        
-                                
-                                        
+                
 
                                         // Set the user's profile pic and name.
                                         userPicElement.style.backgroundImage =
@@ -668,7 +601,55 @@
                                                         
                                                     }
                                                 }); 
+                                                let usersRef = sRef(db, 'bookroomusers/'+roomData.bookingId);
+                                                onValue(usersRef, (snapshot) => {
+                                                    let data = snapshot.val(); 
+                                                // console.log(data); 
+                                                    let dataLen = data.length;
+                                                    if(data == null){
+                                                        set(sRef(db, 'bookroomusers/'+roomData.bookingId+'/0'), {
+                                                            username: userName,
+                                                            profile_picture : profilePicUrl,
+                                                            email: user.email,
+                                                            userId: userId
+                                                        });
+                                                    } else {
+                                                        if(data[0].userId != userId){
+                                                            set(sRef(db, 'bookroomusers/'+roomData.bookingId+'/1'), {
+                                                            username: userName,
+                                                            profile_picture : profilePicUrl,
+                                                            email: user.email,
+                                                            userId: userId
+                                                        });
+                                                        }
+                                                    }
+                                                });
+                                            
                                                 
+                                                onValue(usersRef, (snapshot) => {
+                                                const data = snapshot.val();
+                                
+                                                if(data !== null){
+                                                    let userDiv = document.createElement('div');
+                                                    let userPic = document.createElement('img');
+                                                    let usernm = document.createElement('p');
+                                                    for(let i = 0; i < data.length; i++){
+                                                        if(data[i] !== null){
+                                                            userDiv.setAttribute('id', 'user'+i);
+                                                            userPic.setAttribute('src', data[i].profile_picture.stringValue);
+                                                            userPic.style.borderRadius = '30%';
+                                                            usernm.innerText = data[i].username.stringValue;
+
+                                                            userDiv.appendChild(userPic);
+                                                            userDiv.appendChild(usernm);
+
+                                                            document.getElementById('userlist').appendChild(userDiv);
+                                                        }
+                                                    
+                                                }
+                                                }
+                                                
+                                                });
                                                 
                                             }     
                                         });
@@ -686,7 +667,7 @@
                                     }
                                 });
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = "https://buorgoldengreenresorts.homes/userAccount.html";
+                                    window.location = "https://www.buorgoldengreenresorts.homes/UserAccount.html";
                                 });
                             </script>
                             <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>

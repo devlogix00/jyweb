@@ -1,739 +1,685 @@
-<!doctype html>
-<!--
-  Copyright 2015 Google Inc. All rights reserved.
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-      https://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
--->
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Learn how to use the Firebase platform on the Web">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>bookMe</title>
-
-  <!-- Disable tap highlight on IE -->
-  <meta name="msapplication-tap-highlight" content="no">
-
-  <!-- Web Application Manifest -->
-  <!-- <link rel="manifest" href="manifest.json"> -->
-
-  <!-- Add to homescreen for Chrome on Android -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Friendly Chat">
-  <meta name="theme-color" content="#303F9F">
-
-  <!-- Add to homescreen for Safari on iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Friendly Chat">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
-
-  <!-- Tile icon for Win8 -->
-  <meta name="msapplication-TileColor" content="#3372DF">
-  <meta name="msapplication-navbutton-color" content="#303F9F">
-
-  <!-- Material Design Lite -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-
-  <!-- App Styling -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-  <link rel="stylesheet" href="main.css">
-
-  <!-- TODO: Enable First Input Delay polyfill library. -->
-  <!--  <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script> -->
-
-</head>
-<body>
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
-  <!-- Header section containing logo -->
-  <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
-    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-      <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-        <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
-      </div>
-      <div id="user-container">
-        <div hidden id="user-pic"></div>
-        <div hidden id="user-name"></div>
-        <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-          Sign-out
-        </button>
-        <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-          <i class="material-icons">account_circle</i>Sign-in with Google
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main class="mdl-layout__content mdl-color--grey-100">
-    <div>
-        <div id="img" style="display: flex; flex-direction: row;">
-            <div id="bookingInfo" style="padding-left: 2em; padding-top: 1em;">
-                <button id="start" style="display: none; ">Start Tour</button>
-            </div>
-        </div>
-    </div> 
-    <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
-      <!-- Messages container -->
-      <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-          <div id="messages">
-          </div>
-          <form id="message-form">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
-              <label class="mdl-textfield__label" for="message">Message...</label>
-            </div>
-            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-              Send
-            </button>
-          </form>
-          <form id="image-form" action="#" >
-            <input id="mediaCapture" type="file" accept="image/*" capture="camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-              <i class="material-icons">image</i>
-            </button>
-          </form>
-        </div>
-   
-      </div>
-      <div id="userlist">
-
-      </div>
-
-      <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-        <div class="mdl-snackbar__text"></div>
-        <button class="mdl-snackbar__action" type="button"></button>
-      </div>
-
-      <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
-        import {
-        getAuth,
-        onAuthStateChanged,
-        GoogleAuthProvider,
-        signInWithPopup,
-        signOut,
-        } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
-        import {
-        getDatabase,
-        ref as sRef, 
-        set, 
-        onValue,
-        update
-        } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
-        import {
-        ref,
-        getStorage,
-        uploadBytesResumable,
-        getDownloadURL,
-        } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-messaging.js";
-        import { getPerformance } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-performance.js";
-        import { addDoc, collection, getFirestore, Timestamp, orderBy, limit, onSnapshot, query, serverTimestamp, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
-        const firebaseConfig = {
-            apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
-            authDomain: "booking-app-6750f.firebaseapp.com",
-            databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
-            projectId: "booking-app-6750f",
-            storageBucket: "booking-app-6750f.appspot.com",
-            messagingSenderId: "687482685582",
-            appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
-            measurementId: "G-0WDDDKD9ZL"
-        };
-
-        let app = initializeApp(firebaseConfig);
-        const db = getDatabase();
-        const fs = getFirestore(app);
-        let timestamp = serverTimestamp();
-        let messages = [];
-        const recentMessageQuery = query(collection(fs, 'booktour'), orderBy('timestamp', 'desc'), limit(12));
-        // Signs-in BookMe.
-        async function signIn() {
-        var provider = new GoogleAuthProvider();
-        signInWithPopup(getAuth(), provider);
-        }
-
-        // Signs-out of BookMe.
-        function signOutUser() {
-        signOut(getAuth());
-        }
-
-        // Initiate firebase auth
-        function initFirebaseAuth() {
-        onAuthStateChanged(getAuth(), authStateObserver);
-        }
-
-        // Returns the signed-in user's profile Pic URL.
-        function getProfilePicUrl() {
-        return getAuth().currentUser.photoURL;
-        }
-
-        // Returns the signed-in user's display name.
-        function getUserName() {
-        return getAuth().currentUser.displayName;
-        }
-
-        // Returns true if a user is signed-in.
-        function isUserSignedIn() {
-        return !!getAuth().currentUser;
-        } 
-
-        // Template for messages.
-        var MESSAGE_TEMPLATE =
-        '<div class="message-container">' +
-        '<div class="spacing"><div class="pic"></div></div>' +
-        '<div class="message"></div>' +
-        '<div class="name"></div>' +
-        '</div>';
-
-        var messageListElement = document.getElementById('messages');
-        var messageFormElement = document.getElementById('message-form');
-        var messageInputElement = document.getElementById('message');
-        var submitButtonElement = document.getElementById('submit');
-        var imageButtonElement = document.getElementById('submitImage');
-        var imageFormElement = document.getElementById('image-form');
-        var mediaCaptureElement = document.getElementById('mediaCapture');
-        var userPicElement = document.getElementById('user-pic');
-        var userNameElement = document.getElementById('user-name');
-        var signInButtonElement = document.getElementById('sign-in');
-        var signOutButtonElement = document.getElementById('sign-out');
-        var signInSnackbarElement = document.getElementById('must-signin-snackbar');
-
-        messageFormElement.addEventListener('submit', onMessageFormSubmit);
-        signOutButtonElement.addEventListener('click', signOutUser);
-        signInButtonElement.addEventListener('click', signIn);
-
-        // Toggle for the button.
-        messageInputElement.addEventListener('keyup', toggleButton);
-        messageInputElement.addEventListener('change', toggleButton);
-
-        // Adds a size to Google Profile pics URLs.
-        function addSizeToGoogleProfilePic(url) {
-        if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
-            return url + '?sz=150';
-        }
-        return url;
-        }
-
-       
-
-            
-
-        // Triggers when the auth state change for instance when the user signs-in or signs-out.
-        function authStateObserver(user) {
-        if (user) {
-            // User is signed in!
-            // Get the signed-in user's profile pic and name.
-            var profilePicUrl = getProfilePicUrl();
-            var userName = getUserName();
-            var userId = user.uid;
-            let users = [];
-           
-            // let tourRef = sRef(db, 'users/userAccount/'+userId+'/tourdata');
-            // onValue(tourRef, (snapshot) => {
-            //     let tourData = snapshot.val();
-            //     let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
-            //     onValue(trSearchUrl, (snapshot) => {
-            //         let trSearchData = snapshot.val();
-            //         let splitUrl = trSearchData.bookingUrl.split('/');
-            //         let bookingId = splitUrl[3];
-
-            //         setDoc(doc(fs, "booktourusers", userId), {
-            //             username: userName,
-            //             profile_picture : profilePicUrl,
-            //             email: user.email,
-            //             userId: userId
-            //         });
-            //     });
-            // });
-            
-            // const recentuserQuery = query(collection(fs, 'booktourusers'));
-            // onSnapshot(recentuserQuery, function(snapshot) {
-            //    var user = snapshot._snapshot.docChanges[0].doc.data.value.mapValue.fields;
-            //    users.push(user);
-            //    set(sRef(db, 'booktourusers'), users);
-            // });
-
-            let usersRef = sRef(db, 'booktourusers/');
-            onValue(usersRef, (snapshot) => {
-                let data = snapshot.val();
-                let dataLen = data.length;
-                if(data == null){
-                    set(sRef(db, 'booktourusers/0'), {
-                        username: userName,
-                        profile_picture : profilePicUrl,
-                        email: user.email,
-                        userId: userId
-                    });
-                } else {
-                    set(sRef(db, 'booktourusers/'+dataLen), {
-                        username: userName,
-                        profile_picture : profilePicUrl,
-                        email: user.email,
-                        userId: userId
-                    });
-                }
-            });
-        
-            const userCountRef = sRef(db, 'booktourusers/');
-            onValue(userCountRef, (snapshot) => {
-            const data = snapshot.val();
-   
-            let userDiv = document.createElement('div');
-            let userPic = document.createElement('img');
-            let usernm = document.createElement('p');
-            for(let i = 0; i < data.length; i++){
-                userDiv.setAttribute('id', 'user'+i);
-                userPic.setAttribute('src', data[i].profile_picture.stringValue);
-                userPic.style.borderRadius = '30%';
-                usernm.innerText = data[i].username.stringValue;
-
-                userDiv.appendChild(userPic);
-                userDiv.appendChild(usernm);
-
-                document.getElementById('userlist').appendChild(userDiv);
-            }
-            });
-
-            // Set the user's profile pic and name.
-            userPicElement.style.backgroundImage =
-            'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
-            userNameElement.textContent = userName;
-
-            // Show user's profile and sign-out button.
-            userNameElement.removeAttribute('hidden');
-            userPicElement.removeAttribute('hidden');
-            signOutButtonElement.removeAttribute('hidden');
-
-            // Hide sign-in button.
-            signInButtonElement.setAttribute('hidden', 'true');
-
-            // We save the Firebase Messaging Device token and enable notifications.
-            // saveMessagingDeviceToken();
-
-            let status = document.createElement('h2');
-            status.innerText = 'Tour Started';
-            onValue(tourRef, (snapshot) => {
-                let nwtourData = snapshot.val();
-                if(nwtourData != null){
-                    let trImg = document.createElement('img');
-                    trImg.setAttribute('src', nwtourData.img);
-                    trImg.style.width = '400px';
-                    trImg.style.height = '400px';
-                    trImg.style.borderRadius = '100px';
-                    trImg.style.paddingTop = '1em';
-                    trImg.style.paddingLeft = '1em';
-                    document.getElementById('img').appendChild(trImg);
-                    let trNme = document.createElement('h1');
-                    trNme.innerText = nwtourData.tour;
-                    let bookingDates = document.createElement('h3');
-                    if(nwtourData.tourDates.length === 2){
-                        bookingDates.innerText = 'Booking Dates: '+nwtourData.tourDates[0]+' - '+nwtourData.tourDates[1];
-                    } else {
-                        bookingDates.innerText = 'Booking Date: '+nwtourData.tourDates[0];
-                    }
-                    let checkin = document.createElement('h3');
-                    checkin.innerText = nwtourData.checkin;
-                    document.getElementById('bookingInfo').appendChild(trNme);
-                    document.getElementById('bookingInfo').appendChild(bookingDates);
-
-                    onValue(tourRef, (snapshot) => {
-                    let data = snapshot.val();
-                    
-                    if(data.currentUser == user.uid && data.tourStarted == null){
-                        document.getElementById('start').style.display = 'block';
-                    } else if(data.host == user.uid && data.tourStarted == 'True'){
-                        document.getElementById('bookingInfo').appendChild(status);
-                    } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
-                        document.getElementById('bookingInfo').appendChild(status);
-                    } 
-                    });
-                    document.getElementById('start').addEventListener('click', function(){
-                     //   console.log('tour started!');
-                        updates['tours/'+nwtourData.listingName+'/tourStarted'] = "True";
-                        update(sRef(db), updates);
-                        let startBtn = document.getElementById('start');
-                        startBtn.remove();
-                    
-                        document.getElementById('bookingInfo').appendChild(status);
-                    });
-            
-                }
-
-            });
-            // Saves a new message on the Cloud Firestore.
-            async function saveMessage(messageText) {
-                let tourRef = sRef(db, 'users/userAccount/'+userId+'/tourdata');
-            onValue(tourRef, (snapshot) => {
-                let tourData = snapshot.val();
-                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
-                onValue(trSearchUrl, (snapshot) => {
-                    let trSearchData = snapshot.val();
-                    let splitUrl = trSearchData.bookingUrl.split('/');
-                    let bookingId = splitUrl[3];
-
-                    addDoc(collection(fs, 'booktour'), {
-                        name: getUserName(),
-                        profilePicUrl: getProfilePicUrl(),
-                        text: messageText,
-                        bookingId: bookingId,
-                        timestamp: timestamp
-                    });
-
-                   
-                });
-            });
-                
-            
-                onSnapshot(recentMessageQuery, function(snapshot) {
-                    snapshot.docChanges().forEach(function(change) {
-                        if(change.type === 'removed') {
-                            deleteMessage(change.doc.id);
-                    
-                        } else {
-                            var message = change.doc.data();
-                            messages.push(message);
-                            set(sRef(db, 'booktour'), messages)
-                        // ref('allMessages/').set(messages);
-                            //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                        }
-                    })
-                });
-            }
-        } else {
-            // User is signed out!
-            // Hide user's profile and sign-out button.
-            userNameElement.setAttribute('hidden', 'true');
-            userPicElement.setAttribute('hidden', 'true');
-            signOutButtonElement.setAttribute('hidden', 'true');
-
-            // Show sign-in button.
-            signInButtonElement.removeAttribute('hidden');
-        }
-
-    }
-
-        // Returns true if user is signed-in. Otherwise false and displays a message.
-        function checkSignedInWithMessage() {
-        // Return true if the user is signed in Firebase
-        if (isUserSignedIn()) {
-            return true;
-        }
-
-        // Display a message to the user using a Toast.
-        var data = {
-            message: 'You must sign-in first',
-            timeout: 2000,
-        };
-        signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
-        return false;
-        }
-
-        // Resets the given MaterialTextField.
-        function resetMaterialTextfield(element) {
-        element.value = '';
-        element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
-        }
-
-        // Triggered when the send new message form is submitted.
-        function onMessageFormSubmit(e) {
-        e.preventDefault();
-        // Check that the user entered a message and is signed in.
-        if (messageInputElement.value && checkSignedInWithMessage()) {
-            saveMessage(messageInputElement.value).then(function () {
-            // Clear message text field and re-enable the SEND button.
-            resetMaterialTextfield(messageInputElement);
-            toggleButton();
-            });
-        }
-        }
-
-        // Enables or disables the submit button depending on the values of the input
-        // fields.
-        function toggleButton() {
-        if (messageInputElement.value) {
-            submitButtonElement.removeAttribute('disabled');
-        } else {
-            submitButtonElement.setAttribute('disabled', 'true');
-        }
-        }
-
-        function createAndInsertMessage(id, timestamp) {
-            const container = document.createElement('div');
-            container.innerHTML = MESSAGE_TEMPLATE;
-            const div = container.firstChild;
-            div.setAttribute('id', id);
-
-            // If timestamp is null, assume we've gotten a brand new message.
-            // https://stackoverflow.com/a/47781432/4816918
-            timestamp = timestamp ? timestamp.toMillis() : Date.now();
-            div.setAttribute('timestamp', timestamp);
-
-            // figure out where to insert new message
-            const existingMessages = messageListElement.children;
-            if (existingMessages.length === 0) {
-                messageListElement.appendChild(div);
-            } else {
-                let messageListNode = existingMessages[0];
-
-                while (messageListNode) {
-                const messageListNodeTime = messageListNode.getAttribute('timestamp');
-
-                if (!messageListNodeTime) {
-                    throw new Error(
-                    `Child ${messageListNode.id} has no 'timestamp' attribute`
-                    );
-                }
-
-                if (messageListNodeTime > timestamp) {
-                    break;
-                }
-
-                messageListNode = messageListNode.nextSibling;
-                }
-
-                messageListElement.insertBefore(div, messageListNode);
-            }
-
-            return div;
-        }
-
-    // Displays a Message in the UI.
-    function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
-    var div =
-        document.getElementById(id) || createAndInsertMessage(timestamp);
-
-    // profile picture
-    if (picUrl) {
-        div.querySelector('.pic').style.backgroundImage =
-        'url(' + addSizeToGoogleProfilePic(picUrl) + ')';
-    }
-
-    div.querySelector('.name').textContent = name;
-    var messageElement = div.querySelector('.message');
-
-    if (text) {
-        // If the message is text.
-        messageElement.textContent = text;
-        // Replace all line breaks by <br>.
-        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-    } else if (imageUrl) {
-        // If the message is an image.
-        var image = document.createElement('img');
-        image.addEventListener('load', function () {
-        messageListElement.scrollTop = messageListElement.scrollHeight;
-        });
-        image.src = imageUrl;
- 
-        messageElement.innerHTML = '';
-        messageElement.appendChild(image);
-    }
-    // Show the card fading-in and scroll to view the new message.
-    setTimeout(function () {
-        div.classList.add('visible');
-    }, 1);
-    messageListElement.scrollTop = messageListElement.scrollHeight;
-    messageInputElement.focus();
-    }
-
-    const messageRef = sRef(db, 'booktour');
-    onValue(messageRef, (snapshot) => {
-      const data = snapshot.val();
-      if(data != null){
-   
-        let setToList = [new Set(data)];
-        
-        for(let i = 0; i < data.length; i++){
-            if(data[i].timestamp != null){
-                displayMessage(i, data[i].timestamp, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-            }  
-          }
-        }       
-    });
-
-    // A loading image URL.
-    var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
-
-    // Events for image upload.
-    imageButtonElement.addEventListener('click', function (e) {
-    e.preventDefault();
-    mediaCaptureElement.click();
-    });
-    mediaCaptureElement.addEventListener('change', onMediaFileSelected);
-
-    // Triggered when a file is selected via the media picker.
-    function onMediaFileSelected(event) {
-    event.preventDefault();
-    var file = event.target.files[0];
-   
-
-    // Clear the selection in the file picker input.
-    imageFormElement.reset();
-
-    // Check if the file is an image.
-    if (!file.type.match('image.*')) {
-        var data = {
-        message: 'You can only share images',
-        timeout: 2000,
-        };
-        signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
-        return;
-    }
-    // Check if the user is signed-in
-    if (checkSignedInWithMessage()) {
-        saveImageMessage(file);
-    }
-    }
-
-    // Saves a new message containing an image in Firebase.
-    // This first saves the image in Firebase storage.
-    async function saveImageMessage(file){
-        try{
-            // 1 - Add a message with a loading icon that will get updated with the shared image
-           
-
-            const storage = getStorage();
-            const storageRef = ref(storage, 'images/'+file.name);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-
-            uploadTask.on('state_changed', 
-            (snapshot) => {
-                // Observe state change events such as progress, pause, and resume
-                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                
-                switch (snapshot.state) {
-                case 'paused':
-                    
-                    break;
-                case 'running':
-                    
-                    break;
-                }
-            }, 
-            (error) => {
-                // Handle unsuccessful uploads
-            }, 
-            () => {
-                // Handle successful uploads on complete
-                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                
-                function writeUserData(name, email, imageUrl) {
-                set(sRef(db, 'messages/'), {
-                    name: getUserName(),
-                    imageUrl: downloadURL,
-                    profilePicUrl: getProfilePicUrl()
-                });
-                }
-                writeUserData(getUserName(), downloadURL, getProfilePicUrl);
-               
-                addDoc(collection(fs, 'booktour'), {
-                        name: getUserName(),
-                        profilePicUrl: getProfilePicUrl(),
-                        imageUrl: downloadURL,
-                        timestamp: timestamp
-                });
-                addDoc(collection(fs, 'imagePost'), {
-                    name: getUserName(),
-                    profilePicUrl: getProfilePicUrl(),
-                    imageUrl: downloadURL,
-                    timestamp: timestamp
-                });
-                });
-                let messages = [];
-                const recentMessageQuery = query(collection(fs, 'booktour'), orderBy('timestamp', 'desc'), limit(12));
-                onSnapshot(recentMessageQuery, function(snapshot) {
-                    snapshot.docChanges().forEach(function(change) {
-                        if(change.type === 'removed') {
-                            deleteMessage(change.doc.id);
-                        
-                        } else {
-                            var message = change.doc.data();
-                            messages = [];
-                            messages.push(message);
-                            set(sRef(db, 'booktour'), messages)
-                            // ref('allMessages/').set(messages);
-                            //displayMessage(change.doc.id, message.timestamp, message.name, message.text, message.profilePicUrl, message.imageUrl);
-                        }
-                    })
-                });
-                
-                
-                }
-            );
-
-        }
-        catch(error){
-            console.error('There was an error uploading a file to Cloud Storage: ', error);
-        }
-    }
-
-    function saveMessagingDeviceToken() {
-        try{
-            const currentToken = getToken(getMessaging());
-            if(currentToken){
-             
-                // Saving the Device Token to Real-Time Database.
-                const updates = {};
-                updates['messages/fcmTokens'] = currentToken;
-                update(ref(db), updates);
-
-                // This will fire when a message is received while the app is in the foreground.
-                // When the app is in the background, firebase-messaging-sw.js will receive the message instead.
-                onMessage(getMessaging(), (message) => {
-                  
-                });
-            } else {
-                // Need to request permissions to show notifications.
-                requestNotificationsPermissions();
-            }
-        } catch(error) {
-            console.error('Unable to get messaging token.', error);
-        }
-    }
-
-    function requestNotificationsPermissions(){
-        
-        const permission = Notification.requestPermission();
-        if(permission === 'granted'){
-          
-            // Notification permission granted
-            saveMessagingDeviceToken();
-        } else {
-         
-        }
-    }
-
-    
-   
-
-    initFirebaseAuth();
-    authStateObserver(getAuth().currentUser);
-
-    document.getElementById('bookme').addEventListener('click', function(){
-        window.location = 'https://buorgoldengreenresorts.homes/src/host/index.html';
-    });
-
-      </script>
-      <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
-      <!-- <script type="module" src="./index.js"></script> -->
-    </div>
-  </main>
-</div>
-</body>
-</html>
+<!DOCTYPE html>
+            <html>
+            <head></head>
+            <!-- Material Design Lite -->
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+            <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+            <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+            <!-- App Styling -->
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+            <link rel="stylesheet" href="main.css">
+            <body>
+                <div>
+                    <div id="chatBox">
+                        <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                        <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+                        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+                        <div id="bookme" class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                            <h3><i class="material-icons">chat_bubble_outline</i>BookMe</h3>
+                        </div>
+                        <div id="user-container">
+                            <div hidden id="user-pic"></div>
+                            <div hidden id="user-name"></div>
+                            <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                            Sign-out
+                            </button>
+                            <button id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                            <i class="material-icons">account_circle</i>Sign-in with Google
+                            </button>
+                        </div>
+                        </div>
+                    </header>
+                    <main class="mdl-layout__content mdl-color--grey-100">
+                    <div>
+                        <div id="img" style="display: flex; flex-direction: row;">
+                            <div id="bookingInfo" style="padding-left: 2em; padding-top: 1em;">
+                                <button id="pickup" style="display: none; ">Pick Up</button>
+                            </div>
+                            
+                            
+                        </div>
+                    </div> 
+                        <div id="messages-card-container" style="width: 100%; margin-left: 2em; display: flex; justify-content: center;" >
+                            <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+                                <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                <div id="messages">
+                                </div>
+                                <form id="message-form">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
+                                    <label class="mdl-textfield__label" for="message">Message...</label>
+                                    </div>
+                                    <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                                    Send
+                                    </button>
+                                </form>
+                                <form id="image-form" action="#" >
+                                    <input id="mediaCapture" type="file" accept="image/*" capture="camera">
+                                    <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+                                    <i class="material-icons">image</i>
+                                    </button>
+                                </form>
+                                </div>
+
+                                <div id="userlist"></div>
+                                
+                            </div>
+
+                            <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
+                                <div class="mdl-snackbar__text"></div>
+                                <button class="mdl-snackbar__action" type="button"></button>
+                            </div>
+
+                            <script type="module">
+                                // Import the functions you need from the SDKs you need
+                                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+                                import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
+                                import { initializeAuth,getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
+                                import { getDatabase, ref as sRef, set, push, child, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+                                import {addDoc, collection, getFirestore, Timestamp, orderBy, limit, onSnapshot, query, serverTimestamp, setDoc, doc, getDocs} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
+                                import {ref,getStorage,uploadBytesResumable,getDownloadURL} from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js";
+                                import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-messaging.js";
+                                import { getPerformance } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-performance.js";
+                                // TODO: Add SDKs for Firebase products that you want to use
+                                // https://firebase.google.com/docs/web/setup#available-libraries
+                                
+                                // Your web app's Firebase configuration
+                                // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+                                const firebaseConfig = {
+                                    apiKey: "AIzaSyAN-hSy8cWKUKJS4SxjNcN9lrmvZPTy430",
+                                    authDomain: "booking-app-6750f.firebaseapp.com",
+                                    databaseURL: "https://booking-app-6750f-default-rtdb.firebaseio.com",
+                                    projectId: "booking-app-6750f",
+                                    storageBucket: "booking-app-6750f.appspot.com",
+                                    messagingSenderId: "687482685582",
+                                    appId: "1:687482685582:web:a91f903ce5133c4f5aa1df",
+                                    measurementId: "G-0WDDDKD9ZL"
+                                    };
+                                
+                                // Initialize Firebase
+                                const app = initializeApp(firebaseConfig);
+                                const analytics = getAnalytics(app);
+                                const auth = getAuth();  
+                                const db = getDatabase(); 
+                                const fs = getFirestore();
+                                let timestamp = serverTimestamp();
+                                let messages = [];
+
+                                //initFirebaseAuth();
+                               // authStateObserver(getAuth().currentUser);
+
+                                document.getElementById('bookme').addEventListener('click', function(){
+                                    window.location = 'https://www.buorgoldengreenresorts.homes/UserAccount.html';
+                                });
+
+                               // console.log(auth);
+                                let updates = {};
+
+                                onAuthStateChanged(auth, (user) => {
+                                    if(user){
+
+                                        const recentMessageQuery = query(collection(getFirestore(), 'booktour'), orderBy('timestamp', 'desc'), limit(12));
+                                 // Signs-in BookMe.
+                                async function signIn() {
+                                var provider = new GoogleAuthProvider();
+                                signInWithPopup(getAuth(), provider);
+                                }
+
+                                // Signs-out of BookMe.
+                                function signOutUser() {
+                                signOut(getAuth());
+                                }
+
+                                // Initiate firebase auth
+                                // function initFirebaseAuth() {
+                                // onAuthStateChanged(getAuth(), authStateObserver);
+                                // }
+
+                                // Returns the signed-in user's profile Pic URL.
+                                function getProfilePicUrl() {
+                                return getAuth().currentUser.photoURL;
+                                }
+
+                                // Returns the signed-in user's display name.
+                                function getUserName() {
+                                return getAuth().currentUser.displayName;
+                                }
+
+                                // Returns true if a user is signed-in.
+                                function isUserSignedIn() {
+                                return !!getAuth().currentUser;
+                                } 
+
+                                // Template for messages.
+                                var MESSAGE_TEMPLATE =
+                                '<div class="message-container">' +
+                                '<img class="pic"/>' +
+                                '<div class="message"></div>' +
+                                '<div class="name"></div>' +
+                                '</div>';
+
+                                var messageListElement = document.getElementById('messages');
+                                var messageFormElement = document.getElementById('message-form');
+                                var messageInputElement = document.getElementById('message');
+                                var submitButtonElement = document.getElementById('submit');
+                                var imageButtonElement = document.getElementById('submitImage');
+                                var imageFormElement = document.getElementById('image-form');
+                                var mediaCaptureElement = document.getElementById('mediaCapture');
+                                var userPicElement = document.getElementById('user-pic');
+                                var userNameElement = document.getElementById('user-name');
+                                var signInButtonElement = document.getElementById('sign-in');
+                                var signOutButtonElement = document.getElementById('sign-out');
+                                var signInSnackbarElement = document.getElementById('must-signin-snackbar');
+
+                                messageFormElement.addEventListener('submit', onMessageFormSubmit);
+                                signOutButtonElement.addEventListener('click', signOutUser);
+                                signInButtonElement.addEventListener('click', signIn);
+
+                                // Toggle for the button.
+                                messageInputElement.addEventListener('keyup', toggleButton);
+                                messageInputElement.addEventListener('change', toggleButton);
+
+                                // Adds a size to Google Profile pics URLs.
+                                function addSizeToGoogleProfilePic(url) {
+                                if (url.indexOf('googleusercontent.com') !== -1 && url.indexOf('?') === -1) {
+                                    return url + '?sz=150';
+                                }
+                                return url;
+                                }
+
+                                // Triggers when the auth state change for instance when the user signs-in or signs-out.
+                                // function authStateObserver(user) {
+                                // if (user) {
+                                    
+                                //     } else {
+                                       
+                                //     }
+                                // }
+
+                                    // Returns true if user is signed-in. Otherwise false and displays a message.
+                                    function checkSignedInWithMessage() {
+                                    // Return true if the user is signed in Firebase
+                                    if (isUserSignedIn()) {
+                                        return true;
+                                    }
+
+                                    // Display a message to the user using a Toast.
+                                    var data = {
+                                        message: 'You must sign-in first',
+                                        timeout: 2000,
+                                    };
+                                    signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
+                                    return false;
+                                    }
+
+                                    // Saves a new message on the Cloud Firestore.
+                                    async function saveMessage(messageText) {
+                                        let trSearchUrl = sRef(db, 'users/userAccount/'+userId+'/tourdata');
+                                        onValue(trSearchUrl, (snapshot) => {
+                                            let trsearchData = snapshot.val();
+                                            if(trsearchData != null ){
+                                                let msgRef = sRef(db, 'booktour/'+trsearchData.bookingId);
+                                                onValue(msgRef, (snapshot) => {
+                                                    let msgData = snapshot.val();
+                                                    if(msgData == null){
+                                                        set(sRef(db, 'booktour/'+trsearchData.bookingId+'/0'), {
+                                                            name: user.displayName,
+                                                            text: messageText,
+                                                            profilePicUrl: user.photoURL
+                                                        });
+                                                    } else {
+                                                        let msgDataLen = msgData.length;
+                                                        set(sRef(db, 'booktour/'+trsearchData.bookingId+'/'+msgDataLen), {
+                                                            name: user.displayName,
+                                                            text: messageText,
+                                                            profilePicUrl: user.photoURL
+                                                        });
+                                                    }
+                                                },{
+                                                    onlyOnce: true
+                                                });
+                                                
+                                            }
+                                        });
+                                    }
+
+                                    // Resets the given MaterialTextField.
+                                    function resetMaterialTextfield(element) {
+                                    element.value = '';
+                                    element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
+                                    }
+
+                                    // Triggered when the send new message form is submitted.
+                                    function onMessageFormSubmit(e) {
+                                    e.preventDefault();
+                                    // Check that the user entered a message and is signed in.
+                                    if (messageInputElement.value && checkSignedInWithMessage()) {
+                                        saveMessage(messageInputElement.value).then(function () {
+                                        // Clear message text field and re-enable the SEND button.
+                                        resetMaterialTextfield(messageInputElement);
+                                        toggleButton();
+                                        });
+                                    }
+                                    }
+
+                                    // Enables or disables the submit button depending on the values of the input
+                                    // fields.
+                                    function toggleButton() {
+                                    if (messageInputElement.value) {
+                                        submitButtonElement.removeAttribute('disabled');
+                                    } else {
+                                        submitButtonElement.setAttribute('disabled', 'true');
+                                    }
+                                    }
+
+                                    function createAndInsertMessage(id) {
+                                        const container = document.createElement('div');
+                                        container.innerHTML = MESSAGE_TEMPLATE;
+                                        const div = container.firstChild;
+                                        div.setAttribute('id', id);
+
+                                        // If timestamp is null, assume we've gotten a brand new message.
+                                        // https://stackoverflow.com/a/47781432/4816918
+                                        //timestamp = timestamp ? timestamp.toMillis() : Date.now();
+                                        div.setAttribute('msgId', id);
+
+                                        // figure out where to insert new message
+                                        const existingMessages = messageListElement.children;
+                                        if (existingMessages.length === 0) {
+                                            messageListElement.appendChild(div);
+                                        } else {
+                                            let messageListNode = existingMessages[0];
+
+                                            while (messageListNode) {
+                                            const messageListNodeId = messageListNode.getAttribute('msgId');
+
+                                            if (!messageListNodeId) {
+                                                throw new Error(
+                                                `Child ${messageListNode.id} has no 'id' attribute`
+                                                );
+                                            }
+
+                                            if (messageListNodeId > id) {
+                                                break;
+                                            }
+
+                                            messageListNode = messageListNode.nextSibling;
+                                            }
+
+                                            messageListElement.insertBefore(div, messageListNode);
+                                        }
+
+                                        return div;
+                                    }
+
+                                // Displays a Message in the UI.
+                                function displayMessage(id, name, text, picUrl, imageUrl) {
+                                var div =
+                                    document.getElementById(id) || createAndInsertMessage(id);
+
+                                // profile picture
+                                if (picUrl) {
+                                    div.querySelector('.pic').setAttribute('src', addSizeToGoogleProfilePic(picUrl));
+                                }
+
+                                div.querySelector('.name').textContent = name;
+                                var messageElement = div.querySelector('.message');
+
+                                if (text) {
+                                    // If the message is text.
+                                    messageElement.textContent = text;
+                                    // Replace all line breaks by <br>.
+                                    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+                                } else if (imageUrl) {
+                                    // If the message is an image.
+                                    var image = document.createElement('img');
+                                    image.addEventListener('load', function () {
+                                    messageListElement.scrollTop = messageListElement.scrollHeight;
+                                    });
+                                    image.src = imageUrl;
+                            
+                                    messageElement.innerHTML = '';
+                                    messageElement.appendChild(image);
+                                }
+                                // Show the card fading-in and scroll to view the new message.
+                                setTimeout(function () {
+                                    div.classList.add('visible');
+                                }, 1);
+                                messageListElement.scrollTop = messageListElement.scrollHeight;
+                                messageInputElement.focus();
+                                }
+
+                                // Keep track of booking id for realtime access here
+                                let trSearchUrl = sRef(db, 'users/userAccount/'+userId+'/tourdata');
+                                onValue(trSearchUrl, (snapshot) => {
+                                    let trsearchData = snapshot.val();
+                                    if(trsearchData != null ){
+                                        let messageRef = sRef(db, 'booktour/'+trsearchData.bookingId);
+                                        onValue(messageRef, (snapshot) => {
+                                            const data = snapshot.val();
+                                            if(data != null){
+                                                // let setToList = [new Set(data)];
+                                                for(let i = 0; i < data.length; i++){
+                                                    if(data[i] != null){
+                                                        displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                    }  
+                                                }
+                                            }  
+                                        });
+                                        
+                                    }
+                                });
+
+                                // A loading image URL.
+                                var LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif?a';
+
+                                // Events for image upload.
+                                imageButtonElement.addEventListener('click', function (e) {
+                                e.preventDefault();
+                                mediaCaptureElement.click();
+                                });
+                                mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+
+                                // Triggered when a file is selected via the media picker.
+                                function onMediaFileSelected(event) {
+                                event.preventDefault();
+                                var file = event.target.files[0];
+                            
+
+                                // Clear the selection in the file picker input.
+                                imageFormElement.reset();
+
+                                // Check if the file is an image.
+                                if (!file.type.match('image.*')) {
+                                    var data = {
+                                    message: 'You can only share images',
+                                    timeout: 2000,
+                                    };
+                                    signInSnackbarElement.MaterialSnackbar.showSnackbar(data);
+                                    return;
+                                }
+                                // Check if the user is signed-in
+                                if (checkSignedInWithMessage()) {
+                                    saveImageMessage(file);
+                                }
+                                }
+
+                                // Saves a new message containing an image in Firebase.
+                                // This first saves the image in Firebase storage.
+                                async function saveImageMessage(file){
+                                    try{
+                                        // 1 - Add a message with a loading icon that will get updated with the shared image
+                                    
+
+                                        const storage = getStorage();
+                                        const storageRef = ref(storage, 'images/'+file.name);
+                                        const uploadTask = uploadBytesResumable(storageRef, file);
+
+                                        uploadTask.on('state_changed', 
+                                        (snapshot) => {
+                                            // Observe state change events such as progress, pause, and resume
+                                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                            
+                                            switch (snapshot.state) {
+                                            case 'paused':
+                                                
+                                                break;
+                                            case 'running':
+                                                
+                                                break;
+                                            }
+                                        }, 
+                                        (error) => {
+                                            // Handle unsuccessful uploads
+                                        }, 
+                                        () => {
+                                            // Handle successful uploads on complete
+                                            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                                            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                                                let trSearchUrl = sRef(db, 'users/userAccount/'+userId+'/tourdata');
+                                                onValue(trSearchUrl, (snapshot) => {
+                                                    let trsearchData = snapshot.val();
+                                                    if(trsearchData != null ){
+                                                        let msgRef = sRef(db, 'booktour/'+trsearchData.bookingId);
+                                                        onValue(msgRef, (snapshot) => {
+                                                            let msgData = snapshot.val();
+                                                            if(msgData == null){
+                                                                set(sRef(db, 'booktour/'+trsearchData.bookingId+'/0'), {
+                                                                    name: user.displayName,
+                                                                    imageUrl: downloadURL,
+                                                                    profilePicUrl: user.photoURL
+                                                                });
+                                                            } else {
+                                                                let msgDataLen = msgData.length;
+                                                                set(sRef(db, 'booktour/'+trsearchData.bookingId+'/'+msgDataLen), {
+                                                                    name: user.displayName,
+                                                                    imageUrl: downloadURL,
+                                                                    profilePicUrl: user.photoURL,
+                                                                    // timestamp: timestamp
+                                                                });
+                                                            }
+                                                        },{
+                                                            onlyOnce: true
+                                                        });
+                                                        
+                                                    }
+                                                });
+                                        
+                                            });
+                                            }
+                                        );
+
+                                    }
+                                    catch(error){
+                                        console.error('There was an error uploading a file to Cloud Storage: ', error);
+                                    }
+                                }
+
+                                function saveMessagingDeviceToken() {
+                                    try{
+                                        const currentToken = getToken(getMessaging());
+                                        if(currentToken){
+                                        
+                                            // Saving the Device Token to Real-Time Database.
+                                            const updates = {};
+                                            updates['messages/fcmTokens'] = currentToken;
+                                            update(sRef(db), updates);
+
+                                            // This will fire when a message is received while the app is in the foreground.
+                                            // When the app is in the background, firebase-messaging-sw.js will receive the message instead.
+                                            onMessage(getMessaging(), (message) => {
+                                            
+                                            });
+                                        } else {
+                                            // Need to request permissions to show notifications.
+                                            requestNotificationsPermissions();
+                                        }
+                                    } catch(error) {
+                                        console.error('Unable to get messaging token.', error);
+                                    }
+                                }
+
+                                function requestNotificationsPermissions(){
+                                    
+                                    const permission = Notification.requestPermission();
+                                    if(permission === 'granted'){
+                                    
+                                        // Notification permission granted
+                                        saveMessagingDeviceToken();
+                                    } else {
+                                    
+                                    }
+                                }
+                                       // console.log(user);
+
+                                        // User is signed in!
+                                      //  console.log(user);
+                                        // Get the signed-in user's profile pic and name.
+                                        var profilePicUrl = getProfilePicUrl();
+                                        var userName = getUserName();
+                                        var userId = user.uid;
+                                        let users = [];
+
+                                        
+
+                                    
+                            
+                                    
+
+                                        // Set the user's profile pic and name.
+                                        userPicElement.style.backgroundImage =
+                                        'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
+                                        userNameElement.textContent = userName;
+
+                                        // Show user's profile and sign-out button.
+                                        userNameElement.removeAttribute('hidden');
+                                        userPicElement.removeAttribute('hidden');
+                                        signOutButtonElement.removeAttribute('hidden');
+
+                                        // Hide sign-in button.
+                                        signInButtonElement.setAttribute('hidden', 'true');
+
+                                        // We save the Firebase Messaging Device token and enable notifications.
+                                        // saveMessagingDeviceToken();
+
+                                        let status = document.createElement('h2');
+                                        status.innerText = 'Picked Up';
+                                        let tourRef;
+                                        
+                                        let tourList = sRef(db, 'user/userAccount/'+user.uid+'/tourdata');
+                                        onValue(tourList, (snapshot) => {
+                                            const tourData = snapshot.val();
+                                            if(tourData != null){
+                                                let trSearchUrl = sRef(db, 'tours/'+tourData.tour);
+                                                onValue(trSearchUrl, (snapshot) => {
+                                                    let trsearchData = snapshot.val();
+                                                    tourRef = sRef(db, 'tours/'+tourData.tour);
+                                                    if(trsearchData != null ){
+                                                        if(trsearchData.currentUser === user.uid){
+                                                            let trImg = document.createElement('img');
+                                                            trImg.setAttribute('src', trsearchData.listingImg);
+                                                            trImg.style.width = '400px';
+                                                            trImg.style.height = '400px';
+                                                            trImg.style.borderRadius = '100px';
+                                                            trImg.style.paddingTop = '1em';
+                                                            trImg.style.paddingLeft = '1em';
+                                                            document.getElementById('img').appendChild(trImg);
+                                                            let trNme = document.createElement('h1');
+                                                            trNme.innerText = crsearchData.listingName;
+                                                            let bookingDates = document.createElement('h3');
+                                                            if(trsearchData.tourDates.length === 2){
+                                                                bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
+                                                            } else {
+                                                                bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
+                                                            }
+                                                            document.getElementById('bookingInfo').appendChild(trNme);
+                                                            document.getElementById('bookingInfo').appendChild(bookingDates);
+
+                                                            
+
+                                                            onValue(tourRef, (snapshot) => {
+                                                            let data = snapshot.val();
+                                                            
+                                                            if(data.currentUser == user.uid && data.checkedIn == null){
+                                                                document.getElementById('pickup').style.display = 'block';
+                                                            } else if(data.host == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } else if(data.currentUser == user.uid && data.checkedIn == 'True'){
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            } 
+                                                            });
+                                                            document.getElementById('start').addEventListener('click', function(){
+                                                             //   console.log('picked up!');
+                                                                updates['tours/'+crsearchData.listingName+'/tourStarted'] = "True";
+                                                                update(sRef(db), updates);
+                                                                let pickupBtn = document.getElementById('start');
+                                                                pickupBtn.remove();
+                                                            
+                                                                document.getElementById('bookingInfo').appendChild(status);
+                                                            });
+                                                        }
+                                                        
+                                                    }
+                                                }); 
+                                                let usersRef = sRef(db, 'booktourusers/'+tourData.bookingId);
+                                                onValue(usersRef, (snapshot) => {
+                                                    let data = snapshot.val(); 
+                                                // console.log(data); 
+                                                    let dataLen = data.length;
+                                                    if(data == null){
+                                                        set(sRef(db, 'booktourusers/'+tourData.bookingId+'/0'), {
+                                                            username: userName,
+                                                            profile_picture : profilePicUrl,
+                                                            email: user.email,
+                                                            userId: userId
+                                                        });
+                                                    } else {
+                                                        if(data[0].userId != userId){
+                                                            set(sRef(db, 'booktourusers/'+tourData.bookingId+'/1'), {
+                                                            username: userName,
+                                                            profile_picture : profilePicUrl,
+                                                            email: user.email,
+                                                            userId: userId
+                                                        });
+                                                        }
+                                                    }
+                                                });
+                                            
+                                                
+                                                onValue(usersRef, (snapshot) => {
+                                                const data = snapshot.val();
+                                
+                                                if(data !== null){
+                                                    let userDiv = document.createElement('div');
+                                                    let userPic = document.createElement('img');
+                                                    let usernm = document.createElement('p');
+                                                    for(let i = 0; i < data.length; i++){
+                                                        if(data[i] !== null){
+                                                            userDiv.setAttribute('id', 'user'+i);
+                                                            userPic.setAttribute('src', data[i].profile_picture.stringValue);
+                                                            userPic.style.borderRadius = '30%';
+                                                            usernm.innerText = data[i].username.stringValue;
+
+                                                            userDiv.appendChild(userPic);
+                                                            userDiv.appendChild(usernm);
+
+                                                            document.getElementById('userlist').appendChild(userDiv);
+                                                        }
+                                                    
+                                                }
+                                                }
+                                                
+                                                });
+                                                
+                                            }     
+                                        });
+
+                                       
+                                    } else {
+                                         // User is signed out!
+                                        // Hide user's profile and sign-out button.
+                                        userNameElement.setAttribute('hidden', 'true');
+                                        userPicElement.setAttribute('hidden', 'true');
+                                        signOutButtonElement.setAttribute('hidden', 'true');
+
+                                        // Show sign-in button.
+                                        signInButtonElement.removeAttribute('hidden');
+                                    }
+                                })
+                                document.getElementById('bookme').addEventListener('click', function(){
+                                    window.location = "https://www.buorgoldengreenresorts.homes/UserAccount.html";
+                                });
+                            </script>
+                            <script type="text/javascript">!function(n,e){var t,o,i,c=[],f={passive:!0,capture:!0},r=new Date,a="pointerup",u="pointercancel";function p(n,c){t||(t=c,o=n,i=new Date,w(e),s())}function s(){o>=0&&o<i-r&&(c.forEach(function(n){n(o,t)}),c=[])}function l(t){if(t.cancelable){var o=(t.timeStamp>1e12?new Date:performance.now())-t.timeStamp;"pointerdown"==t.type?function(t,o){function i(){p(t,o),r()}function c(){r()}function r(){e(a,i,f),e(u,c,f)}n(a,i,f),n(u,c,f)}(o,t):p(o,t)}}function w(n){["click","mousedown","keydown","touchstart","pointerdown"].forEach(function(e){n(e,l,f)})}w(n),self.perfMetrics=self.perfMetrics||{},self.perfMetrics.onFirstInputDelay=function(n){c.push(n),s()}}(addEventListener,removeEventListener);</script>
+                        </div>
+                    </main>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>
 
 
 
