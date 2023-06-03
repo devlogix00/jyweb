@@ -543,7 +543,7 @@
                                         status.innerText = 'Picked Up';
                                         let tourRef;
                                         
-                                        let tourList = sRef(db, 'user/userAccount/'+user.uid+'/tourdata');
+                                        let tourList = sRef(db, 'users/userAccount/'+user.uid+'/tourdata');
                                         onValue(tourList, (snapshot) => {
                                             const tourData = snapshot.val();
                                             if(tourData != null){

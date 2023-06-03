@@ -542,14 +542,13 @@
                                         status.innerText = 'Picked Up';
                                         let carRef;
                                         
-                                        let carList = sRef(db, 'user/userAccount/'+userId+'/cardata');
+                                        let carList = sRef(db, 'users/userAccount/'+userId+'/cardata');
                                         onValue(carList, (snapshot) => {
                                             const carData = snapshot.val();
                                             if(carData != null){
                                                 let crSearchUrl = sRef(db, 'cars/'+carData.car);
                                                 onValue(crSearchUrl, (snapshot) => {
                                                     let crsearchData = snapshot.val();
-                                                    console.log(crsearchData);
                                                     carRef = sRef(db, 'cars/'+carData.car);
                                                     if(crsearchData != null ){
                                                         if(crsearchData.currentUser === userId){
@@ -601,8 +600,6 @@
                                                 let usersRef = sRef(db, 'bookcarusers/'+carData.bookingId);
                                                 onValue(usersRef, (snapshot) => {
                                                     let data = snapshot.val(); 
-                                                    console.log(data); 
-                                                    
                                                     if(data == null){
                                                         set(sRef(db, 'bookcarusers/'+carData.bookingId+'/0'), {
                                                             username: userName,
