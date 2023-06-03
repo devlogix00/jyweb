@@ -569,12 +569,9 @@
                                                             } else {
                                                                 bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
                                                             }
-                                                            let start = document.createElement('h3');
-                                                            start.innerText = trsearchData.starttour;
+                                                          
                                                             document.getElementById('bookingInfo').appendChild(trNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                            document.getElementById('bookingInfo').appendChild(start);
-                                                            
 
                                                             onValue(tourRef, (snapshot) => {
                                                             let data = snapshot.val();

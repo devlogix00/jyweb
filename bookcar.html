@@ -568,12 +568,9 @@
                                                             } else {
                                                                 bookingDates.innerText = 'Booking Date: '+crsearchData.carDates[0];
                                                             }
-                                                            let pickup = document.createElement('h3');
-                                                            pickup.innerText = crsearchData.pickup;
+                                                            
                                                             document.getElementById('bookingInfo').appendChild(crNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                            document.getElementById('bookingInfo').appendChild(pickup);
-                                                            
 
                                                             onValue(carRef, (snapshot) => {
                                                             let data = snapshot.val();
