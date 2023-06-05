@@ -158,7 +158,7 @@
                   onValue(roombookingRef, (snapshot) => {
                     const data = snapshot.val();
                  //   console.log(data);
-                    if(data != null && data.host == userId && data.currentUser != null){
+                    if(data.bookingId != null ){
                     let listingimg = data.listingImg.slice(12,data.listingImg.length);
                     let cardOuter = document.createElement('div');
                     cardOuter.setAttribute('class', 'col-md-4');
@@ -221,7 +221,7 @@
                   onValue(carbookingRef, (snapshot) => {
                     const data = snapshot.val();
                  //   console.log(data);
-                    if(data != null && data.host == userId && data.currentUser != null){
+                    if(data.bookingId != null){
                     let listingimg = data.listingImg.slice(12,data.listingImg.length);
                     let cardOuter = document.createElement('div');
                     cardOuter.setAttribute('class', 'col-md-4');
@@ -266,7 +266,6 @@
                     let bookingObj = {};
 
                     bookingObj.bookingDate = data.bookingDate;
-                    bookingObj.checkin = data.checkin;
                     bookingObj.currentUser = data.currentUser;
                     bookingObj.host = data.host;
                     bookingObj.itemId = data.itemId;
@@ -288,7 +287,7 @@
                   onValue(tourbookingRef, (snapshot) => {
                     const data = snapshot.val();
                  //   console.log(data);
-                    if(data != null && data.host == userId && data.currentUser != null){
+                    if(data.bookingId != null){
                   
                     let cardOuter = document.createElement('div');
                     cardOuter.setAttribute('class', 'col-md-4');
@@ -334,7 +333,6 @@
                     let bookingObj = {};
 
                     bookingObj.bookingDate = data.bookingDate;
-                    bookingObj.checkin = data.checkin;
                     bookingObj.currentUser = data.currentUser;
                     bookingObj.host = data.host;
                     bookingObj.itemId = data.itemId;
