@@ -525,10 +525,10 @@
                                             const newData = snapshot.val();
                                             //console.log(newData);
                                             if(newData != null){
-                                                let drSearchUrl = sRef(db, 'bookedDrivers/'+newData[i].listingName);
+                                                let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.listingName);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
-                                                    driverRef = ref(db, 'bookedDrivers/'+newData[i].listingName);
+                                                    driverRef = ref(db, 'bookedDrivers/'+newData.listingName);
                                                     if(drsearchData != null ){
                                                         if(drsearchData.currentUser === user.uid){
                                                             let drImg = document.createElement('img');

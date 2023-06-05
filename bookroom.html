@@ -61,9 +61,7 @@
                                     </button>
                                 </form>
                                 </div>
-                                <div>
-                              
-                                </div>
+                               
                             </div>
                             <div id="userlist"></div>
 
@@ -220,7 +218,7 @@
                                     return false;
                                     }
 
-                                    // Saves a new message on the Cloud Firestore.
+                                    // Saves a new message in realtime.
                                     async function saveMessage(messageText) {
                                         let rmSearchUrl = sRef(db, 'users/userAccount/'+userId+'/roomdata');
                                         onValue(rmSearchUrl, (snapshot) => {
