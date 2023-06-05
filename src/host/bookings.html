@@ -345,7 +345,7 @@
                     bookingObj.roomDates = data.roomDates;
                     bookingObj.userName = data.userName;
 
-                    updates = {};
+                    let updates = {};
                     updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
                   }
                   });
