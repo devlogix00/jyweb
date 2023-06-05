@@ -602,8 +602,9 @@
                                                                         bookingObj.roomDates = rmsearchData.roomDates;
                                                                         bookingObj.userName = rmsearchData.userName;
 
-                                                                        let bookingPath = rmsearchData.bookingId; 
-                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId), bookingObj);
+                                                                        let updates = {};
+                                                                        updates['hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId] = bookingObj;
+                                                                        update(ref(db), updates);
                                                                     }
 
                                                                     let rmImg = document.createElement('img');
