@@ -540,7 +540,7 @@
                                                             drImg.style.paddingLeft = '1em';
                                                             document.getElementById('img').appendChild(drImg);
                                                             let drNme = document.createElement('h1');
-                                                            drNme.innerText = drsearchData.listingName;
+                                                            drNme.innerText = drsearchData.driver;
                                                             let bookingDates = document.createElement('h3');
                                                             if(drsearchData.driverDates.length === 2){
                                                                 bookingDates.innerText = 'Booking Dates: '+drsearchData.driverDates[0]+' - '+drsearchData.driverDates[1];
@@ -571,12 +571,12 @@
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });
 
-                                                            let usersRef = sRef(db, 'bookdriverusers/'+driverData.bookingId);
+                                                            let usersRef = sRef(db, 'bookdriverusers/'+newData.bookingId);
                                                             onValue(usersRef, (snapshot) => {
                                                                 let data = snapshot.val(); 
                                                             // console.log(data); 
                                                                 if(data == null){
-                                                                    set(sRef(db, 'bookdriverusers/'+driverData.bookingId+'/0'), {
+                                                                    set(sRef(db, 'bookdriverusers/'+newData.bookingId+'/0'), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email,
@@ -584,7 +584,7 @@
                                                                     });
                                                                 } else {
                                                                     if(data[0].userId != userId){
-                                                                        set(sRef(db, 'bookdriverusers/'+driverData.bookingId+'/1'), {
+                                                                        set(sRef(db, 'bookdriverusers/'+newData.bookingId+'/1'), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email,
