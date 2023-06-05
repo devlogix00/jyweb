@@ -530,9 +530,10 @@
                                                     let drsearchData = snapshot.val();
                                                     driverRef = sRef(db, 'bookedDrivers/'+newData.driver);
                                                     if(drsearchData != null ){
-                                                        if(drsearchData.currentUser === user.uid){
+                                                        for(let i = 0; i < drsearchData.length; i++){
+                                                            if(drsearchData[i].currentUser === user.uid){
                                                             let drImg = document.createElement('img');
-                                                            drImg.setAttribute('src', drsearchData.img);
+                                                            drImg.setAttribute('src', drsearchData[i].img);
                                                             drImg.style.width = '400px';
                                                             drImg.style.height = '400px';
                                                             drImg.style.borderRadius = '100px';
@@ -540,12 +541,12 @@
                                                             drImg.style.paddingLeft = '1em';
                                                             document.getElementById('img').appendChild(drImg);
                                                             let drNme = document.createElement('h1');
-                                                            drNme.innerText = drsearchData.driverName;
+                                                            drNme.innerText = drsearchData[i].driverName;
                                                             let bookingDates = document.createElement('h3');
-                                                            if(drsearchData.driverDates.length === 2){
-                                                                bookingDates.innerText = 'Booking Dates: '+drsearchData.driverDates[0]+' - '+drsearchData.driverDates[1];
+                                                            if(drsearchData[i].driverDates.length === 2){
+                                                                bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
                                                             } else {
-                                                                bookingDates.innerText = 'Booking Date: '+drsearchData.driverDates[0];
+                                                                bookingDates.innerText = 'Booking Date: '+drsearchData[i].driverDates[0];
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(drNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
@@ -563,7 +564,7 @@
                                                             });
                                                             document.getElementById('ridestarted').addEventListener('click', function(){
                                                                 
-                                                                updates['bookedDrivers/'+drsearchData.driverName+'/driverPresent'] = "True";
+                                                                updates['bookedDrivers/'+drsearchData[i].driverName+'/driverPresent'] = "True";
                                                                 update(sRef(db), updates);
                                                                 let drvPrsntBtn = document.getElementById('ridestarted');
                                                                 drvPrsntBtn.remove();
@@ -619,10 +620,11 @@
                                                             }
                                                             
                                                             });
-                                                                }
+                                                        }
+                                                        }
                                                                 
-                                                            }
-                                                        }); 
+                                                    }
+                                                }); 
                                                     
                                                 
                                             }     

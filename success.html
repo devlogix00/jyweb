@@ -200,17 +200,36 @@
                     updates['users/userAccount/'+userId+'/driverdata/userName'] = userName;
                     updates['users/userAccount/'+userId+'/driverdata/driverDates'] = driverRead.itemDates;
                     updates['users/userAccount/'+userId+'/driverdata/bookingId'] = bookingId;
-                    updates['bookedDrivers/'+dbRead.item+'/bookingDate'] = today;
-                    updates['bookedDrivers/'+dbRead.item+'/currentUser'] = userId;
-                    updates['bookedDrivers/'+dbRead.item+'/driverDates'] = driverRead.itemDates;
-                    updates['bookedDrivers/'+dbRead.item+'/userName'] = userName;
-                    updates['bookedDrivers/'+dbRead.item+'/driverName'] = data.item;
-                    updates['bookedDrivers/'+dbRead.item+'/driverPresent'] = null;
-                    updates['bookedDrivers/'+dbRead.item+'/bookingId'] = bookingId;
                     update(ref(db), updates);
-                    window.location = "UserAccount.html";
+                    
                   });
-                
+
+                  let bookedDrv = ref(db, 'bookedDrivers/'+dbRead.item);
+                  onValue(bookedDrv, (snapshot) => {
+                    let bookingDt = snapshot.val();
+                    if(bookingDt != null){
+                      let len = bookingDt.length;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingDate'] = today;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/currentUser'] = userId;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverDates'] = driverRead.itemDates;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/userName'] = userName;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverName'] = data.item;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverPresent'] = null;
+                      updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingId'] = bookingId;
+                      update(ref(db), updates);
+                    } else {
+                      updates['bookedDrivers/'+dbRead.item+'/0/bookingDate'] = today;
+                      updates['bookedDrivers/'+dbRead.item+'/0/currentUser'] = userId;
+                      updates['bookedDrivers/'+dbRead.item+'/0/driverDates'] = driverRead.itemDates;
+                      updates['bookedDrivers/'+dbRead.item+'/0/userName'] = userName;
+                      updates['bookedDrivers/'+dbRead.item+'/0/driverName'] = data.item;
+                      updates['bookedDrivers/'+dbRead.item+'/0/driverPresent'] = null;
+                      updates['bookedDrivers/'+dbRead.item+'/0/bookingId'] = bookingId;
+                      update(ref(db), updates);
+                    }
+                    
+                  });
+                  window.location = "UserAccount.html";
 
                }
             });

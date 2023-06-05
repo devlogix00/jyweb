@@ -206,26 +206,28 @@
                                             onValue(drSearchUrl, (snapshot) => {
                                                 let drsearchData = snapshot.val();
                                                 if(drsearchData != null ){
-                                                    let msgRef = sRef(db, 'bookdriver/'+drsearchData.bookingId);
-                                                    onValue(msgRef, (snapshot) => {
-                                                        let msgData = snapshot.val();
-                                                        if(msgData == null){
-                                                            set(sRef(db, 'bookdriver/'+drsearchData.bookingId+'/0'), {
-                                                                name: user.displayName,
-                                                                text: messageText,
-                                                                profilePicUrl: user.photoURL
-                                                            });
-                                                        } else {
-                                                            let msgDataLen = msgData.length;
-                                                            set(sRef(db, 'bookdriver/'+drsearchData.bookingId+'/'+msgDataLen), {
-                                                                name: user.displayName,
-                                                                text: messageText,
-                                                                profilePicUrl: user.photoURL
-                                                            });
-                                                        }
-                                                    },{
-                                                        onlyOnce: true
-                                                    });
+                                                    for(let i = 0; i < drsearchData.length; i++){
+                                                        let msgRef = sRef(db, 'bookdriver/'+drsearchData[i].bookingId);
+                                                        onValue(msgRef, (snapshot) => {
+                                                            let msgData = snapshot.val();
+                                                            if(msgData == null){
+                                                                set(sRef(db, 'bookdriver/'+drsearchData[i].bookingId+'/0'), {
+                                                                    name: user.displayName,
+                                                                    text: messageText,
+                                                                    profilePicUrl: user.photoURL
+                                                                });
+                                                            } else {
+                                                                let msgDataLen = msgData.length;
+                                                                set(sRef(db, 'bookdriver/'+drsearchData[i].bookingId+'/'+msgDataLen), {
+                                                                    name: user.displayName,
+                                                                    text: messageText,
+                                                                    profilePicUrl: user.photoURL
+                                                                });
+                                                            }
+                                                        },{
+                                                            onlyOnce: true
+                                                        });
+                                                    }
                                                     
                                                 }
                                             });
@@ -344,19 +346,21 @@
                                     let drsearchData = snapshot.val();
 
                                     if(drsearchData != null ){
-                                        let messageRef = sRef(db, 'bookdriver/'+drsearchData.bookingId);
-                                        onValue(messageRef, (snapshot) => {
-                                            const data = snapshot.val();
-                                            //console.log(data);
-                                            if(data != null){
-                                                // let setToList = [new Set(data)];
-                                                for(let i = 0; i < data.length; i++){
-                                                    if(data[i] != null){
-                                                        displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
-                                                    }  
-                                                }
-                                            }  
-                                        });
+                                        for(let j = 0; j < drsearchData.length; j++){
+                                            let messageRef = sRef(db, 'bookdriver/'+drsearchData[j].bookingId);
+                                            onValue(messageRef, (snapshot) => {
+                                                const data = snapshot.val();
+                                                //console.log(data);
+                                                if(data != null){
+                                                    // let setToList = [new Set(data)];
+                                                    for(let i = 0; i < data.length; i++){
+                                                        if(data[i] != null){
+                                                            displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                        }  
+                                                    }
+                                                }  
+                                            });
+                                        }
                                         
                                     }
                                 });
@@ -429,31 +433,33 @@
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
-                                                //let drSearchUrl = sRef(db, 'book/'+userId+'/driverdata');
+                                               
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
                                                     if(drsearchData != null ){
-                                                        let msgRef = sRef(db, 'bookdriver/'+drsearchData.bookingId);
-                                                        onValue(msgRef, (snapshot) => {
-                                                            let msgData = snapshot.val();
-                                                            if(msgData == null){
-                                                                set(sRef(db, 'bookdriver/'+drsearchData.bookingId+'/0'), {
-                                                                    name: user.displayName,
-                                                                    imageUrl: downloadURL,
-                                                                    profilePicUrl: user.photoURL
-                                                                });
-                                                            } else {
-                                                                let msgDataLen = msgData.length;
-                                                                set(sRef(db, 'bookdriver/'+drsearchData.bookingId+'/'+msgDataLen), {
-                                                                    name: user.displayName,
-                                                                    imageUrl: downloadURL,
-                                                                    profilePicUrl: user.photoURL,
-                                                                    // timestamp: timestamp
-                                                                });
-                                                            }
-                                                        },{
-                                                            onlyOnce: true
-                                                        });
+                                                        for(let i = 0; i < drsearchData.length; i++){
+                                                            let msgRef = sRef(db, 'bookdriver/'+drsearchData[i].bookingId);
+                                                            onValue(msgRef, (snapshot) => {
+                                                                let msgData = snapshot.val();
+                                                                if(msgData == null){
+                                                                    set(sRef(db, 'bookdriver/'+drsearchData[i].bookingId+'/0'), {
+                                                                        name: user.displayName,
+                                                                        imageUrl: downloadURL,
+                                                                        profilePicUrl: user.photoURL
+                                                                    });
+                                                                } else {
+                                                                    let msgDataLen = msgData.length;
+                                                                    set(sRef(db, 'bookdriver/'+drsearchData[i].bookingId+'/'+msgDataLen), {
+                                                                        name: user.displayName,
+                                                                        imageUrl: downloadURL,
+                                                                        profilePicUrl: user.photoURL,
+                                                                        // timestamp: timestamp
+                                                                    });
+                                                                }
+                                                            },{
+                                                                onlyOnce: true
+                                                            });
+                                                        }
                                                         
                                                     }
                                                 });
@@ -527,12 +533,13 @@
                                            
                                                 //let drSearchUrl = sRef(db, 'bookedDrivers/'+userName);
                                                 onValue(drSearchUrl, (snapshot) => {
-                                                    let drsearchData = snapshot.val();
-                                                    driverRef = sRef(db, 'bookedDrivers/'+userName);
-                                                    if(drsearchData != null ){
-                                                        if(drsearchData.currentUser === user.uid){
+                                                  let drsearchData = snapshot.val();
+                                                  driverRef = sRef(db, 'bookedDrivers/'+userName);
+                                                  if(drsearchData != null ){
+                                                    for(let i = 0; i < drsearchData.length; i++){
+                                                        if(drsearchData[i].currentUser === user.uid){
                                                             let drImg = document.createElement('img');
-                                                            drImg.setAttribute('src', drsearchData.img);
+                                                            drImg.setAttribute('src', drsearchData[i].img);
                                                             drImg.style.width = '400px';
                                                             drImg.style.height = '400px';
                                                             drImg.style.borderRadius = '100px';
@@ -540,12 +547,12 @@
                                                             drImg.style.paddingLeft = '1em';
                                                             document.getElementById('img').appendChild(drImg);
                                                             let drNme = document.createElement('h1');
-                                                            drNme.innerText = drsearchData.driverName;
+                                                            drNme.innerText = drsearchData[i].driverName;
                                                             let bookingDates = document.createElement('h3');
-                                                            if(drsearchData.driverDates.length === 2){
-                                                                bookingDates.innerText = 'Booking Dates: '+drsearchData.driverDates[0]+' - '+drsearchData.driverDates[1];
+                                                            if(drsearchData[i].driverDates.length === 2){
+                                                                bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
                                                             } else {
-                                                                bookingDates.innerText = 'Booking Date: '+drsearchData.driverDates[0];
+                                                                bookingDates.innerText = 'Booking Date: '+drsearchData[i].driverDates[0];
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(drNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
@@ -571,12 +578,12 @@
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });
 
-                                                            let usersRef = sRef(db, 'bookdriverusers/'+drsearchData.bookingId);
+                                                            let usersRef = sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId);
                                                             onValue(usersRef, (snapshot) => {
                                                                 let data = snapshot.val(); 
                                                             // console.log(data); 
                                                                 if(data == null){
-                                                                    set(sRef(db, 'bookdriverusers/'+drsearchData.bookingId+'/0'), {
+                                                                    set(sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId+'/0'), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email,
@@ -584,7 +591,7 @@
                                                                     });
                                                                 } else {
                                                                     if(data[0].userId != userId){
-                                                                        set(sRef(db, 'bookdriverusers/'+drsearchData.bookingId+'/1'), {
+                                                                        set(sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId+'/1'), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email,
@@ -620,9 +627,10 @@
                                                             
                                                             });
                                                                 }
+                                                    }     
                                                                 
-                                                            }
-                                                        }); 
+                                                  }
+                                                }); 
                                                     
                                                 
                                                
