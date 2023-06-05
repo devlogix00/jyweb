@@ -173,16 +173,56 @@
             }
 
             async function saveImage(file){
-              const formData = new FormData();
-              formData.append("file", file);
+              const storageRef = sRef(storage, 'images/'+ file.name);
+              const uploadTask = uploadBytesResumable(storageRef, file);
+
+                uploadTask.on('state_changed', 
+                  (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    
+                    switch (snapshot.state) {
+                    case 'paused':
+                        
+                        break;
+                    case 'running':
+                        
+                        break;
+                    }
+                  },
+                  (error) => {
+                    // Handle unsuccessful uploads
+                  },
+                  () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                      profile.licenseImg = downloadURL;
+                    })
+                  }
+                )
+              // const formData = new FormData();
+              // formData.append("file", file);
     
-              fetch("https://buorgoldengreenresorts.homes/uploadimgfiles", {
-                method: 'POST',
-                body: formData
-              })
-              .then((res) => console.log(res))
-              .then((err) => ("Error occured", err));
+              // fetch("https://buorgoldengreenresorts.homes/uploadimgfiles", {
+              //   method: 'POST',
+              //   body: formData
+              // })
+              // .then((res) => console.log(res))
+              // .then((err) => ("Error occured", err));
             }
+
+            function generateId(length) {
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                  result += characters.charAt(Math.floor(Math.random() * 
+                  charactersLength));
+                }
+                    return result;
+              }
+
+              profile.itemId = generateId(24);
           
         </script>
         <script>
@@ -216,6 +256,7 @@
           import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-analytics.js";
           import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js";
           import { getDatabase, update, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js";
+          import { ref as sRef, getStorage, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-storage.js";
           // TODO: Add SDKs for Firebase products that you want to use
           // https://firebase.google.com/docs/web/setup#available-libraries
         
@@ -248,11 +289,12 @@
               let image = document.getElementById('mediaCapture').value;
               profile.Name = userName;
               profile.userId = userId;
+              let itemId = profile.itemId;
               //profile.profileImg = userImg;
-              updates['profile/Name'] = userName;
-              updates['profile/userId'] = userId;
-              updates['profile/profileImg'] = userImg;
-              update(ref(db), updates);
+              // updates['profile/Name'] = userName;
+              // updates['profile/userId'] = userId;
+              // updates['profile/profileImg'] = userImg;
+              // update(ref(db), updates);
               
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
@@ -262,9 +304,22 @@
                 updates['drivers/driverAccount/'+userId+'/profile/userId'] = userId;
                 updates['drivers/driverAccount/'+userId+'/profile/price'] = price;
                 updates['drivers/driverAccount/'+userId+'/profile/profileImg'] = userImg;
-                updates['profile/location'] = profile.location;
-                updates['profile/price'] = price;
+                updates['drivers/driverAccount/'+userId+'/profile/itemId'] = itemId;
                 update(ref(db), updates);
+                let profilesRef = ref(db, 'profiles/profiles/');
+                onValue(profilesRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if(data != null){
+                      let dataLen = data.length;
+                      updates['profiles/profiles/'+dataLen] = profile;
+                      update(ref(db), updates);
+                    } else {
+                      updates['profiles/profiles/0'] = profile;
+                      update(ref(db), updates);
+                    }
+                  },{
+                        onlyOnce: true
+                });
               });
 
               let profileRef = ref(db, 'drivers/driverAccount/'+userId+'/profile');
@@ -278,7 +333,7 @@
                       let profileImg = document.createElement('img');
                       profileImg.setAttribute('src', profileimg);
                       let licenseImg = document.createElement('img');
-                      licenseImg.setAttribute('src', 'https://buorgoldengreenresorts.homes/'+ data.licenseImg);
+                      licenseImg.setAttribute('src',  data.licenseImg);
                       profileImg.style.borderRadius = '100px';
                       profileImg.style.width = '200px';
                       profileImg.style.height = '200px';
