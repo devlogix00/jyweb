@@ -304,11 +304,61 @@
                     
                   }
                   });
+
+                  const bookingRef = ref(db, 'bookedDrivers/'+userName);
+              
                  }
                   
               
               });
              
+              onValue(bookingRef, (snapshot) => {
+                  const data = snapshot.val();
+                  console.log(data);
+                  if(data != null && data.driverId === userId && data.currentUser != null){
+                    let userImg = data.userImg;
+                    let cardOuter = document.createElement('div');
+                    cardOuter.setAttribute('class', 'col-md-4');
+                    cardOuter.setAttribute('id', userName);
+                    let cardOuterInner = document.createElement('div');
+                    cardOuterInner.setAttribute('class', "card card-blog");
+                    let cardInnerInner = document.createElement('div');
+                    cardInnerInner.setAttribute('class', 'card-header card-header-image');
+                    let cardImg = document.createElement('img');
+                    cardImg.setAttribute('src', userImg);
+                    let cardBody = document.createElement('div');
+                    cardBody.setAttribute('class', 'card-body');
+                    let cardHeader = document.createElement('h6');
+                    cardHeader.setAttribute('class', "card-category text-info");
+                    cardHeader.innerText = userName;
+                    let cardTitle = document.createElement('h4');
+                    cardTitle.setAttribute('class', 'card-title');
+                    cardTitle.style.paddingBottom = '3em';
+                    if(data.driverDates.length == 1){
+                    cardTitle.innerText = data.userName;
+                    } else {
+                    cardTitle.innerText = data.userName;
+                    }
+                    
+                    cardBody.appendChild(cardHeader);
+                    cardHeader.appendChild(cardTitle);
+                    cardInnerInner.appendChild(cardImg);
+                    cardInnerInner.appendChild(cardBody);
+                    cardOuterInner.appendChild(cardInnerInner);
+                    cardOuter.appendChild(cardOuterInner);
+                    document.getElementById('bookings').appendChild(cardOuter);
+
+                    cardOuter.addEventListener('click', function(){
+                    let bookingRef = ref(db, 'bookedDrivers/'+userName);
+                    onValue(bookingRef, (snapshot) => {
+                        const data = snapshot.val();
+                        window.location = 'bookdriver.html';
+                    })
+                    });
+
+                    }
+          
+                  });
             
                
             } else {

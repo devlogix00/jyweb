@@ -109,7 +109,7 @@
                                 // Signs-in BookMe.
 
                                 document.getElementById('bookme').addEventListener('click', function(){
-                                    window.location = 'https://buorgoldengreenresorts.homes/UserAccount.html';
+                                    window.location = 'https://buorgoldengreenresorts.homes/src/host/index.html';
                                 });
 
                                 let updates = {};
@@ -202,7 +202,7 @@
 
                                          // Saves a new message in realtime.
                                         async function saveMessage(messageText) {
-                                            let drSearchUrl = sRef(db, 'users/userAccount/'+userId+'/driverdata');
+                                            let drSearchUrl = sRef(db, 'bookedDrivers/'+userName);
                                             onValue(drSearchUrl, (snapshot) => {
                                                 let drsearchData = snapshot.val();
                                                 if(drsearchData != null ){
@@ -429,7 +429,7 @@
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                                             
-                                                let drSearchUrl = sRef(db, 'users/userAccount/'+userId+'/driverdata');
+                                                //let drSearchUrl = sRef(db, 'book/'+userId+'/driverdata');
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
                                                     if(drsearchData != null ){
@@ -520,15 +520,15 @@
                                         let status = document.createElement('h2');
                                         status.innerText = 'Ride Started';
                                         let driverRef;
-                                        let regList = sRef(db, 'users/userAccount/'+user.uid+'/driverdata');
-                                        onValue(regList, (snapshot) => {
-                                            const newData = snapshot.val();
+                                        //let regList = sRef(db, 'users/userAccount/'+user.uid+'/driverdata');
+                                        //onValue(regList, (snapshot) => {
+                                          //  const newData = snapshot.val();
                                             //console.log(newData);
-                                            if(newData != null){
-                                                let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
+                                           
+                                                //let drSearchUrl = sRef(db, 'bookedDrivers/'+userName);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
-                                                    driverRef = sRef(db, 'bookedDrivers/'+newData.driver);
+                                                    driverRef = sRef(db, 'bookedDrivers/'+userName);
                                                     if(drsearchData != null ){
                                                         if(drsearchData.currentUser === user.uid){
                                                             let drImg = document.createElement('img');
@@ -563,7 +563,7 @@
                                                             });
                                                             document.getElementById('ridestarted').addEventListener('click', function(){
                                                                 
-                                                                updates['bookedDrivers/'+drsearchData.driverName+'/driverPresent'] = "True";
+                                                                updates['bookedDrivers/'+userName+'/driverPresent'] = "True";
                                                                 update(sRef(db), updates);
                                                                 let drvPrsntBtn = document.getElementById('ridestarted');
                                                                 drvPrsntBtn.remove();
@@ -571,12 +571,12 @@
                                                                 document.getElementById('bookingInfo').appendChild(status);
                                                             });
 
-                                                            let usersRef = sRef(db, 'bookdriverusers/'+newData.bookingId);
+                                                            let usersRef = sRef(db, 'bookdriverusers/'+drsearchData.bookingId);
                                                             onValue(usersRef, (snapshot) => {
                                                                 let data = snapshot.val(); 
                                                             // console.log(data); 
                                                                 if(data == null){
-                                                                    set(sRef(db, 'bookdriverusers/'+newData.bookingId+'/0'), {
+                                                                    set(sRef(db, 'bookdriverusers/'+drsearchData.bookingId+'/0'), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email,
@@ -584,7 +584,7 @@
                                                                     });
                                                                 } else {
                                                                     if(data[0].userId != userId){
-                                                                        set(sRef(db, 'bookdriverusers/'+newData.bookingId+'/1'), {
+                                                                        set(sRef(db, 'bookdriverusers/'+drsearchData.bookingId+'/1'), {
                                                                         username: userName,
                                                                         profile_picture : profilePicUrl,
                                                                         email: user.email,
@@ -625,8 +625,8 @@
                                                         }); 
                                                     
                                                 
-                                            }     
-                                        });
+                                               
+                                        
 
                                         
                                        
