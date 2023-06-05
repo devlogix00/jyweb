@@ -563,7 +563,7 @@
                                                             });
                                                             document.getElementById('ridestarted').addEventListener('click', function(){
                                                                 
-                                                                updates['bookedDrivers/'+drsearchData.listingName+'/driverPresent'] = "True";
+                                                                updates['bookedDrivers/'+drsearchData.driverName+'/driverPresent'] = "True";
                                                                 update(sRef(db), updates);
                                                                 let drvPrsntBtn = document.getElementById('ridestarted');
                                                                 drvPrsntBtn.remove();
