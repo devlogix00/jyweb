@@ -214,20 +214,22 @@
                         updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverPresent'] = null;
                         updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingId'] = bookingId;
                         updates['bookedDrivers/'+dbRead.item+'/'+len+'/userImg'] = user.photoURL;
-                      
-                      } else {
-                        updates['bookedDrivers/'+dbRead.item+'/0/bookingDate'] = today;
-                        updates['bookedDrivers/'+dbRead.item+'/0/currentUser'] = userId;
-                        updates['bookedDrivers/'+dbRead.item+'/0/driverDates'] = driverRead.itemDates;
-                        updates['bookedDrivers/'+dbRead.item+'/0/userName'] = userName;
-                        updates['bookedDrivers/'+dbRead.item+'/0/driverName'] = data.item;
-                        updates['bookedDrivers/'+dbRead.item+'/0/driverPresent'] = null;
-                        updates['bookedDrivers/'+dbRead.item+'/0/bookingId'] = bookingId;
-                        updates['bookedDrivers/'+dbRead.item+'/0/userImg'] = user.photoURL;
-                        
                       }
-                      
+                      update(ref(db), updates);
                     });
+                      // } else {
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/bookingDate'] = today;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/currentUser'] = userId;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/driverDates'] = driverRead.itemDates;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/userName'] = userName;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/driverName'] = data.item;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/driverPresent'] = null;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/bookingId'] = bookingId;
+                      //   updates['bookedDrivers/'+dbRead.item+'/0/userImg'] = user.photoURL;
+                        
+                      // }
+                      
+                 
                     update(ref(db), updates);
                     window.location = "UserAccount.html";
                     
