@@ -587,21 +587,23 @@
                                                             roomRef = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+listingData[i].listingName);
                                                             if(rmsearchData != null ){
                                                                 if(rmsearchData.host === userId && rmsearchData.bookingId != null){
-                                                                    let bookingObj = {};
+                                                                    if(rmsearchData.bookingId != null){
+                                                                        let bookingObj = {};
 
-                                                                    bookingObj.bookingDate = rmsearchData.bookingDate;
-                                                                    bookingObj.checkin = rmsearchData.checkin;
-                                                                    bookingObj.currentUser = rmsearchData.currentUser;
-                                                                    bookingObj.host = rmsearchData.host;
-                                                                    bookingObj.itemId = rmsearchData.itemId;
-                                                                    bookingObj.listingImg = rmsearchData.listingImg;
-                                                                    bookingObj.listingName = rmsearchData.listingName;
-                                                                    bookingObj.listingPrice = rmsearchData.listingPrice;
-                                                                    bookingObj.listingType = rmsearchData.listingType;
-                                                                    bookingObj.roomDates = rmsearchData.roomDates;
-                                                                    bookingObj.userName = rmsearchData.userName;
+                                                                        bookingObj.bookingDate = rmsearchData.bookingDate;
+                                                                        bookingObj.checkin = rmsearchData.checkin;
+                                                                        bookingObj.currentUser = rmsearchData.currentUser;
+                                                                        bookingObj.host = rmsearchData.host;
+                                                                        bookingObj.itemId = rmsearchData.itemId;
+                                                                        bookingObj.listingImg = rmsearchData.listingImg;
+                                                                        bookingObj.listingName = rmsearchData.listingName;
+                                                                        bookingObj.listingPrice = rmsearchData.listingPrice;
+                                                                        bookingObj.listingType = rmsearchData.listingType;
+                                                                        bookingObj.roomDates = rmsearchData.roomDates;
+                                                                        bookingObj.userName = rmsearchData.userName;
 
-                                                                    set(ref(db, 'hosts/hostAccount/'+userId+'/'+rmsearchData.bookingId), bookingObj);
+                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/'+rmsearchData.bookingId), bookingObj);
+                                                                    }
 
                                                                     let rmImg = document.createElement('img');
                                                                     rmImg.setAttribute('src', rmsearchData.listingImg);

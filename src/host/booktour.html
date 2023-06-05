@@ -589,22 +589,24 @@
                                                             tourRef = sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+listingData[i].listingName);
                                                             if(trsearchData != null ){
                                                                 if(trsearchData.host == userId && trsearchData.bookingId != null){
-                                                                    let bookingObj = {};
+                                                                    if(trsearchData.bookingId != null){
+                                                                        let bookingObj = {};
 
-                                                                    bookingObj.bookingDate = trsearchData.bookingDate;
-                                                                    bookingObj.currentUser = trsearchData.currentUser;
-                                                                    bookingObj.host = trsearchData.host;
-                                                                    bookingObj.itemId = trsearchData.itemId;
-                                                                    bookingObj.listingImg = trsearchData.listingImg;
-                                                                    bookingObj.listingName = trsearchData.listingName;
-                                                                    bookingObj.listingPrice = trsearchData.listingPrice;
-                                                                    bookingObj.listingType = trsearchData.listingType;
-                                                                    bookingObj.tourDates = trsearchData.tourDates;
-                                                                    bookingObj.userName = trsearchData.userName;
+                                                                        bookingObj.bookingDate = trsearchData.bookingDate;
+                                                                        bookingObj.currentUser = trsearchData.currentUser;
+                                                                        bookingObj.host = trsearchData.host;
+                                                                        bookingObj.itemId = trsearchData.itemId;
+                                                                        bookingObj.listingImg = trsearchData.listingImg;
+                                                                        bookingObj.listingName = trsearchData.listingName;
+                                                                        bookingObj.listingPrice = trsearchData.listingPrice;
+                                                                        bookingObj.listingType = trsearchData.listingType;
+                                                                        bookingObj.tourDates = trsearchData.tourDates;
+                                                                        bookingObj.userName = trsearchData.userName;
 
-                                                                    // let updates = {};
-                                                                    // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
-                                                                    set(ref(db, 'hosts/hostAccount/'+userId+'/'+trsearchData.bookingId), bookingObj);
+                                                                        // let updates = {};
+                                                                        // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/'+trsearchData.bookingId), bookingObj);
+                                                                    }
 
                                                                     let trImg = document.createElement('img');
                                                                     trImg.setAttribute('src', trsearchData.listingImg);
