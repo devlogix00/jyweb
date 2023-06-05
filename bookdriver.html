@@ -552,7 +552,7 @@
 
                                                             onValue(driverRef, (snapshot) => {
                                                                 let data = snapshot.val();
-                                                                console.log(data);
+                                                              
                                                                 if(data.currentUser == user.uid && data.driverPresent == null){
                                                                     document.getElementById('ridestarted').style.display = 'block';
                                                                 } else if(data.driverId == user.uid && data.driverPresent == 'True'){
