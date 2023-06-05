@@ -604,6 +604,7 @@
                                                                         bookingObj.carDates = crsearchData.carDates;
                                                                         bookingObj.userName = crsearchData.userName;
 
+                                                                        console.log(crsearchData.bookingId);
 
                                                                         set(ref(db, 'hosts/hostAccount/'+userId+'/cars/'+crsearchData.bookingId), bookingObj);
                                                                     }
