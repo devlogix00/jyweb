@@ -214,8 +214,7 @@
                     bookingObj.roomDates = data.roomDates;
                     bookingObj.userName = data.userName;
 
-                    let updates = {};
-                    updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                    set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
                   }
                   });
                   const carbookingRef = ref(db, 'cars/'+data[i].listingName);
@@ -278,8 +277,9 @@
                     bookingObj.roomDates = data.roomDates;
                     bookingObj.userName = data.userName;
 
-                    let updates = {};
-                    updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                    // let updates = {};
+                    // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                    set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
                   }
                   });
                   
@@ -345,8 +345,9 @@
                     bookingObj.roomDates = data.roomDates;
                     bookingObj.userName = data.userName;
 
-                    let updates = {};
-                    updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                    // let updates = {};
+                    // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                    set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
                   }
                   });
                  }
