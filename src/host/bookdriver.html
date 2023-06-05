@@ -339,7 +339,7 @@
                                 }
 
                                 // Keep track of booking id for realtime access here
-                                let drSearchUrl = sRef(db, 'users/userAccount/'+userId+'/driverdata');
+                                let drSearchUrl = sRef(db, 'bookedDrivers/'+userName);
                                 onValue(drSearchUrl, (snapshot) => {
                                     let drsearchData = snapshot.val();
 
@@ -525,7 +525,7 @@
                                           //  const newData = snapshot.val();
                                             //console.log(newData);
                                            
-                                                let drSearchUrl = sRef(db, 'bookedDrivers/'+userName);
+                                                //let drSearchUrl = sRef(db, 'bookedDrivers/'+userName);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
                                                     driverRef = sRef(db, 'bookedDrivers/'+userName);
