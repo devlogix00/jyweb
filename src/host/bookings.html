@@ -199,6 +199,23 @@
                         window.location = 'bookroom.html';
                       })
                     });
+
+                    let bookingObj = {};
+
+                    bookingObj.bookingDate = data.bookingDate;
+                    bookingObj.checkin = data.checkin;
+                    bookingObj.currentUser = data.currentUser;
+                    bookingObj.host = data.host;
+                    bookingObj.itemId = data.itemId;
+                    bookingObj.listingImg = data.listingImg;
+                    bookingObj.listingName = data.listingName;
+                    bookingObj.listingPrice = data.listingPrice;
+                    bookingObj.listingType = data.listingType;
+                    bookingObj.roomDates = data.roomDates;
+                    bookingObj.userName = data.userName;
+
+                    updates = {};
+                    updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
                   }
                   });
                   const carbookingRef = ref(db, 'cars/'+data[i].listingName);
@@ -246,6 +263,23 @@
                         window.location = 'bookcar.html';
                       })
                     });
+
+                    let bookingObj = {};
+
+                    bookingObj.bookingDate = data.bookingDate;
+                    bookingObj.checkin = data.checkin;
+                    bookingObj.currentUser = data.currentUser;
+                    bookingObj.host = data.host;
+                    bookingObj.itemId = data.itemId;
+                    bookingObj.listingImg = data.listingImg;
+                    bookingObj.listingName = data.listingName;
+                    bookingObj.listingPrice = data.listingPrice;
+                    bookingObj.listingType = data.listingType;
+                    bookingObj.roomDates = data.roomDates;
+                    bookingObj.userName = data.userName;
+
+                    updates = {};
+                    updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
                   }
                   });
                   
@@ -296,6 +330,23 @@
                         window.location = 'booktour.html';
                       })
                     });
+
+                    let bookingObj = {};
+
+                    bookingObj.bookingDate = data.bookingDate;
+                    bookingObj.checkin = data.checkin;
+                    bookingObj.currentUser = data.currentUser;
+                    bookingObj.host = data.host;
+                    bookingObj.itemId = data.itemId;
+                    bookingObj.listingImg = data.listingImg;
+                    bookingObj.listingName = data.listingName;
+                    bookingObj.listingPrice = data.listingPrice;
+                    bookingObj.listingType = data.listingType;
+                    bookingObj.roomDates = data.roomDates;
+                    bookingObj.userName = data.userName;
+
+                    updates = {};
+                    updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
                   }
                   });
                  }
