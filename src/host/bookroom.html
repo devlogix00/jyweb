@@ -601,8 +601,8 @@
                                                                     bookingObj.roomDates = rmsearchData.roomDates;
                                                                     bookingObj.userName = rmsearchData.userName;
 
-                                                                    set(ref(db, 'host/hostAccount/'+userId+'/'+rmsearchData.bookingId), bookingObj);
-                                                                    
+                                                                    set(ref(db, 'hosts/hostAccount/'+userId+'/'+rmsearchData.bookingId), bookingObj);
+
                                                                     let rmImg = document.createElement('img');
                                                                     rmImg.setAttribute('src', rmsearchData.listingImg);
                                                                     rmImg.style.width = '400px';

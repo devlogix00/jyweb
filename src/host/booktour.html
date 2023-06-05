@@ -604,8 +604,8 @@
 
                                                                     // let updates = {};
                                                                     // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
-                                                                    set(ref(db, 'host/hostAccount/'+userId+'/'+trsearchData.bookingId), bookingObj);
-                                                                    
+                                                                    set(ref(db, 'hosts/hostAccount/'+userId+'/'+trsearchData.bookingId), bookingObj);
+
                                                                     let trImg = document.createElement('img');
                                                                     trImg.setAttribute('src', trsearchData.listingImg);
                                                                     trImg.style.width = '400px';
