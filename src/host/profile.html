@@ -240,7 +240,7 @@
               profile.Name = userName;
               profile.userId = userId;
               let itemId = profile.itemId;
-              //profile.profileImg = userImg;
+              profile.profileImg = userImg;
               // updates['profile/Name'] = userName;
               // updates['profile/userId'] = userId;
               // updates['profile/profileImg'] = userImg;
@@ -311,6 +311,7 @@
                 updates['drivers/driverAccount/'+userId+'/profile/price'] = price;
                 updates['drivers/driverAccount/'+userId+'/profile/profileImg'] = userImg;
                 updates['drivers/driverAccount/'+userId+'/profile/itemId'] = itemId;
+                updates['drivers/driverAccount/'+userId+'/profile/licenseImg'] = profile.licenseImg;
                 update(ref(db), updates);
                 let profilesRef = ref(db, 'profiles/profiles/');
                 onValue(profilesRef, (snapshot) => {
