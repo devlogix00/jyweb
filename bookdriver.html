@@ -528,7 +528,7 @@
                                                 let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
-                                                    driverRef = ref(db, 'bookedDrivers/'+newData.driver);
+                                                    driverRef = sRef(db, 'bookedDrivers/'+newData.driver);
                                                     if(drsearchData != null ){
                                                         if(drsearchData.currentUser === user.uid){
                                                             let drImg = document.createElement('img');
