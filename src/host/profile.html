@@ -172,44 +172,7 @@
               saveImage(file);
             }
 
-            async function saveImage(file){
-              const storageRef = sRef(storage, 'images/'+ file.name);
-              const uploadTask = uploadBytesResumable(storageRef, file);
-
-                uploadTask.on('state_changed', 
-                  (snapshot) => {
-                    // Observe state change events such as progress, pause, and resume
-                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    
-                    switch (snapshot.state) {
-                    case 'paused':
-                        
-                        break;
-                    case 'running':
-                        
-                        break;
-                    }
-                  },
-                  (error) => {
-                    // Handle unsuccessful uploads
-                  },
-                  () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                      profile.licenseImg = downloadURL;
-                    })
-                  }
-                )
-              // const formData = new FormData();
-              // formData.append("file", file);
-    
-              // fetch("https://buorgoldengreenresorts.homes/uploadimgfiles", {
-              //   method: 'POST',
-              //   body: formData
-              // })
-              // .then((res) => console.log(res))
-              // .then((err) => ("Error occured", err));
-            }
+            
 
             function generateId(length) {
                 var result           = '';
@@ -295,6 +258,45 @@
               // updates['profile/userId'] = userId;
               // updates['profile/profileImg'] = userImg;
               // update(ref(db), updates);
+
+              async function saveImage(file){
+              const storageRef = sRef(storage, 'images/'+ file.name);
+              const uploadTask = uploadBytesResumable(storageRef, file);
+
+                uploadTask.on('state_changed', 
+                  (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    
+                    switch (snapshot.state) {
+                    case 'paused':
+                        
+                        break;
+                    case 'running':
+                        
+                        break;
+                    }
+                  },
+                  (error) => {
+                    // Handle unsuccessful uploads
+                  },
+                  () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                      profile.licenseImg = downloadURL;
+                    })
+                  }
+                )
+              // const formData = new FormData();
+              // formData.append("file", file);
+    
+              // fetch("https://buorgoldengreenresorts.homes/uploadimgfiles", {
+              //   method: 'POST',
+              //   body: formData
+              // })
+              // .then((res) => console.log(res))
+              // .then((err) => ("Error occured", err));
+            }
               
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
