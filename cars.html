@@ -324,6 +324,8 @@
                             updates['bookedDrivers/'+data[i].Name+'/'+drvLen+'/itemId'] = data[i].itemId;
                             update(ref(db), updates);
                           }
+                        }, {
+                          onlyOnce: true
                         });
                         
                         window.location = './drivercheckout.html';
