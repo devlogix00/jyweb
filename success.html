@@ -206,31 +206,25 @@
                       let bookingDt = snapshot.val();
                       if(bookingDt != null){
                         let len = bookingDt.length;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingDate'] = today;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/currentUser'] = userId;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverDates'] = driverRead.itemDates;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/userName'] = userName;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverName'] = data.item;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverPresent'] = null;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingId'] = bookingId;
-                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/userImg'] = user.photoURL;
+                        for(let i = 0; i < len; i++){
+                         if(dbRead.itemId == bookingDt[i].itemId){
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/bookingDate'] = today;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/currentUser'] = userId;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/driverDates'] = driverRead.itemDates;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/userName'] = userName;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/driverName'] = data.item;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/driverPresent'] = null;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/bookingId'] = bookingId;
+                          updates['bookedDrivers/'+dbRead.item+'/'+i+'/userImg'] = user.photoURL;
+                         }
+                        }
                       }
                       update(ref(db), updates);
                     });
-                      // } else {
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/bookingDate'] = today;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/currentUser'] = userId;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/driverDates'] = driverRead.itemDates;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/userName'] = userName;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/driverName'] = data.item;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/driverPresent'] = null;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/bookingId'] = bookingId;
-                      //   updates['bookedDrivers/'+dbRead.item+'/0/userImg'] = user.photoURL;
-                        
-                      // }
+                      
                       
                  
-                    update(ref(db), updates);
+                 
                     window.location = "UserAccount.html";
                     
                   });

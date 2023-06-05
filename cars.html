@@ -308,9 +308,24 @@
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemType'] = 'driver';
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemPrice'] = data[i].price;
                         updates['users/userAccount/'+userId+'/itemdata'+today+'/itemId'] = data[i].itemId;
-                        updates['bookedDrivers/'+data[i].Name+'/img'] = data[i].profileImg;
-                        updates['bookedDrivers/'+data[i].Name+'/driverId'] = data[i].userId;
-                        update(ref(db), updates);
+                        
+                        let drvRef = ref(db, 'bookedDrivers/'+data[i].Name);
+                        onValue(drvRef, (snapshot) => {
+                          let drvData = snapshot.val();
+                          if(drvData == null){
+                            updates['bookedDrivers/'+data[i].Name+'/0/img'] = data[i].profileImg;
+                            updates['bookedDrivers/'+data[i].Name+'/0/driverId'] = data[i].userId;
+                            updates['bookedDrivers/'+data[i].Name+'/0/itemId'] = data[i].itemId;
+                            update(ref(db), updates);
+                          } else {
+                            let drvLen = drvData.length;
+                            updates['bookedDrivers/'+data[i].Name+'/'+drvLen+'/img'] = data[i].profileImg;
+                            updates['bookedDrivers/'+data[i].Name+'/'+drvLen+'/driverId'] = data[i].userId;
+                            updates['bookedDrivers/'+data[i].Name+'/'+drvLen+'/itemId'] = data[i].itemId;
+                            update(ref(db), updates);
+                          }
+                        });
+                        
                         window.location = './drivercheckout.html';
                       }
                      
