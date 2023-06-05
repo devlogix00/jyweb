@@ -555,14 +555,14 @@
                                                                 
                                                                 if(data.currentUser == user.uid && data.driverPresent == null){
                                                                     document.getElementById('ridestarted').style.display = 'block';
-                                                                } else if(data.host == user.uid && data.driverPresent == 'True'){
+                                                                } else if(data.driverId == user.uid && data.driverPresent == 'True'){
                                                                     document.getElementById('bookingInfo').appendChild(status);
                                                                 } else if(data.currentUser == user.uid && data.driverPresent == 'True'){
                                                                     document.getElementById('bookingInfo').appendChild(status);
                                                                 } 
                                                             });
                                                             document.getElementById('ridestarted').addEventListener('click', function(){
-                                                                console.log('driver present');
+                                                                
                                                                 updates['bookedDrivers/'+drsearchData.listingName+'/driverPresent'] = "True";
                                                                 update(sRef(db), updates);
                                                                 let drvPrsntBtn = document.getElementById('ridestarted');
