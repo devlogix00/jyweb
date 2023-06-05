@@ -246,6 +246,8 @@
               // updates['profile/profileImg'] = userImg;
               // update(ref(db), updates);
 
+              const storage = getStorage();
+
               mediaCaptureElement.addEventListener('change', onMediaFileSelected);
               function onMediaFileSelected(e){
                 e.preventDefault();
