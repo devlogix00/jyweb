@@ -587,7 +587,7 @@ app.post('/create-checkout-session', async (req, res) => {
                 for(let i = 0; i < data.length; i++){
                     if(data[i].itemId === itemId){
                         let driveruid = data[i].userId;
-                        let driverRef = ref(db, 'drivers/driverAccount/'+driveruid+'/stripe/accid');
+                        let driverRef = ref(db, 'hosts/hostAccount/'+driveruid+'/stripe/accid');
                         onValue(driverRef, (snapshot) => {
                             accid = snapshot.val();
                         }, {
