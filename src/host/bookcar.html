@@ -605,9 +605,9 @@
                                                                         bookingObj.userName = crsearchData.userName;
 
                                                                         
-                                                                        let bookingPath = crsearchData.bookingId;
+                                                                      
 
-                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/cars/'+bookingPath), bookingObj);
+                                                                        set(sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+crsearchData.bookingId), bookingObj);
                                                                     }
 
                                                                     let crImg = document.createElement('img');

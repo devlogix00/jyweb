@@ -603,8 +603,7 @@
                                                                         bookingObj.tourDates = trsearchData.tourDates;
                                                                         bookingObj.userName = trsearchData.userName;
 
-                                                                        let bookingPath = trsearchData.bookingId;
-                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/tours/'+trsearchData.bookingId), bookingObj);
+                                                                        set(sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+trsearchData.bookingId), bookingObj);
                                                                     }
 
                                                                     let trImg = document.createElement('img');

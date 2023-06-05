@@ -602,9 +602,8 @@
                                                                         bookingObj.roomDates = rmsearchData.roomDates;
                                                                         bookingObj.userName = rmsearchData.userName;
 
-                                                                        let updates = {};
-                                                                        updates['hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId] = bookingObj;
-                                                                        update(ref(db), updates);
+                                                                       
+                                                                        set(sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId), bookingObj);
                                                                     }
 
                                                                     let rmImg = document.createElement('img');
