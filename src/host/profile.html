@@ -241,6 +241,8 @@
               profile.userId = userId;
               let itemId = profile.itemId;
               profile.profileImg = userImg;
+              let price = document.getElementById('price').value;
+              profile.price = price;
               // updates['profile/Name'] = userName;
               // updates['profile/userId'] = userId;
               // updates['profile/profileImg'] = userImg;
@@ -304,7 +306,7 @@
               
               document.getElementById('submitListing').addEventListener('click', e => {
                 e.preventDefault();
-                let price = document.getElementById('price').value;
+                
                 updates['drivers/driverAccount/'+userId+'/profile/Name'] = userName;
                 updates['drivers/driverAccount/'+userId+'/profile/location'] = profile.location;
                 updates['drivers/driverAccount/'+userId+'/profile/userId'] = userId;
