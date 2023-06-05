@@ -602,7 +602,7 @@
                                                                         bookingObj.roomDates = rmsearchData.roomDates;
                                                                         bookingObj.userName = rmsearchData.userName;
 
-                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/'+rmsearchData.bookingId), bookingObj);
+                                                                        set(ref(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId), bookingObj);
                                                                     }
 
                                                                     let rmImg = document.createElement('img');
