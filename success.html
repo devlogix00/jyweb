@@ -187,28 +187,20 @@
                 
 
                } else if(dbRead.itemType == 'driver'){
-                  const driverRef = ref(db, 'users/userAccount/'+userId+'/bookingdata'+today);
-                  let driverRead;
                   let bookingId = generateId(16);
-                  onValue(driverRef, (snapshot) => {
-                    const data = snapshot.val();
-                    driverRead = data;                 
-                    updates['users/userAccount/'+userId+'/driverdata/driverStatus'] = 'paid';
-                    updates['users/userAccount/'+userId+'/driverdata/bookingDate'] = today;
-                    updates['users/userAccount/'+userId+'/driverdata'+today+'/driverStatus'] = 'paid';
-                    updates['users/userAccount/'+userId+'/driverdata'+today+'/bookingDate'] = today;
-                    updates['users/userAccount/'+userId+'/driverdata/userName'] = userName;
-                    updates['users/userAccount/'+userId+'/driverdata/driverDates'] = driverRead.itemDates;
-                    updates['users/userAccount/'+userId+'/driverdata/bookingId'] = bookingId;
-                    update(ref(db), updates);
-                    
-                  });
 
                   let bookedDrv = ref(db, 'bookedDrivers/'+dbRead.item);
                   onValue(bookedDrv, (snapshot) => {
                     let bookingDt = snapshot.val();
                     if(bookingDt != null){
                       let len = bookingDt.length;
+                      updates['users/userAccount/'+userId+'/driverdata/driverStatus'] = 'paid';
+                      updates['users/userAccount/'+userId+'/driverdata/bookingDate'] = today;
+                      updates['users/userAccount/'+userId+'/driverdata'+today+'/driverStatus'] = 'paid';
+                      updates['users/userAccount/'+userId+'/driverdata'+today+'/bookingDate'] = today;
+                      updates['users/userAccount/'+userId+'/driverdata/userName'] = userName;
+                      updates['users/userAccount/'+userId+'/driverdata/driverDates'] = driverRead.itemDates;
+                      updates['users/userAccount/'+userId+'/driverdata/bookingId'] = bookingId;
                       updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingDate'] = today;
                       updates['bookedDrivers/'+dbRead.item+'/'+len+'/currentUser'] = userId;
                       updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverDates'] = driverRead.itemDates;
@@ -217,7 +209,15 @@
                       updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverPresent'] = null;
                       updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingId'] = bookingId;
                       update(ref(db), updates);
+                      window.location = "UserAccount.html";
                     } else {
+                      updates['users/userAccount/'+userId+'/driverdata/driverStatus'] = 'paid';
+                      updates['users/userAccount/'+userId+'/driverdata/bookingDate'] = today;
+                      updates['users/userAccount/'+userId+'/driverdata'+today+'/driverStatus'] = 'paid';
+                      updates['users/userAccount/'+userId+'/driverdata'+today+'/bookingDate'] = today;
+                      updates['users/userAccount/'+userId+'/driverdata/userName'] = userName;
+                      updates['users/userAccount/'+userId+'/driverdata/driverDates'] = driverRead.itemDates;
+                      updates['users/userAccount/'+userId+'/driverdata/bookingId'] = bookingId;
                       updates['bookedDrivers/'+dbRead.item+'/0/bookingDate'] = today;
                       updates['bookedDrivers/'+dbRead.item+'/0/currentUser'] = userId;
                       updates['bookedDrivers/'+dbRead.item+'/0/driverDates'] = driverRead.itemDates;
@@ -226,10 +226,11 @@
                       updates['bookedDrivers/'+dbRead.item+'/0/driverPresent'] = null;
                       updates['bookedDrivers/'+dbRead.item+'/0/bookingId'] = bookingId;
                       update(ref(db), updates);
+                      window.location = "UserAccount.html";
                     }
                     
                   });
-                  window.location = "UserAccount.html";
+                  
 
                }
             });
