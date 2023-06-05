@@ -200,21 +200,23 @@
                       })
                     });
 
-                    let bookingObj = {};
+                    if(data.bookingId != null){
+                      let bookingObj = {};
 
-                    bookingObj.bookingDate = data.bookingDate;
-                    bookingObj.checkin = data.checkin;
-                    bookingObj.currentUser = data.currentUser;
-                    bookingObj.host = data.host;
-                    bookingObj.itemId = data.itemId;
-                    bookingObj.listingImg = data.listingImg;
-                    bookingObj.listingName = data.listingName;
-                    bookingObj.listingPrice = data.listingPrice;
-                    bookingObj.listingType = data.listingType;
-                    bookingObj.roomDates = data.roomDates;
-                    bookingObj.userName = data.userName;
+                      bookingObj.bookingDate = data.bookingDate;
+                      bookingObj.checkin = data.checkin;
+                      bookingObj.currentUser = data.currentUser;
+                      bookingObj.host = data.host;
+                      bookingObj.itemId = data.itemId;
+                      bookingObj.listingImg = data.listingImg;
+                      bookingObj.listingName = data.listingName;
+                      bookingObj.listingPrice = data.listingPrice;
+                      bookingObj.listingType = data.listingType;
+                      bookingObj.roomDates = data.roomDates;
+                      bookingObj.userName = data.userName;
 
-                    set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
+                      set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
+                    }
                   }
                   });
                   const carbookingRef = ref(db, 'cars/'+data[i].listingName);
@@ -263,22 +265,24 @@
                       })
                     });
 
-                    let bookingObj = {};
+                    if(data.bookingId != null){
+                      let bookingObj = {};
 
-                    bookingObj.bookingDate = data.bookingDate;
-                    bookingObj.currentUser = data.currentUser;
-                    bookingObj.host = data.host;
-                    bookingObj.itemId = data.itemId;
-                    bookingObj.listingImg = data.listingImg;
-                    bookingObj.listingName = data.listingName;
-                    bookingObj.listingPrice = data.listingPrice;
-                    bookingObj.listingType = data.listingType;
-                    bookingObj.roomDates = data.carDates;
-                    bookingObj.userName = data.userName;
+                      bookingObj.bookingDate = data.bookingDate;
+                      bookingObj.currentUser = data.currentUser;
+                      bookingObj.host = data.host;
+                      bookingObj.itemId = data.itemId;
+                      bookingObj.listingImg = data.listingImg;
+                      bookingObj.listingName = data.listingName;
+                      bookingObj.listingPrice = data.listingPrice;
+                      bookingObj.listingType = data.listingType;
+                      bookingObj.roomDates = data.carDates;
+                      bookingObj.userName = data.userName;
 
-                    // let updates = {};
-                    // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
-                    set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
+                      // let updates = {};
+                      // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                      set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
+                    }
                   }
                   });
                   
@@ -330,22 +334,24 @@
                       })
                     });
 
-                    let bookingObj = {};
+                    if(data.bookingId != null){
+                      let bookingObj = {};
 
-                    bookingObj.bookingDate = data.bookingDate;
-                    bookingObj.currentUser = data.currentUser;
-                    bookingObj.host = data.host;
-                    bookingObj.itemId = data.itemId;
-                    bookingObj.listingImg = data.listingImg;
-                    bookingObj.listingName = data.listingName;
-                    bookingObj.listingPrice = data.listingPrice;
-                    bookingObj.listingType = data.listingType;
-                    bookingObj.roomDates = data.tourDates;
-                    bookingObj.userName = data.userName;
+                      bookingObj.bookingDate = data.bookingDate;
+                      bookingObj.currentUser = data.currentUser;
+                      bookingObj.host = data.host;
+                      bookingObj.itemId = data.itemId;
+                      bookingObj.listingImg = data.listingImg;
+                      bookingObj.listingName = data.listingName;
+                      bookingObj.listingPrice = data.listingPrice;
+                      bookingObj.listingType = data.listingType;
+                      bookingObj.roomDates = data.tourDates;
+                      bookingObj.userName = data.userName;
 
-                    // let updates = {};
-                    // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
-                    set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
+                      // let updates = {};
+                      // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                      set(ref(db, 'host/hostAccount/'+userId+'/'+data.bookingId), bookingObj);
+                    }
                   }
                   });
                  }
