@@ -410,15 +410,18 @@
                       });
 
                     }
-                    let bookedDriversRef = ref(db, 'bookedDrivers/'+data.driver+'/userImg');
-                    onValue(bookedDriversRef, (snapshot) => {
-                      const bkddata = snapshot.val();
-                      if(bkddata == null){
-                        let updates = {};
-                        updates['bookedDrivers/'+data.driver+'/userImg'] = user.photoURL;
-                        update(ref(db), updates);
-                      }
-                    });
+                    // let bookedDriversRef = ref(db, 'bookedDrivers/'+data.driver);
+                    // onValue(bookedDriversRef, (snapshot) => {
+                    //   const bkddata = snapshot.val();
+                    //   // if(bkddata == null){
+                    //   //   let updates = {};
+                    //   //   updates['bookedDrivers/'+data.driver+'/0/userImg'] = user.photoURL;
+                    //   //   update(ref(db), updates);
+                    //   // } else {
+                    //   //   updates['bookedDrivers/'+data.driver+'/'+bkddata.length'/userImg'] = user.photoURL;
+                    //   //   update(ref(db), updates);
+                    //   // }
+                    // });
                 }
                 });
                 

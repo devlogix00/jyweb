@@ -200,7 +200,7 @@
                     updates['users/userAccount/'+userId+'/driverdata/userName'] = userName;
                     updates['users/userAccount/'+userId+'/driverdata/driverDates'] = driverRead.itemDates;
                     updates['users/userAccount/'+userId+'/driverdata/bookingId'] = bookingId;
-                    update(ref(db), updates);
+                    
                     let bookedDrv = ref(db, 'bookedDrivers/'+dbRead.item);
                     onValue(bookedDrv, (snapshot) => {
                       let bookingDt = snapshot.val();
@@ -213,8 +213,7 @@
                         updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverName'] = data.item;
                         updates['bookedDrivers/'+dbRead.item+'/'+len+'/driverPresent'] = null;
                         updates['bookedDrivers/'+dbRead.item+'/'+len+'/bookingId'] = bookingId;
-                        update(ref(db), updates);
-                        window.location = "UserAccount.html";
+                        updates['bookedDrivers/'+dbRead.item+'/'+len+'/userImg'] = user.photoURL;
                       
                       } else {
                         updates['bookedDrivers/'+dbRead.item+'/0/bookingDate'] = today;
@@ -224,12 +223,13 @@
                         updates['bookedDrivers/'+dbRead.item+'/0/driverName'] = data.item;
                         updates['bookedDrivers/'+dbRead.item+'/0/driverPresent'] = null;
                         updates['bookedDrivers/'+dbRead.item+'/0/bookingId'] = bookingId;
-                        update(ref(db), updates);
-                        window.location = "UserAccount.html";
+                        updates['bookedDrivers/'+dbRead.item+'/0/userImg'] = user.photoURL;
                         
                       }
                       
                     });
+                    update(ref(db), updates);
+                    window.location = "UserAccount.html";
                     
                   });
 
