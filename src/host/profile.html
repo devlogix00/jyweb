@@ -157,20 +157,7 @@
             let mediaCaptureElement = document.getElementById('mediaCapture');
            // let mediaCaptureProfElement = document.getElementById('mediaCaptureProf');
  
-            mediaCaptureElement.addEventListener('change', onMediaFileSelected);
-            function onMediaFileSelected(e){
-              e.preventDefault();
-              let file = e.target.files[0];
-              //imageFormElement.reset();
-              if(!file.type.match('image.*')){
-                let data = {
-                  message: 'You can only share images',
-                  timeout: 2000
-                };
-                return;
-              }
-              saveImage(file);
-            }
+           
 
             
 
@@ -258,6 +245,21 @@
               // updates['profile/userId'] = userId;
               // updates['profile/profileImg'] = userImg;
               // update(ref(db), updates);
+
+              mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+              function onMediaFileSelected(e){
+                e.preventDefault();
+                let file = e.target.files[0];
+                //imageFormElement.reset();
+                if(!file.type.match('image.*')){
+                  let data = {
+                    message: 'You can only share images',
+                    timeout: 2000
+                  };
+                  return;
+                }
+                saveImage(file);
+              }
 
               async function saveImage(file){
               const storageRef = sRef(storage, 'images/'+ file.name);
