@@ -305,13 +305,13 @@
                   }
                   });
 
-                  const bookingRef = ref(db, 'bookedDrivers/'+userName);
+                  
               
                  }
                   
               
               });
-             
+              const bookingRef = ref(db, 'bookedDrivers/'+userName);
               onValue(bookingRef, (snapshot) => {
                   const data = snapshot.val();
                   console.log(data);
