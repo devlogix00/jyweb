@@ -315,8 +315,9 @@
               onValue(bookingRef, (snapshot) => {
                   const data = snapshot.val();
                   console.log(data);
-                  if(data != null && data.driverId === userId && data.currentUser != null){
-                    let userImg = data.userImg;
+                  for(let i = 0; i < data.length; i++){
+                    if(data[i] != null && data[i].driverId === userId && data[i].currentUser != null){
+                    let userImg = data[i].userImg;
                     let cardOuter = document.createElement('div');
                     cardOuter.setAttribute('class', 'col-md-4');
                     cardOuter.setAttribute('id', userName);
@@ -335,9 +336,9 @@
                     cardTitle.setAttribute('class', 'card-title');
                     cardTitle.style.paddingBottom = '3em';
                     if(data.driverDates.length == 1){
-                    cardTitle.innerText = data.userName;
+                    cardTitle.innerText = data[i].userName;
                     } else {
-                    cardTitle.innerText = data.userName;
+                    cardTitle.innerText = data[i].userName;
                     }
                     
                     cardBody.appendChild(cardHeader);
@@ -349,14 +350,11 @@
                     document.getElementById('bookings').appendChild(cardOuter);
 
                     cardOuter.addEventListener('click', function(){
-                    let bookingRef = ref(db, 'bookedDrivers/'+userName);
-                    onValue(bookingRef, (snapshot) => {
-                        const data = snapshot.val();
-                        window.location = 'bookdriver.html';
-                    })
+                      window.location = 'bookdriver.html';
                     });
 
                     }
+                  }
           
                   });
             
