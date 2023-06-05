@@ -589,6 +589,24 @@
                                                             carRef = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+listingData[i].listingName);
                                                             if(crsearchData != null ){
                                                                 if(crsearchData.host == userId && crsearchData.bookingId != null){
+                                                                      
+                                                                    let bookingObj = {};
+
+                                                                    bookingObj.bookingDate = crsearchData.bookingDate;
+                                                                    bookingObj.currentUser = crsearchData.currentUser;
+                                                                    bookingObj.host = crsearchData.host;
+                                                                    bookingObj.itemId = crsearchData.itemId;
+                                                                    bookingObj.listingImg = crsearchData.listingImg;
+                                                                    bookingObj.listingName = crsearchData.listingName;
+                                                                    bookingObj.listingPrice = crsearchData.listingPrice;
+                                                                    bookingObj.listingType = crsearchData.listingType;
+                                                                    bookingObj.carDates = crsearchData.carDates;
+                                                                    bookingObj.userName = crsearchData.userName;
+
+                                                                    // let updates = {};
+                                                                    // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                                                                    set(ref(db, 'host/hostAccount/'+userId+'/'+crsearchData.bookingId), bookingObj);
+
                                                                     let crImg = document.createElement('img');
                                                                     crImg.setAttribute('src', crsearchData.listingImg);
                                                                     crImg.style.width = '400px';
@@ -662,23 +680,7 @@
                                                                         }
                                                                     });
 
-                                                      
-                                                                        let bookingObj = {};
-
-                                                                        bookingObj.bookingDate = crsearchData.bookingDate;
-                                                                        bookingObj.currentUser = crsearchData.currentUser;
-                                                                        bookingObj.host = crsearchData.host;
-                                                                        bookingObj.itemId = crsearchData.itemId;
-                                                                        bookingObj.listingImg = crsearchData.listingImg;
-                                                                        bookingObj.listingName = crsearchData.listingName;
-                                                                        bookingObj.listingPrice = crsearchData.listingPrice;
-                                                                        bookingObj.listingType = crsearchData.listingType;
-                                                                        bookingObj.carDates = crsearchData.carDates;
-                                                                        bookingObj.userName = crsearchData.userName;
-
-                                                                        // let updates = {};
-                                                                        // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
-                                                                        set(ref(db, 'host/hostAccount/'+userId+'/'+crsearchData.bookingId), bookingObj);
+                                                    
                                                                                 
                                                                                             }
                                                                                             
