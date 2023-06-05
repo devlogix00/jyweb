@@ -661,7 +661,25 @@
                                                                             }
                                                                         }
                                                                     });
-                                                                                    
+
+                                                      
+                                                                        let bookingObj = {};
+
+                                                                        bookingObj.bookingDate = crsearchData.bookingDate;
+                                                                        bookingObj.currentUser = crsearchData.currentUser;
+                                                                        bookingObj.host = crsearchData.host;
+                                                                        bookingObj.itemId = crsearchData.itemId;
+                                                                        bookingObj.listingImg = crsearchData.listingImg;
+                                                                        bookingObj.listingName = crsearchData.listingName;
+                                                                        bookingObj.listingPrice = crsearchData.listingPrice;
+                                                                        bookingObj.listingType = crsearchData.listingType;
+                                                                        bookingObj.carDates = crsearchData.carDates;
+                                                                        bookingObj.userName = crsearchData.userName;
+
+                                                                        // let updates = {};
+                                                                        // updates['host/hostAccount/'+userId+'/'+data.bookingId] = bookingObj;
+                                                                        set(ref(db, 'host/hostAccount/'+userId+'/'+crsearchData.bookingId), bookingObj);
+                                                                                
                                                                                             }
                                                                                             
                                                                                         }
