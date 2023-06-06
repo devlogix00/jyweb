@@ -601,7 +601,7 @@
                                                                         bookingObj.listingType = rmsearchData.listingType;
                                                                         bookingObj.roomDates = rmsearchData.roomDates;
                                                                         bookingObj.userName = rmsearchData.userName;
-
+                                                                        bookingObj.userImg = rmsearchData.userImg;
                                                                        
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId), bookingObj);
                                                                     }

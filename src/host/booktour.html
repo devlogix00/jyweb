@@ -602,6 +602,7 @@
                                                                         bookingObj.listingType = trsearchData.listingType;
                                                                         bookingObj.tourDates = trsearchData.tourDates;
                                                                         bookingObj.userName = trsearchData.userName;
+                                                                        bookingObj.userImg = trsearchData.userImg;
 
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+trsearchData.bookingId), bookingObj);
                                                                     }
