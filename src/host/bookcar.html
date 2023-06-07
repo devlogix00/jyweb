@@ -608,28 +608,41 @@
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+crsearchData.bookingId), bookingObj);
                                                                     }
 
-                                                                    let crImg = document.createElement('img');
-                                                                    crImg.setAttribute('src', crsearchData.listingImg);
-                                                                    crImg.style.width = '400px';
-                                                                    crImg.style.height = '400px';
-                                                                    crImg.style.borderRadius = '100px';
-                                                                    crImg.style.paddingTop = '1em';
-                                                                    crImg.style.paddingLeft = '1em';
-                                                                    document.getElementById('img').appendChild(crImg);
-                                                                    let crNme = document.createElement('h1');
-                                                                    crNme.innerText = crsearchData.listingName;
-                                                                    let bookingDates = document.createElement('h3');
-                                                                    if(crsearchData.carDates.length === 2){
-                                                                        bookingDates.innerText = 'Booking Dates: '+crsearchData.carDates[0]+' - '+crsearchData.carDates[1];
-                                                                    } else {
-                                                                        bookingDates.innerText = 'Booking Date: '+crsearchData.carDates[0];
-                                                                    }
-                                                                    // let checkin = document.createElement('h3');
-                                                                    // checkin.innerText = crsearchData.checkin;
-                                                                    document.getElementById('bookingInfo').appendChild(crNme);
-                                                                    document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                                   // document.getElementById('bookingInfo').appendChild(checkin);
-                                                                    document.getElementById('bookingInfo').appendChild(status);
+                                                                    let bookingRef = sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+crsearchData.bookingId);
+                                                                    onValue(bookingRef, (snapshot) => {
+                                                                        let crdt = snapshot.val();
+                                                                        let guestProf = document.createElement('img');
+                                                                        guestProf.setAttribute('src', crdt.userImg);
+                                                                        guestProf.style.width = '150px';
+                                                                        guestProf.style.height = '150px';
+                                                                        guestProf.style.borderRadius = '150px';
+                                                                        guestProf.style.paddingTop = '1em';
+                                                                        guestProf.style.paddingLeft = '1em';
+                                                                        document.getElementById('bookingInfo').appendChild(guestProf);
+                                                                    });
+
+                                                                //     let crImg = document.createElement('img');
+                                                                //     crImg.setAttribute('src', crsearchData.listingImg);
+                                                                //     crImg.style.width = '400px';
+                                                                //     crImg.style.height = '400px';
+                                                                //     crImg.style.borderRadius = '100px';
+                                                                //     crImg.style.paddingTop = '1em';
+                                                                //     crImg.style.paddingLeft = '1em';
+                                                                //     document.getElementById('img').appendChild(crImg);
+                                                                //     let crNme = document.createElement('h1');
+                                                                //     crNme.innerText = crsearchData.listingName;
+                                                                //     let bookingDates = document.createElement('h3');
+                                                                //     if(crsearchData.carDates.length === 2){
+                                                                //         bookingDates.innerText = 'Booking Dates: '+crsearchData.carDates[0]+' - '+crsearchData.carDates[1];
+                                                                //     } else {
+                                                                //         bookingDates.innerText = 'Booking Date: '+crsearchData.carDates[0];
+                                                                //     }
+                                                                //     // let checkin = document.createElement('h3');
+                                                                //     // checkin.innerText = crsearchData.checkin;
+                                                                //     document.getElementById('bookingInfo').appendChild(crNme);
+                                                                //     document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                                //    // document.getElementById('bookingInfo').appendChild(checkin);
+                                                                //     document.getElementById('bookingInfo').appendChild(status);
 
                                                                     let usersRef = sRef(db, 'bookcarusers/'+crsearchData.bookingId);
                                                                     onValue(usersRef, (snapshot) => {

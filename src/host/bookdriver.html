@@ -537,25 +537,34 @@
                                                   driverRef = sRef(db, 'bookedDrivers/'+userName);
                                                   if(drsearchData != null ){
                                                     for(let i = 0; i < drsearchData.length; i++){
-                                                        if(drsearchData[i].currentUser === user.uid){
-                                                            let drImg = document.createElement('img');
-                                                            drImg.setAttribute('src', drsearchData[i].img);
-                                                            drImg.style.width = '400px';
-                                                            drImg.style.height = '400px';
-                                                            drImg.style.borderRadius = '100px';
-                                                            drImg.style.paddingTop = '1em';
-                                                            drImg.style.paddingLeft = '1em';
-                                                            document.getElementById('img').appendChild(drImg);
-                                                            let drNme = document.createElement('h1');
-                                                            drNme.innerText = drsearchData[i].driverName;
-                                                            let bookingDates = document.createElement('h3');
-                                                            if(drsearchData[i].driverDates.length === 2){
-                                                                bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
-                                                            } else {
-                                                                bookingDates.innerText = 'Booking Date: '+drsearchData[i].driverDates[0];
-                                                            }
-                                                            document.getElementById('bookingInfo').appendChild(drNme);
-                                                            document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                        if(drsearchData[i].driverId === user.uid){
+                                                            let guestProf = document.createElement('img');
+                                                            guestProf.setAttribute('src', drsearchData[i].userImg);
+                                                            guestProf.style.width = '150px';
+                                                            guestProf.style.height = '150px';
+                                                            guestProf.style.borderRadius = '150px';
+                                                            guestProf.style.paddingTop = '1em';
+                                                            guestProf.style.paddingLeft = '1em';
+                                                            document.getElementById('bookingInfo').appendChild(guestProf);
+                                                            
+                                                            // let drImg = document.createElement('img');
+                                                            // drImg.setAttribute('src', drsearchData[i].img);
+                                                            // drImg.style.width = '400px';
+                                                            // drImg.style.height = '400px';
+                                                            // drImg.style.borderRadius = '100px';
+                                                            // drImg.style.paddingTop = '1em';
+                                                            // drImg.style.paddingLeft = '1em';
+                                                            // document.getElementById('img').appendChild(drImg);
+                                                            // let drNme = document.createElement('h1');
+                                                            // drNme.innerText = drsearchData[i].driverName;
+                                                            // let bookingDates = document.createElement('h3');
+                                                            // if(drsearchData[i].driverDates.length === 2){
+                                                            //     bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
+                                                            // } else {
+                                                            //     bookingDates.innerText = 'Booking Date: '+drsearchData[i].driverDates[0];
+                                                            // }
+                                                            // document.getElementById('bookingInfo').appendChild(drNme);
+                                                            // document.getElementById('bookingInfo').appendChild(bookingDates);
 
                                                             onValue(driverRef, (snapshot) => {
                                                                 let data = snapshot.val();

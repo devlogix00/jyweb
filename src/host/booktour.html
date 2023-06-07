@@ -607,28 +607,41 @@
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+trsearchData.bookingId), bookingObj);
                                                                     }
 
-                                                                    let trImg = document.createElement('img');
-                                                                    trImg.setAttribute('src', trsearchData.listingImg);
-                                                                    trImg.style.width = '400px';
-                                                                    trImg.style.height = '400px';
-                                                                    trImg.style.borderRadius = '100px';
-                                                                    trImg.style.paddingTop = '1em';
-                                                                    trImg.style.paddingLeft = '1em';
-                                                                    document.getElementById('img').appendChild(trImg);
-                                                                    let trNme = document.createElement('h1');
-                                                                    trNme.innerText = trsearchData.listingName;
-                                                                    let bookingDates = document.createElement('h3');
-                                                                    if(trsearchData.tourDates.length === 2){
-                                                                        bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
-                                                                    } else {
-                                                                        bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
-                                                                    }
-                                                                    // let checkin = document.createElement('h3');
-                                                                    // checkin.innerText = crsearchData.checkin;
-                                                                    document.getElementById('bookingInfo').appendChild(trNme);
-                                                                    document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                                   // document.getElementById('bookingInfo').appendChild(checkin);
-                                                                    document.getElementById('bookingInfo').appendChild(status);
+                                                                    let bookingRef = sRef(db, 'hosts/hostAccount/'+userId+'/tours/'+trsearchData.bookingId);
+                                                                    onValue(bookingRef, (snapshot) => {
+                                                                        let trdt = snapshot.val();
+                                                                        let guestProf = document.createElement('img');
+                                                                        guestProf.setAttribute('src', trdt.userImg);
+                                                                        guestProf.style.width = '150px';
+                                                                        guestProf.style.height = '150px';
+                                                                        guestProf.style.borderRadius = '150px';
+                                                                        guestProf.style.paddingTop = '1em';
+                                                                        guestProf.style.paddingLeft = '1em';
+                                                                        document.getElementById('bookingInfo').appendChild(guestProf);
+                                                                    });
+
+                                                                //     let trImg = document.createElement('img');
+                                                                //     trImg.setAttribute('src', trsearchData.listingImg);
+                                                                //     trImg.style.width = '400px';
+                                                                //     trImg.style.height = '400px';
+                                                                //     trImg.style.borderRadius = '100px';
+                                                                //     trImg.style.paddingTop = '1em';
+                                                                //     trImg.style.paddingLeft = '1em';
+                                                                //     document.getElementById('img').appendChild(trImg);
+                                                                //     let trNme = document.createElement('h1');
+                                                                //     trNme.innerText = trsearchData.listingName;
+                                                                //     let bookingDates = document.createElement('h3');
+                                                                //     if(trsearchData.tourDates.length === 2){
+                                                                //         bookingDates.innerText = 'Booking Dates: '+trsearchData.tourDates[0]+' - '+trsearchData.tourDates[1];
+                                                                //     } else {
+                                                                //         bookingDates.innerText = 'Booking Date: '+trsearchData.tourDates[0];
+                                                                //     }
+                                                                //     // let checkin = document.createElement('h3');
+                                                                //     // checkin.innerText = crsearchData.checkin;
+                                                                //     document.getElementById('bookingInfo').appendChild(trNme);
+                                                                //     document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                                //    // document.getElementById('bookingInfo').appendChild(checkin);
+                                                                //     document.getElementById('bookingInfo').appendChild(status);
 
                                                                     let usersRef = sRef(db, 'booktourusers/'+trsearchData.bookingId);
                                                                     onValue(usersRef, (snapshot) => {
