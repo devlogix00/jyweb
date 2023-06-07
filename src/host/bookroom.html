@@ -605,7 +605,8 @@
                                                                        
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId), bookingObj);
                                                                     }
-                                                                    onValue('hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId, (snapshot) => {
+                                                                    let bookingRef = sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId);
+                                                                    onValue(bookingRef, (snapshot) => {
                                                                         let rmdt = snapshot.val();
                                                                         let guestProf = document.createElement('img');
                                                                         guestProf.setAttribute('src', rmdt.userImg);
