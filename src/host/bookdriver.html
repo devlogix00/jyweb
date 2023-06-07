@@ -546,6 +546,9 @@
                                                             guestProf.style.paddingTop = '1em';
                                                             guestProf.style.paddingLeft = '1em';
                                                             document.getElementById('bookingInfo').appendChild(guestProf);
+                                                            guestProf.addEventListener('click', function(){
+                                                                console.log('You clicked on me!');
+                                                            });
                                                             
                                                             // let drImg = document.createElement('img');
                                                             // drImg.setAttribute('src', drsearchData[i].img);
