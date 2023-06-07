@@ -616,7 +616,12 @@
                                                                         guestProf.style.paddingTop = '1em';
                                                                         guestProf.style.paddingLeft = '1em';
                                                                         document.getElementById('bookingInfo').appendChild(guestProf);
+                                                                        guestProf.addEventListener('click', function(){
+                                                                            console.log('You clicked on me!');
+                                                                        });
                                                                     });
+
+
 
                                                                 //     let rmImg = document.createElement('img');
                                                                 //     rmImg.setAttribute('src', rmsearchData.listingImg);
