@@ -605,29 +605,40 @@
                                                                        
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId), bookingObj);
                                                                     }
+                                                                    onValue('hosts/hostAccount/'+userId+'/rooms/'+rmsearchData.bookingId, (snapshot) => {
+                                                                        let rmdt = snapshot.val();
+                                                                        let guestProf = document.createElement('img');
+                                                                        guestProf.setAttribute('src', rmdt.userImg);
+                                                                        guestProf.style.width = '64px';
+                                                                        guestProf.style.height = '64px';
+                                                                        rmImg.style.borderRadius = '5px';
+                                                                        rmImg.style.paddingTop = '1em';
+                                                                        rmImg.style.paddingLeft = '1em';
+                                                                        document.getElementById('bookingInfo').appendChild(rmdt);
+                                                                    });
 
-                                                                    let rmImg = document.createElement('img');
-                                                                    rmImg.setAttribute('src', rmsearchData.listingImg);
-                                                                    rmImg.style.width = '400px';
-                                                                    rmImg.style.height = '400px';
-                                                                    rmImg.style.borderRadius = '100px';
-                                                                    rmImg.style.paddingTop = '1em';
-                                                                    rmImg.style.paddingLeft = '1em';
-                                                                    document.getElementById('img').appendChild(rmImg);
-                                                                    let rmNme = document.createElement('h1');
-                                                                    rmNme.innerText = rmsearchData.listingName;
-                                                                    let bookingDates = document.createElement('h3');
-                                                                    if(rmsearchData.roomDates.length == 2){
-                                                                        bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
-                                                                    } else {
-                                                                        bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
-                                                                    }
-                                                                    // let checkin = document.createElement('h3');
-                                                                    // checkin.innerText = crsearchData.checkin;
-                                                                    document.getElementById('bookingInfo').appendChild(rmNme);
-                                                                    document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                                   // document.getElementById('bookingInfo').appendChild(checkin);
-                                                                    document.getElementById('bookingInfo').appendChild(status);
+                                                                //     let rmImg = document.createElement('img');
+                                                                //     rmImg.setAttribute('src', rmsearchData.listingImg);
+                                                                //     rmImg.style.width = '400px';
+                                                                //     rmImg.style.height = '400px';
+                                                                //     rmImg.style.borderRadius = '100px';
+                                                                //     rmImg.style.paddingTop = '1em';
+                                                                //     rmImg.style.paddingLeft = '1em';
+                                                                //     document.getElementById('img').appendChild(rmImg);
+                                                                //     let rmNme = document.createElement('h1');
+                                                                //     rmNme.innerText = rmsearchData.listingName;
+                                                                //     let bookingDates = document.createElement('h3');
+                                                                //     if(rmsearchData.roomDates.length == 2){
+                                                                //         bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
+                                                                //     } else {
+                                                                //         bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
+                                                                //     }
+                                                                //     // let checkin = document.createElement('h3');
+                                                                //     // checkin.innerText = crsearchData.checkin;
+                                                                //     document.getElementById('bookingInfo').appendChild(rmNme);
+                                                                //     document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                                //    // document.getElementById('bookingInfo').appendChild(checkin);
+                                                                //     document.getElementById('bookingInfo').appendChild(status);
 
                                                                     let usersRef = sRef(db, 'bookroomusers/'+rmsearchData.bookingId);
                                                                     onValue(usersRef, (snapshot) => {

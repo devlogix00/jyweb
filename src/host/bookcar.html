@@ -604,9 +604,7 @@
                                                                         bookingObj.carDates = crsearchData.carDates;
                                                                         bookingObj.userName = crsearchData.userName;
                                                                         bookingObj.userImg = crsearchData.userImg;
-                                                                        
-                                                                      
-
+                   
                                                                         set(sRef(db, 'hosts/hostAccount/'+userId+'/cars/'+crsearchData.bookingId), bookingObj);
                                                                     }
 
