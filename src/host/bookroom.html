@@ -616,85 +616,88 @@
                                                                         guestProf.style.paddingTop = '1em';
                                                                         guestProf.style.paddingLeft = '1em';
                                                                         document.getElementById('bookingInfo').appendChild(guestProf);
+
                                                                         guestProf.addEventListener('click', function(){
-                                                                            console.log('You clicked on me!');
+                                                                            let rmImg = document.createElement('img');
+                                                                            rmImg.setAttribute('src', rmdt.listingImg);
+                                                                            rmImg.style.width = '200px';
+                                                                            rmImg.style.height = '200px';
+                                                                            rmImg.style.borderRadius = '100px';
+                                                                            rmImg.style.paddingTop = '1em';
+                                                                            rmImg.style.paddingLeft = '1em';
+                                                                            document.getElementById('img').appendChild(rmImg);
+                                                                            let rmNme = document.createElement('h1');
+                                                                            rmNme.innerText = rmdt.listingName;
+                                                                            let bookingDates = document.createElement('h3');
+                                                                            if(rmdt.roomDates.length == 2){
+                                                                                bookingDates.innerText = 'Booking Dates: '+rmdt.roomDates[0]+' - '+rmdt.roomDates[1];
+                                                                            } else {
+                                                                                bookingDates.innerText = 'Booking Date: '+rmdt.roomDates[0];
+                                                                            }
+                                                                            // let checkin = document.createElement('h3');
+                                                                            // checkin.innerText = crsearchData.checkin;
+                                                                            document.getElementById('bookingInfo').appendChild(rmNme);
+                                                                            document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                                            // document.getElementById('bookingInfo').appendChild(checkin);
+                                                                            document.getElementById('bookingInfo').appendChild(status);
+
+                                                                            let usersRef = sRef(db, 'bookroomusers/'+rmsearchData.bookingId);
+                                                                            onValue(usersRef, (snapshot) => {
+                                                                                let data = snapshot.val(); 
+                                                                            //  console.log(data); 
+                                                                                if(data == null){
+                                                                                    set(sRef(db, 'bookroomusers/'+rmsearchData.bookingId+'/0'), {
+                                                                                        username: userName,
+                                                                                        profile_picture : profilePicUrl,
+                                                                                        email: user.email,
+                                                                                        userId: userId
+                                                                                    });
+                                                                                } else {
+                                                                                    if(data[0].userId != userId){
+                                                                                        set(sRef(db, 'bookroomusers/'+rmsearchData.bookingId+'/1'), {
+                                                                                        username: userName,
+                                                                                        profile_picture : profilePicUrl,
+                                                                                        email: user.email,
+                                                                                        userId: userId
+                                                                                    });
+                                                                                    }
+                                                                                }
+                                                                            },{
+                                                                                onlyOnce: true
+                                                                            });
+                                                                        
+                                                                
+                                                                            onValue(usersRef, (snapshot) => {
+                                                                                const data = snapshot.val();
+                                                                            
+                                                                                if(data !== null){
+                                                                                    let userDiv = document.createElement('div');
+                                                                                    let userPic = document.createElement('img');
+                                                                                    let usernm = document.createElement('p');
+                                                                                    for(let i = 0; i < data.length; i++){
+                                                                                        if(data[i] !== null){
+                                                                                            userDiv.setAttribute('id', 'user'+i);
+                                                                                            userPic.setAttribute('src', data[i].profile_picture);
+                                                                                            userPic.style.borderRadius = '30%';
+                                                                                            usernm.innerText = data[i].username;
+
+                                                                                            userDiv.appendChild(userPic);
+                                                                                            userDiv.appendChild(usernm);
+
+                                                                                            document.getElementById('userlist').appendChild(userDiv);
+                                                                                        }
+                                                                                    
+                                                                                    }
+                                                                                }
+                                                                            });
                                                                         });
                                                                     });
 
 
 
-                                                                //     let rmImg = document.createElement('img');
-                                                                //     rmImg.setAttribute('src', rmsearchData.listingImg);
-                                                                //     rmImg.style.width = '400px';
-                                                                //     rmImg.style.height = '400px';
-                                                                //     rmImg.style.borderRadius = '100px';
-                                                                //     rmImg.style.paddingTop = '1em';
-                                                                //     rmImg.style.paddingLeft = '1em';
-                                                                //     document.getElementById('img').appendChild(rmImg);
-                                                                //     let rmNme = document.createElement('h1');
-                                                                //     rmNme.innerText = rmsearchData.listingName;
-                                                                //     let bookingDates = document.createElement('h3');
-                                                                //     if(rmsearchData.roomDates.length == 2){
-                                                                //         bookingDates.innerText = 'Booking Dates: '+rmsearchData.roomDates[0]+' - '+rmsearchData.roomDates[1];
-                                                                //     } else {
-                                                                //         bookingDates.innerText = 'Booking Date: '+rmsearchData.roomDates[0];
-                                                                //     }
-                                                                //     // let checkin = document.createElement('h3');
-                                                                //     // checkin.innerText = crsearchData.checkin;
-                                                                //     document.getElementById('bookingInfo').appendChild(rmNme);
-                                                                //     document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                                //    // document.getElementById('bookingInfo').appendChild(checkin);
-                                                                //     document.getElementById('bookingInfo').appendChild(status);
-
-                                                                    let usersRef = sRef(db, 'bookroomusers/'+rmsearchData.bookingId);
-                                                                    onValue(usersRef, (snapshot) => {
-                                                                        let data = snapshot.val(); 
-                                                                      //  console.log(data); 
-                                                                        if(data == null){
-                                                                            set(sRef(db, 'bookroomusers/'+rmsearchData.bookingId+'/0'), {
-                                                                                username: userName,
-                                                                                profile_picture : profilePicUrl,
-                                                                                email: user.email,
-                                                                                userId: userId
-                                                                            });
-                                                                        } else {
-                                                                            if(data[0].userId != userId){
-                                                                                set(sRef(db, 'bookroomusers/'+rmsearchData.bookingId+'/1'), {
-                                                                                username: userName,
-                                                                                profile_picture : profilePicUrl,
-                                                                                email: user.email,
-                                                                                userId: userId
-                                                                            });
-                                                                            }
-                                                                        }
-                                                                    },{
-                                                                        onlyOnce: true
-                                                                    });
                                                                 
-                                                          
-                                                                    onValue(usersRef, (snapshot) => {
-                                                                        const data = snapshot.val();
-                                                                    
-                                                                        if(data !== null){
-                                                                            let userDiv = document.createElement('div');
-                                                                            let userPic = document.createElement('img');
-                                                                            let usernm = document.createElement('p');
-                                                                            for(let i = 0; i < data.length; i++){
-                                                                                if(data[i] !== null){
-                                                                                    userDiv.setAttribute('id', 'user'+i);
-                                                                                    userPic.setAttribute('src', data[i].profile_picture);
-                                                                                    userPic.style.borderRadius = '30%';
-                                                                                    usernm.innerText = data[i].username;
 
-                                                                                    userDiv.appendChild(userPic);
-                                                                                    userDiv.appendChild(usernm);
-
-                                                                                    document.getElementById('userlist').appendChild(userDiv);
-                                                                                }
-                                                                            
-                                                                            }
-                                                                        }
-                                                                    });
+                                                                   
                                                                    
                                              
                                                                     
