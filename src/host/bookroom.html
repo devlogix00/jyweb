@@ -690,6 +690,20 @@
                                                                                     }
                                                                                 }
                                                                             });
+
+                                                                            if(rmdt.host === userId){
+                                                                                let messageRef = sRef(db, 'bookroom/'+rmdt.bookingId);
+                                                                                onValue(messageRef, (snapshot) => {
+                                                                                    const data = snapshot.val();
+                                                                                    if(data != null){
+                                                                                        for(let i = 0; i < data.length; i++){
+                                                                                            if(data[i] != null){
+                                                                                                displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
+                                                                                            }  
+                                                                                        }
+                                                                                    }  
+                                                                                });
+                                                                            }
                                                                         });
                                                                     });
 

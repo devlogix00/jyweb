@@ -546,98 +546,97 @@
                                                             guestProf.style.paddingTop = '1em';
                                                             guestProf.style.paddingLeft = '1em';
                                                             document.getElementById('bookingInfo').appendChild(guestProf);
+
                                                             guestProf.addEventListener('click', function(){
-                                                                console.log('You clicked on me!');
-                                                            });
-                                                            
-                                                            // let drImg = document.createElement('img');
-                                                            // drImg.setAttribute('src', drsearchData[i].img);
-                                                            // drImg.style.width = '400px';
-                                                            // drImg.style.height = '400px';
-                                                            // drImg.style.borderRadius = '100px';
-                                                            // drImg.style.paddingTop = '1em';
-                                                            // drImg.style.paddingLeft = '1em';
-                                                            // document.getElementById('img').appendChild(drImg);
-                                                            // let drNme = document.createElement('h1');
-                                                            // drNme.innerText = drsearchData[i].driverName;
-                                                            // let bookingDates = document.createElement('h3');
-                                                            // if(drsearchData[i].driverDates.length === 2){
-                                                            //     bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
-                                                            // } else {
-                                                            //     bookingDates.innerText = 'Booking Date: '+drsearchData[i].driverDates[0];
-                                                            // }
-                                                            // document.getElementById('bookingInfo').appendChild(drNme);
-                                                            // document.getElementById('bookingInfo').appendChild(bookingDates);
-
-                                                            onValue(driverRef, (snapshot) => {
-                                                                let data = snapshot.val();
-                                                              
-                                                                if(data.currentUser == user.uid && data.driverPresent == null){
-                                                                    document.getElementById('ridestarted').style.display = 'block';
-                                                                } else if(data.driverId == user.uid && data.driverPresent == 'True'){
-                                                                    document.getElementById('bookingInfo').appendChild(status);
-                                                                } else if(data.currentUser == user.uid && data.driverPresent == 'True'){
-                                                                    document.getElementById('bookingInfo').appendChild(status);
-                                                                } 
-                                                            });
-                                                            document.getElementById('ridestarted').addEventListener('click', function(){
-                                                                
-                                                                updates['bookedDrivers/'+userName+'/driverPresent'] = "True";
-                                                                update(sRef(db), updates);
-                                                                let drvPrsntBtn = document.getElementById('ridestarted');
-                                                                drvPrsntBtn.remove();
-                                                            
-                                                                document.getElementById('bookingInfo').appendChild(status);
-                                                            });
-
-                                                            let usersRef = sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId);
-                                                            onValue(usersRef, (snapshot) => {
-                                                                let data = snapshot.val(); 
-                                                            // console.log(data); 
-                                                                if(data == null){
-                                                                    set(sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId+'/0'), {
-                                                                        username: userName,
-                                                                        profile_picture : profilePicUrl,
-                                                                        email: user.email,
-                                                                        userId: userId
-                                                                    });
+                                                                let drImg = document.createElement('img');
+                                                                drImg.setAttribute('src', drsearchData[i].img);
+                                                                drImg.style.width = '400px';
+                                                                drImg.style.height = '400px';
+                                                                drImg.style.borderRadius = '100px';
+                                                                drImg.style.paddingTop = '1em';
+                                                                drImg.style.paddingLeft = '1em';
+                                                                document.getElementById('img').appendChild(drImg);
+                                                                let drNme = document.createElement('h1');
+                                                                drNme.innerText = drsearchData[i].driverName;
+                                                                let bookingDates = document.createElement('h3');
+                                                                if(drsearchData[i].driverDates.length === 2){
+                                                                    bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
                                                                 } else {
-                                                                    if(data[0].userId != userId){
-                                                                        set(sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId+'/1'), {
-                                                                        username: userName,
-                                                                        profile_picture : profilePicUrl,
-                                                                        email: user.email,
-                                                                        userId: userId
-                                                                    });
-                                                                    }
+                                                                    bookingDates.innerText = 'Booking Date: '+drsearchData[i].driverDates[0];
                                                                 }
+                                                                document.getElementById('bookingInfo').appendChild(drNme);
+                                                                document.getElementById('bookingInfo').appendChild(bookingDates);
+
+                                                                onValue(driverRef, (snapshot) => {
+                                                                    let data = snapshot.val();
+                                                                
+                                                                    if(data.currentUser == user.uid && data.driverPresent == null){
+                                                                        document.getElementById('ridestarted').style.display = 'block';
+                                                                    } else if(data.driverId == user.uid && data.driverPresent == 'True'){
+                                                                        document.getElementById('bookingInfo').appendChild(status);
+                                                                    } else if(data.currentUser == user.uid && data.driverPresent == 'True'){
+                                                                        document.getElementById('bookingInfo').appendChild(status);
+                                                                    } 
+                                                                });
+
+                                                                let usersRef = sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId);
+                                                                onValue(usersRef, (snapshot) => {
+                                                                    let data = snapshot.val(); 
+                                                                // console.log(data); 
+                                                                    if(data == null){
+                                                                        set(sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId+'/0'), {
+                                                                            username: userName,
+                                                                            profile_picture : profilePicUrl,
+                                                                            email: user.email,
+                                                                            userId: userId
+                                                                        });
+                                                                    } else {
+                                                                        if(data[0].userId != userId){
+                                                                            set(sRef(db, 'bookdriverusers/'+drsearchData[i].bookingId+'/1'), {
+                                                                            username: userName,
+                                                                            profile_picture : profilePicUrl,
+                                                                            email: user.email,
+                                                                            userId: userId
+                                                                        });
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                                onValue(usersRef, (snapshot) => {
+                                                                    const data = snapshot.val();
+                                                    
+                                                                    if(data !== null){
+                                                                        let userDiv = document.createElement('div');
+                                                                        let userPic = document.createElement('img');
+                                                                        let usernm = document.createElement('p');
+                                                                        for(let i = 0; i < data.length; i++){
+                                                                            if(data[i] !== null){
+                                                                                userDiv.setAttribute('id', 'user'+i);
+                                                                                userPic.setAttribute('src', data[i].profile_picture);
+                                                                                userPic.style.borderRadius = '30%';
+                                                                                usernm.innerText = data[i].username;
+
+                                                                                userDiv.appendChild(userPic);
+                                                                                userDiv.appendChild(usernm);
+
+                                                                                document.getElementById('userlist').appendChild(userDiv);
+                                                                            }
+                                                                        
+                                                                    }
+                                                                    }
+                                                                    
+                                                                });
+
                                                             });
+                                                            
+                                                            
+
+                                                            
+                 
+                                                            
                                                         
                                                             
-                                                            onValue(usersRef, (snapshot) => {
-                                                            const data = snapshot.val();
-                                            
-                                                            if(data !== null){
-                                                                let userDiv = document.createElement('div');
-                                                                let userPic = document.createElement('img');
-                                                                let usernm = document.createElement('p');
-                                                                for(let i = 0; i < data.length; i++){
-                                                                    if(data[i] !== null){
-                                                                        userDiv.setAttribute('id', 'user'+i);
-                                                                        userPic.setAttribute('src', data[i].profile_picture);
-                                                                        userPic.style.borderRadius = '30%';
-                                                                        usernm.innerText = data[i].username;
-
-                                                                        userDiv.appendChild(userPic);
-                                                                        userDiv.appendChild(usernm);
-
-                                                                        document.getElementById('userlist').appendChild(userDiv);
-                                                                    }
-                                                                
-                                                            }
-                                                            }
-                                                            
-                                                            });
+                                                           
                                                                 }
                                                     }     
                                                                 
