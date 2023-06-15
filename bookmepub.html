@@ -549,6 +549,8 @@
                                                 let userPic = document.createElement('img');
                                                 let usernm = document.createElement('p');
                                                 let clickedId;
+                                                let profImg;
+                                                let profNm;
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data[i] !== null){
                                                         userDiv.setAttribute('id', 'user'+i);
@@ -562,14 +564,16 @@
                                                         document.getElementById('userlist').appendChild(userDiv);
 
                                                         clickedId = data[i].userId;
+                                                        profImg = data[i].profile_picture;
+                                                        profNm = data[i].username;
                                                     }
                                                 
                                                 }
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'users/userAccount/'+userId+'/clicks'),{
                                                         clickedId: clickedId,
-                                                        profile_picture: data[i].profile_picture,
-                                                        username: data[i].username
+                                                        profile_picture: profImg,
+                                                        username: profNm
                                                     });
                                                     let clickedRef = sRef(db, 'hosts/hostAccount/'+clickedId);
                                                     onValue(clickedRef, (snapshot) => {
