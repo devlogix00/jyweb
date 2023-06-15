@@ -262,9 +262,6 @@
                       let commNm = document.createElement('h3');
                       let comm = document.createElement('h4');
                       let commDiv = document.createElement('div');
-
-                      
-                      
                       
                       let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
 
@@ -272,13 +269,9 @@
                         let commentData = snapshot.val();
                         if(commentData != null){
                           for(let i = 0; i < commentData.length; i++){
-                              let commentProfImg = commentData[i].userImg;
-                              let commentProfNm = commentData[i].username;
-                              let commentProf = commentData[i].comment;
-
-                              commImg.setAttribute('src', commentProfImg);
-                              commNm.innerText = commentProfNm;
-                              comm.innerText = commentProf;
+                              commImg.setAttribute('src', commentData[i].userImg);
+                              commNm.innerText = commentData[i].username;
+                              comm.innerText = commentData[i].comment;
 
                               commDiv.appendChild(commImg);
                               commDiv.appendChild(commNm);
