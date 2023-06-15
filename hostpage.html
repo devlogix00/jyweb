@@ -113,8 +113,8 @@
               onValue(clickedRef, (snapshot) => {
                 let clickedData = snapshot.val();
 
-                hostProfImg = clickeddata[i].profile_picture;
-                hostName = clickeddata[i].username;
+                hostProfImg = clickedData.profile_picture;
+                hostName = clickedData.username;
                 
                 profimg.setAttribute('src', hostProfImg);
                 profnm.setAttribute('src', hostName);
