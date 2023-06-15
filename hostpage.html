@@ -108,6 +108,7 @@
               let hostName;
               let profimg = document.createElement('img');
               let profnm = document.createElement('h3');
+              let profstat = document.createElement('p');
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -124,15 +125,16 @@
                 profimg.style.borderRadius = '120px';
                 document.getElementById('profile').appendChild(profimg);
                 document.getElementById('profile').appendChild(profnm);
-                
-                        
-                       
-                    
-                    
-         
+
+                let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
+                onValue(hostRef, (snapshot) => {
+                    let statusdata = snapshot.val();
+                    profstat.innerText = statusdata;
+                    document.getElementById('profile').appendChild(profstat);
+                });
               });
 
-              
+             
               
 
               } else {
