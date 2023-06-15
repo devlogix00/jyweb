@@ -274,7 +274,8 @@
               let commNm = document.createElement('h3');
               let comm = document.createElement('h4');
               let commDiv = document.createElement('div');
-              
+              let picDiv = document.createElement('div');
+              let mainCommDiv = document.createElement('div');
               let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
 
               onValue(commentRef, (snapshot) => {
@@ -282,13 +283,24 @@
                 if(commentData != null){
                   for(let i = 0; i < commentData.length; i++){
                       commImg.setAttribute('src', commentData[i].userImg);
+                      commImg.style.borderRadius = '120px';
+                      commImg.style.width = '100px';
+                      commImg.style.height = '100px';
                       commNm.innerText = commentData[i].username;
                       comm.innerText = commentData[i].comment;
 
-                      commDiv.appendChild(commImg);
+                      picDiv.appendChild(commImg);
                       commDiv.appendChild(commNm);
                       commDiv.appendChild(comm);
-                      document.getElementById('comments').appendChild(commDiv);
+                      mainCommDiv.appendChild(picDiv);
+                      mainCommDiv.appendChild(commDiv);
+                      mainCommDiv.style.display = 'flex';
+                      mainCommDiv.style.flexDirection = 'row';
+                      commDiv.style.display = 'flex';
+                      commDiv.style.flexDirection = 'column';
+                    
+                      document.getElementById('comments').appendChild(mainCommDiv);
+                 
                 }
                     
                 }
