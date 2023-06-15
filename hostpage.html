@@ -279,11 +279,13 @@
                               commImg.setAttribute('src', commentProfImg);
                               commNm.innerText = commentProfNm;
                               comm.innerText = commentProf;
+
+                              commDiv.appendChild(commImg);
+                              commDiv.appendChild(commNm);
+                              commDiv.appendChild(comm);
+                              document.getElementById('comments').appendChild(commDiv);
                         }
-                            commDiv.appendChild(commImg);
-                            commDiv.appendChild(commNm);
-                            commDiv.appendChild(comm);
-                            document.getElementById('comments').appendChild(commDiv);
+                            
                         }
                         
                       });
