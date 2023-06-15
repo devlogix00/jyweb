@@ -256,17 +256,18 @@
                     });
 
                     
-                      let comment = document.getElementById('comment').value;
-                      let commentObj = {
-                        userImg: user.photoURL,
-                        username: user.displayName,
-                        comment: comment
-                      }
+                      
                       let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
                       onValue(commentRef, (snapshot) => {
                         let commentData = snapshot.val();
                         if(commentData == null){
                           document.getElementById('reviewbtn').addEventListener('click', function(){
+                            let comment = document.getElementById('comment').value;
+                            let commentObj = {
+                              userImg: user.photoURL,
+                              username: user.displayName,
+                              comment: comment
+                            }
                             set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
                           });
                           
@@ -274,6 +275,12 @@
                           // update(ref(db), updates);
                         } else {
                           document.getElementById('reviewbtn').addEventListener('click', function(){
+                            let comment = document.getElementById('comment').value;
+                            let commentObj = {
+                              userImg: user.photoURL,
+                              username: user.displayName,
+                              comment: comment
+                            }
                             let commentLen = commentData.length;
                             set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
                           });
