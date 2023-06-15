@@ -31,7 +31,7 @@
                         </div> 
                 </div>
               </nav>
-              <div id="profile">
+              <div id="profile" style="border-width: 3em;">
 
               </div>
           </div>     
@@ -117,7 +117,7 @@
                 hostName = clickedData.username;
                 
                 profimg.setAttribute('src', hostProfImg);
-                profnm.setAttribute('src', hostName);
+                profnm.innerText = hostName;
 
                 profimg.style.width = '150px';
                 profimg.style.height = '150px';
