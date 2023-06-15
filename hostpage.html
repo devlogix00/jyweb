@@ -262,21 +262,15 @@
                       let commNm = document.createElement('h3');
                       let comm = document.createElement('h4');
                       let commDiv = document.createElement('div');
+
+                      
                       
                       
                       let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
+
                       onValue(commentRef, (snapshot) => {
-                        let commentData = snapshot.val();
-                        if(commentData == null){
-                          document.getElementById('reviewbtn').addEventListener('click', function(){
-                            let comment = document.getElementById('comment').value;
-                            let commentObj = {
-                              userImg: user.photoURL,
-                              username: user.displayName,
-                              comment: comment
-                            }
-                            set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
-                            for(let i = 0; i < commentData.length; i++){
+                        let data = snapshot.val();
+                        for(let i = 0; i < commentData.length; i++){
                               let commentProfImg = commentData[i].userImg;
                               let commentProfNm = commentData[i].username;
                               let commentProf = commentData[i].comment;
@@ -289,6 +283,21 @@
                             commDiv.appendChild(commNm);
                             commDiv.appendChild(comm);
                             document.getElementById('comments').appendChild(commDiv);
+                        
+                      });
+
+                      onValue(commentRef, (snapshot) => {
+                        let commentData = snapshot.val();
+                        if(commentData == null){
+                          document.getElementById('reviewbtn').addEventListener('click', function(){
+                            let comment = document.getElementById('comment').value;
+                            let commentObj = {
+                              userImg: user.photoURL,
+                              username: user.displayName,
+                              comment: comment
+                            }
+                            set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                            
                           });
                           
                           // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
@@ -303,19 +312,7 @@
                             }
                             let commentLen = commentData.length;
                             set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
-                            for(let i = 0; i < commentData.length; i++){
-                              let commentProfImg = commentData[i].userImg;
-                              let commentProfNm = commentData[i].username;
-                              let commentProf = commentData[i].comment;
-
-                              commImg.setAttribute('src', commentProfImg);
-                              commNm.innerText = commentProfNm;
-                              comm.innerText = commentProf;
-                            }
-                            commDiv.appendChild(commImg);
-                            commDiv.appendChild(commNm);
-                            commDiv.appendChild(comm);
-                            document.getElementById('comments').appendChild(commDiv);
+                            
                           });
                          
                           // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
