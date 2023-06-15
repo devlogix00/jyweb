@@ -124,6 +124,11 @@
                                 profimg.setAttribute('src', hostProfImg);
                                 profnm.setAttribute('src', hostName);
 
+                                profimg.style.width = '150px';
+                                profimg.style.height = '150px';
+                                profimg.style.borderRadius = '120px';
+                                document.getElementById('profile').appendChild(profimg);
+                                document.getElementById('profile').appendChild(profnm);
                             }
                         }
                        
@@ -132,11 +137,7 @@
                 });
               });
 
-              profimg.style.width = '150px';
-              profimg.style.height = '150px';
-              profimg.style.borderRadius = '120px';
-              document.getElementById('profile').appendChild(profimg);
-              document.getElementById('profile').appendChild(profnm);
+              
               
 
               } else {
