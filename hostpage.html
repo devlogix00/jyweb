@@ -120,21 +120,22 @@
                                 hostName = hostdata[i].username;
                             }
                         }
+                        let profimg = document.createElement('img');
+                        profimg.setAttribute('src', hostProfImg);
+                        profimg.style.width = '150px';
+                        profimg.style.height = '150px';
+                        profimg.style.borderRadius = '120px';
+                        let profnm = document.createElement('h3');
+                        profnm.setAttribute('src', hostName);
+
+                        document.getElementById('profile').appendChild(profimg);
+                        document.getElementById('profile').appendChild(profnm);
                     }
                     
                 });
               });
 
-              let profimg = document.createElement('img');
-              profimg.setAttribute('src', hostProfImg);
-              profimg.style.width = '150px';
-              profimg.style.height = '150px';
-              profimg.style.borderRadius = '120px';
-              let profnm = document.createElement('h3');
-              profnm.setAttribute('src', hostName);
-
-              document.getElementById('profile').appendChild(profimg);
-              document.getElementById('profile').appendChild(profnm);
+              
 
               } else {
                 // User is signed out
