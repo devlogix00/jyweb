@@ -31,7 +31,7 @@
             <div style="padding-top: 1em;">
               <form >
                 <input id="status" type="text" placeholder="status"/>
-                <button onclick="submitStatus()" class="btn btn-white btn-fill btn-round">Update</button>
+                <button id="statusbtn" class="btn btn-white btn-fill btn-round">Update</button>
               </form>
             </div>
           </div>
@@ -396,12 +396,15 @@
               let userId = user.uid;
               let updates = {};
 
-              function submitStatus(){
-                let status = document.getElementById('status').value;
+
+                document.getElementById('statusbtn').addEventListener('click', e => {
+                  e.preventDefault();
+                  let status = document.getElementById('status').value;
             
-                updates['hosts/hostAccount/'+userId+'/status'] = status;
-                update(ref(db), updates);
-              }
+                  updates['hosts/hostAccount/'+userId+'/status'] = status;
+                  update(ref(db), updates);
+                });
+              
 
               let mediaCaptureElement = document.getElementById('mediaCapture');
               let imageButtonElement = document.getElementById('submitImage');
