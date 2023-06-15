@@ -258,10 +258,7 @@
                         
                     });
 
-                      let commImg = document.createElement('img');
-                      let commNm = document.createElement('h3');
-                      let comm = document.createElement('h4');
-                      let commDiv = document.createElement('div');
+                    
                       
                       let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
 
@@ -269,6 +266,11 @@
                         let commentData = snapshot.val();
                         if(commentData != null){
                           for(let i = 0; i < commentData.length; i++){
+                              let commImg = document.createElement('img');
+                              let commNm = document.createElement('h3');
+                              let comm = document.createElement('h4');
+                              let commDiv = document.createElement('div');
+                              
                               commImg.setAttribute('src', commentData[i].userImg);
                               commNm.innerText = commentData[i].username;
                               comm.innerText = commentData[i].comment;
