@@ -266,12 +266,14 @@
                       onValue(commentRef, (snapshot) => {
                         let commentData = snapshot.val();
                         if(commentData == null){
-                          updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
-                          update(ref(db), updates);
+                          set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                          // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                          // update(ref(db), updates);
                         } else {
                           let commentLen = commentData.length;
-                          updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
-                          update(ref(db), updates);
+                          set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj)
+                          // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                          // update(ref(db), updates);
                         }
                       });
                     });
