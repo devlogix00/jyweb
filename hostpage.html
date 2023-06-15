@@ -31,6 +31,9 @@
                         </div> 
                 </div>
               </nav>
+              <div id="profile">
+
+              </div>
           </div>     
           
         </div>
@@ -100,8 +103,38 @@
           onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in 
+              let userId = user.uid;
+              let hostProfImg;
+              let hostName;
 
-              
+              let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
+              onValue(clickedRef, (snapshot) => {
+                let clickedData = snapshot.val();
+                let usersRef = ref(db, 'pubusers/');
+                onValue(usersRef, (snapshot) => {
+                    let hostdata = snapshot.val();
+                    if(hostdata != null){
+                        for(let i = 0; i < hostdata.length; i++){
+                            if(clickedData == hostdata[i].userId){
+                                hostProfImg = hostdata[i].profile_picture;
+                                hostName = hostdata[i].username;
+                            }
+                        }
+                    }
+                    
+                });
+              });
+
+              let profimg = document.createElement('img');
+              profimg.setAttribute('src', hostProfImg);
+              profimg.style.width = '150px';
+              profimg.style.height = '150px';
+              profimg.style.borderRadius = '120px';
+              let profnm = document.createElement('h3');
+              profnm.setAttribute('src', hostName);
+
+              document.getElementById('profile').appendChild(profimg);
+              document.getElementById('profile').appendChild(profnm);
 
               } else {
                 // User is signed out
