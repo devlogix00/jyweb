@@ -286,18 +286,26 @@
                       commImg.style.borderRadius = '120px';
                       commImg.style.width = '100px';
                       commImg.style.height = '100px';
-                      commNm.innerText = commentData[i].username;
+
+                      commNm.innerText = commentData[i].username+':';
+                      commNm.style.padding = '0.5em';
+                      commNm.style.fontStyle = 'italic';
+
                       comm.innerText = commentData[i].comment;
+                      comm.style.padding = '1em';
+                      comm.style.display = 'flex';
+                      comm.style.alignItems = 'center';
 
                       picDiv.appendChild(commImg);
                       commDiv.appendChild(commNm);
                       commDiv.appendChild(comm);
                       mainCommDiv.appendChild(picDiv);
                       mainCommDiv.appendChild(commDiv);
+
                       mainCommDiv.style.display = 'flex';
                       mainCommDiv.style.flexDirection = 'row';
                       commDiv.style.display = 'flex';
-                      commDiv.style.flexDirection = 'column';
+                      commDiv.style.flexDirection = 'row';
                     
                       document.getElementById('comments').appendChild(mainCommDiv);
                  
