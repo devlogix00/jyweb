@@ -206,9 +206,10 @@
                                     return false;
                                     }
 
+                                    let messages = sRef(db, 'allMessages/');
                                     // Saves a new message in Realtime.
                                     async function saveMessage(messageText) {
-                                        let messages = sRef(db, 'allMessages/');
+                                        
                                             onValue(messages, (snapshot) => {
                                                 const messageData = snapshot.val();
                                                 if(messageData != null){
@@ -339,7 +340,7 @@
                                 messageInputElement.focus();
                                 }
 
-                                let messages = sRef(db, 'allMessages/');
+                                
                                 onValue(messages, (snapshot) => {
                                     let data = snapshot.val();
                                     if(data != null){
@@ -417,7 +418,7 @@
                                             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 
-                                                let messages = sRef(db, 'allMessages/');
+                                         
                                                 onValue(messages, (snapshot) => {
                                                     const messageData = snapshot.val();
                                                     if(messageData != null){
