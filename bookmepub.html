@@ -569,6 +569,13 @@
                                                     set(sRef(db, 'users/userAccount/'+userId+'/clicks'),{
                                                         clickedId: clickedId
                                                     });
+                                                    let clickedRef = sRef(db, 'hosts/hostAccount/'+clickedId);
+                                                    onValue(clickedRef, (snapshot) => {
+                                                        let clickedData = snapshot.val();
+                                                        if(clickedData != null){
+                                                            window.location = './hostpage.html';
+                                                        }
+                                                    });
                                                 });
                                             }
                                         });
