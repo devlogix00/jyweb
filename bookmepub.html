@@ -209,17 +209,19 @@
                                     // Saves a new message in Realtime.
                                     async function saveMessage(messageText) {
                                         let messages = sRef(db, 'allMessages/');
+                                        let updates = {};
                                             onValue(messages, (snapshot) => {
                                                 const messageData = snapshot.val();
                                                 if(messageData != null){
-                                                    for(let i = 0; i < messageData.length; i++){       
-                                                        let msgDataLen = messageData.length;
-                                                        set(sRef(db, 'allMessages/'+msgDataLen), {
+                                                    let msgDataLen = messageData.length;
+                                                  
+                                                    let msgObj = {
                                                             name: user.displayName,
                                                             text: messageText,
                                                             profilePicUrl: user.photoURL
-                                                        });
-                                                    }
+                                                    };
+                                                    updates['allMessages/'+msgDataLen] = msgObj;
+                                                    update(sRef(db), updates);
                                                 }else{
                                                     set(sRef(db, 'allMessages/0'), {
                                                         name: user.displayName,
@@ -418,17 +420,19 @@
                                             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 
                                                 let messages = sRef(db, 'allMessages/');
+                                                let updates = {};
                                                 onValue(messages, (snapshot) => {
                                                     const messageData = snapshot.val();
                                                     if(messageData != null){
-                                                        for(let i = 0; i < messageData.length; i++){       
-                                                            let msgDataLen = messageData.length;
-                                                            set(sRef(db, 'allMessages/'+msgDataLen), {
+                                                        let msgDataLen = messageData.length;
+                                                    
+                                                        let msgObj = {
                                                                 name: user.displayName,
                                                                 imageUrl: downloadURL,
                                                                 profilePicUrl: user.photoURL
-                                                            });
-                                                        }
+                                                        };
+                                                        updates['allMessages/'+msgDataLen] = msgObj;
+                                                        update(sRef(db), updates);
                                                     }else{
                                                         set(sRef(db, 'allMessages/0'), {
                                                             name: user.displayName,
@@ -439,6 +443,7 @@
                                                 },{
                                                     onlyOnce: true
                                                 });
+                                               
                                             });
 
                                             }
