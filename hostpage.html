@@ -32,7 +32,10 @@
                 </div>
               </nav>
               <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
-         
+              <div style="border-width: 3em; padding: 6em; display: flex; overflow: auto; flex-direction: row;">
+                <h2>Listings</h2>
+                <div id="listings"></div>
+              </div>
           </div>     
           
         </div>
@@ -140,6 +143,92 @@
                     
                 });
                 document.getElementById('profile').appendChild(profDiv);
+
+                const listingsRef = ref(db, 'listings/listings/');
+                onValue(listingsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    for(let i = 0; i < data.length; i++){
+                    let newdata = data[i]; 
+                    if(newdata != null && newdata.listingImg != 'undefined' && newdata.host === clickedData.clickedId){
+                   
+                    let cardOuter = document.createElement('div');
+                    cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
+                    
+                    cardOuter.style.margin = '1em';
+
+                    let rcc = document.createElement('div');
+                    rcc.setAttribute('class', "rotating-card-container");
+                    rcc.setAttribute('id', data[i].itemId);
+                    rcc.style.marginBottom = '30px';
+
+                    let cardInnerInner = document.createElement('div');
+                    cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
+
+                    let cardImg = document.createElement('img');
+                    cardImg.setAttribute('src', newdata.listingImg);
+
+                    let front = document.createElement('div');
+                    front.setAttribute('class', 'front');
+                    front.setAttribute('id', data[i].listingName+'-front');
+
+                    let cardBody = document.createElement('div');
+                    cardBody.setAttribute('class', 'card-body');
+                    cardBody.style.padding = '3em';
+
+
+                    let back = document.createElement('h6');
+                    back.setAttribute('class', "back");
+                    back.setAttribute('id', data[i].listingName+'-back');
+                    back.innerText = data[i].listingName;
+                    back.style.paddingTop = '3em';
+
+                    let price = document.createElement('h5');
+                    price.setAttribute('class', "price");
+                    price.setAttribute('id', data[i].listingName+'-price');
+                    price.innerText = '$'+data[i].listingPrice+'/night';
+                    price.style.paddingTop = '3em';
+                    price.style.color = 'black';
+                    
+
+                    let cardTitle = document.createElement('h4');
+                    cardTitle.setAttribute('class', 'card-body');
+                    cardTitle.style.paddingBottom = '3em';
+
+                    let cardButton = document.createElement('button');
+                    cardButton.setAttribute('class', 'btn btn-white btn-fill btn-round');
+                    cardButton.setAttribute('id', data[i].listingName);
+                    cardButton.innerText = 'BookMe';
+
+                    cardTitle.appendChild(cardButton);
+                    back.appendChild(cardTitle);
+                    cardInnerInner.appendChild(back);
+                    back.appendChild(price);
+
+                    front.appendChild(cardImg);
+                    cardInnerInner.appendChild(front);
+                    rcc.appendChild(cardInnerInner);
+                    cardOuter.appendChild(rcc);
+                    document.getElementById('listings').appendChild(cardOuter);
+                    
+                    if(data[i].listingType == 'room'){
+                        cardButton.addEventListener('click', function(){
+                            window.location = 'https://www.buorgoldengreenresorts.homes/rooms.html'
+                        });
+                    } else if(data[i].listingType == 'car'){
+                        cardButton.addEventListener('click', function(){
+                            window.location = 'https://www.buorgoldengreenresorts.homes/cars.html'
+                        });
+                    }else if(data[i].listingType == 'tour'){
+                        cardButton.addEventListener('click', function(){
+                            window.location = 'https://www.buorgoldengreenresorts.homes/tours.html'
+                        });
+                    }
+
+                }
+
+              }
+
+            });
               });
 
              
