@@ -566,7 +566,9 @@
                                                 
                                                 }
                                                 userDiv.addEventListener('click', function(){
-                                                    
+                                                    set(sRef(db, 'users/userAccount/'+userId+'/clicks'),{
+                                                        clickedId: clickedId
+                                                    });
                                                 });
                                             }
                                         });
