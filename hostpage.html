@@ -255,7 +255,7 @@
                         
                     });
 
-                    document.getElementById('reviewbtn').addEventListener('click', function(){
+                    
                       let comment = document.getElementById('comment').value;
                       let commentObj = {
                         userImg: user.photoURL,
@@ -266,17 +266,23 @@
                       onValue(commentRef, (snapshot) => {
                         let commentData = snapshot.val();
                         if(commentData == null){
-                          set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                          document.getElementById('reviewbtn').addEventListener('click', function(){
+                            set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                          });
+                          
                           // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
                           // update(ref(db), updates);
                         } else {
-                          let commentLen = commentData.length;
-                          set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj)
+                          document.getElementById('reviewbtn').addEventListener('click', function(){
+                            let commentLen = commentData.length;
+                            set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                          });
+                         
                           // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
                           // update(ref(db), updates);
                         }
                       });
-                    });
+                    
                     
 
                     
