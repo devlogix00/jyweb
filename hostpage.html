@@ -270,7 +270,8 @@
 
                       onValue(commentRef, (snapshot) => {
                         let data = snapshot.val();
-                        for(let i = 0; i < commentData.length; i++){
+                        if(data != null){
+                          for(let i = 0; i < commentData.length; i++){
                               let commentProfImg = commentData[i].userImg;
                               let commentProfNm = commentData[i].username;
                               let commentProf = commentData[i].comment;
@@ -278,11 +279,12 @@
                               commImg.setAttribute('src', commentProfImg);
                               commNm.innerText = commentProfNm;
                               comm.innerText = commentProf;
-                            }
+                        }
                             commDiv.appendChild(commImg);
                             commDiv.appendChild(commNm);
                             commDiv.appendChild(comm);
                             document.getElementById('comments').appendChild(commDiv);
+                        }
                         
                       });
 
