@@ -125,6 +125,7 @@
               let profDiv = document.createElement('div');
               profDiv.style.display = 'flex';
               profDiv.style.flexDirection = 'column';
+              let updates = {};
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -239,8 +240,19 @@
                         let likedata = snapshot.val();
                         if(likedata == null){
                             document.getElementById('likecount').innerText = '0';
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                            });
+                        } else {
+                            document.getElementById('likecount').innerText = likedata;
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedata.length;
+                            });
                         }
+                        
                     });
+
+                    
 
                 }
 
