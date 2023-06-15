@@ -135,6 +135,7 @@
                 onValue(hostRef, (snapshot) => {
                     let statusdata = snapshot.val();
                     profstat.innerText = statusdata;
+                    profstat.style.paddingLeft = '1em';
                     profDiv.appendChild(profstat);
                     
                 });
