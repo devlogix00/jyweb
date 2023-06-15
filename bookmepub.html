@@ -567,7 +567,9 @@
                                                 }
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'users/userAccount/'+userId+'/clicks'),{
-                                                        clickedId: clickedId
+                                                        clickedId: clickedId,
+                                                        profile_picture: data[i].profile_picture,
+                                                        username: data[i].username
                                                     });
                                                     let clickedRef = sRef(db, 'hosts/hostAccount/'+clickedId);
                                                     onValue(clickedRef, (snapshot) => {

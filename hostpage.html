@@ -112,29 +112,24 @@
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
                 let clickedData = snapshot.val();
-                let usersRef = ref(db, 'pubusers/');
-                onValue(usersRef, (snapshot) => {
-                    let hostdata = snapshot.val();
-                    if(hostdata != null){
-                        for(let i = 0; i < hostdata.length; i++){
-                            if(clickedData == hostdata[i].userId){
-                                hostProfImg = hostdata[i].profile_picture;
-                                hostName = hostdata[i].username;
-                                
-                                profimg.setAttribute('src', hostProfImg);
-                                profnm.setAttribute('src', hostName);
 
-                                profimg.style.width = '150px';
-                                profimg.style.height = '150px';
-                                profimg.style.borderRadius = '120px';
-                                document.getElementById('profile').appendChild(profimg);
-                                document.getElementById('profile').appendChild(profnm);
-                            }
-                        }
+                hostProfImg = clickeddata[i].profile_picture;
+                hostName = clickeddata[i].username;
+                
+                profimg.setAttribute('src', hostProfImg);
+                profnm.setAttribute('src', hostName);
+
+                profimg.style.width = '150px';
+                profimg.style.height = '150px';
+                profimg.style.borderRadius = '120px';
+                document.getElementById('profile').appendChild(profimg);
+                document.getElementById('profile').appendChild(profnm);
+                
+                        
                        
-                    }
                     
-                });
+                    
+         
               });
 
               
