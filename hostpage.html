@@ -245,7 +245,7 @@
                                 update(ref(db), updates);
                             });
                         } else {
-                            document.getElementById('likecount').innerText = likedata;
+                            document.getElementById('likecount').innerText = likedata+' Likes';
                             let likedcount = likedata + 1;
                             document.getElementById('likebtn').addEventListener('click', function(){
                                 updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
