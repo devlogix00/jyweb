@@ -246,8 +246,9 @@
                             });
                         } else {
                             document.getElementById('likecount').innerText = likedata;
+                            let likedcount = likedata + 1;
                             document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedata.length;
+                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
                                 update(ref(db), updates);
                             });
                         }
