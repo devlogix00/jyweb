@@ -32,7 +32,7 @@
                 </div>
               </nav>
               <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
-              <div id="status"></div>
+         
           </div>     
           
         </div>
@@ -108,6 +108,10 @@
               let profimg = document.createElement('img');
               let profnm = document.createElement('h2');
               let profstat = document.createElement('h3');
+              let imgDiv = document.createElement('div');
+              let profDiv = document.createElement('div');
+              profDiv.style.display = 'flex';
+              profDiv.style.flexDirection = 'column';
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -122,15 +126,19 @@
                 profimg.style.width = '150px';
                 profimg.style.height = '150px';
                 profimg.style.borderRadius = '120px';
-                document.getElementById('profile').appendChild(profimg);
-                document.getElementById('profile').appendChild(profnm);
+                imgDiv.appendChild(profimg);
+                profDiv.appendChild(profnm)
+                document.getElementById('profile').appendChild(imgDiv);
+             
 
                 let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
                 onValue(hostRef, (snapshot) => {
                     let statusdata = snapshot.val();
-                    profstat.innerText = 'Status: '+statusdata;
-                    document.getElementById('status').appendChild(profstat);
+                    profstat.innerText = statusdata;
+                    profDiv.appendChild(profstat);
+                    
                 });
+                document.getElementById('status').appendChild(profDiv);
               });
 
              
