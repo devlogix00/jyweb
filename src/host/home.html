@@ -206,45 +206,6 @@
 
           });
 
-          
-
-          // const roomData = {
-          //   room: '',
-          //   dates: ''
-          // }
-
-          // const carData = {
-          //   car: '',
-          //   dates: ''
-          // }
-
-          // const tourData = {
-          //   tourStop: '',
-          //   dates: ''
-          // }
-
-          // const roomPostKey = push(child(ref(db), 'users/userAccount/'+userId+'/'+today+'/roomData')).key;
-          // const carPostKey = push(child(ref(db), 'users/userAccount/'+userId+'/'+today+'/carData')).key;
-          // const tourPostKey = push(child(ref(db), 'users/userAccount/'+userId+'/'+today+'/tourData')).key;
-
-          // const updates = {};
-
-          // const roomLink = document.querySelector('#roomdata');
-          // roomLink.addEventListener('click', e => {
-            
-          // })
-
-
-          // function writeUserData(userId){
-          //   set(ref(db, '/users/'+'userAccount/'+userId+'/'+today), {
-              
-          //   });
-          // }
-      
-          // writeUserData(userId);
-
-          // const urlParams = new URLSearchParams(window.location.search);  
-
           const signoutBtn = document.querySelector('#signout');
           signoutBtn.addEventListener('click', e => {
             e.preventDefault();
@@ -261,20 +222,10 @@
           
 
         </script> 
-        <!-- <script src="https://js.stripe.com/v3/">
-            let clientSecret = 'sk_test_51KRid6JhNHZfzXZ6P4Vy6VtppsuokDqbPnbjQbgMyy3GyafwMEmRd2wesd1bgFqMdB02fXux4nnOllhdYbY4ddV200ZlZM1OMC';
-            var stripe = Stripe('pk_test_51KRid6JhNHZfzXZ6RkA6Zy98NBznzXeZkszTloX4jRh7vIJDrZ7mAG4a9u8oI5r9Oqt8dxCf2NPlfWJdLGXAsWB500H2os5CDd');
-            stripe.confirmCardPayment(clientSecret).then(function(response){
-                if(response.error){
-                    console.error(response.error);
-                } else if(response.paymentIntent && response.paymentIntent.status === 'succeeded'){
-                    console.log(response.paymentIntent);
-                }
-            });
-        </script> -->
+      
         <script>
           function openChat(){
-            window.location = "https://bookme-e703b.web.app/";
+            window.location = "./bookmepub.html";
           }
         </script>
       </body>
