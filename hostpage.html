@@ -31,9 +31,8 @@
                         </div> 
                 </div>
               </nav>
-              <div id="profile" style="border-width: 3em; padding: 6em; display: flex;">
-
-              </div>
+              <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
+              <div id="status"></div>
           </div>     
           
         </div>
@@ -107,8 +106,8 @@
               let hostProfImg;
               let hostName;
               let profimg = document.createElement('img');
-              let profnm = document.createElement('h3');
-              let profstat = document.createElement('p');
+              let profnm = document.createElement('h2');
+              let profstat = document.createElement('h3');
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -129,8 +128,8 @@
                 let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
                 onValue(hostRef, (snapshot) => {
                     let statusdata = snapshot.val();
-                    profstat.innerText = statusdata;
-                    document.getElementById('profile').appendChild(profstat);
+                    profstat.innerText = 'Status: '+statusdata;
+                    document.getElementById('status').appendChild(profstat);
                 });
               });
 
