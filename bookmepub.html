@@ -341,9 +341,9 @@
 
                                 let messages = sRef(db, 'allMessages/');
                                 onValue(messages, (snapshot) => {
-                                    let msgData = snapshot.val();
-                                    if(msgData != null){
-                                        for(let i = 0; i < msgData.length; i++){
+                                    let data = snapshot.val();
+                                    if(data != null){
+                                        for(let i = 0; i < data.length; i++){
                                             displayMessage(i, data[i].name, data[i].text, data[i].profilePicUrl, data[i].imageUrl);
                                         }
                                     }
