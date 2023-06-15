@@ -29,6 +29,12 @@
               <a class="navbar-brand" href="./home.html">
                 BookMe </a>
             </div>
+            <div>
+              <form>
+                <input id="status" type="text" placeholder="status"/>
+                <button onclick="submitStatus()">Update</button>
+              </form>
+            </div>
           </div>
         </nav>
         <div class="page-header header-filter">
@@ -174,6 +180,8 @@
                 listingPrice: '',
                 listingImg: ''
             }
+
+           
 
             function getType(){
                 let type = document.getElementById('type').value;
@@ -388,6 +396,13 @@
               let userName = user.displayName;
               let userId = user.uid;
               let updates = {};
+
+              function submitStatus(){
+                let status = document.getElementById('status').value;
+            
+                updates['hosts/hostAccount/'+userId+'/status'] = status;
+                update(ref(db), updates);
+              }
 
               let mediaCaptureElement = document.getElementById('mediaCapture');
               let imageButtonElement = document.getElementById('submitImage');
