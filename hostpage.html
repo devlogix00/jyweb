@@ -106,6 +106,8 @@
               let userId = user.uid;
               let hostProfImg;
               let hostName;
+              let profimg = document.createElement('img');
+              let profnm = document.createElement('h3');
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -118,23 +120,23 @@
                             if(clickedData == hostdata[i].userId){
                                 hostProfImg = hostdata[i].profile_picture;
                                 hostName = hostdata[i].username;
+                                
+                                profimg.setAttribute('src', hostProfImg);
+                                profnm.setAttribute('src', hostName);
+
                             }
                         }
-                        let profimg = document.createElement('img');
-                        profimg.setAttribute('src', hostProfImg);
-                        profimg.style.width = '150px';
-                        profimg.style.height = '150px';
-                        profimg.style.borderRadius = '120px';
-                        let profnm = document.createElement('h3');
-                        profnm.setAttribute('src', hostName);
-
-                        document.getElementById('profile').appendChild(profimg);
-                        document.getElementById('profile').appendChild(profnm);
+                       
                     }
                     
                 });
               });
 
+              profimg.style.width = '150px';
+              profimg.style.height = '150px';
+              profimg.style.borderRadius = '120px';
+              document.getElementById('profile').appendChild(profimg);
+              document.getElementById('profile').appendChild(profnm);
               
 
               } else {
