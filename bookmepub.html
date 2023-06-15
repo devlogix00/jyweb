@@ -543,6 +543,7 @@
                                                 let userDiv = document.createElement('div');
                                                 let userPic = document.createElement('img');
                                                 let usernm = document.createElement('p');
+                                                let clickedId;
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data[i] !== null){
                                                         userDiv.setAttribute('id', 'user'+i);
@@ -555,7 +556,7 @@
 
                                                         document.getElementById('userlist').appendChild(userDiv);
 
-                                                        
+                                                        clickedId = data[i].userId;
                                                     }
                                                 
                                                 }
