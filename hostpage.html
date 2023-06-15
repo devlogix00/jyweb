@@ -242,11 +242,13 @@
                             document.getElementById('likecount').innerText = '0';
                             document.getElementById('likebtn').addEventListener('click', function(){
                                 updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                update(ref(db), updates);
                             });
                         } else {
                             document.getElementById('likecount').innerText = likedata;
                             document.getElementById('likebtn').addEventListener('click', function(){
                                 updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedata.length;
+                                update(ref(db), updates);
                             });
                         }
                         
