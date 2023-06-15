@@ -26,9 +26,9 @@
                 <div class="container navbar-translate" style="display: flex; justify-content: space-between;">
                       <a style="color: black;" class="navbar-brand" href="UserAccount.html">
                         BookMe</a>
-                        <div id="contactHost" style="color: cornflowerblue;">
-                         
-                        </div> 
+                      <div style="color: cornflowerblue;">
+                        <a id="contactHost" style="display: none;">Contact Host</a>
+                      </div> 
                 </div>
               </nav>
               <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
@@ -348,6 +348,49 @@
                   // update(ref(db), updates);
                 }
               });
+
+              let roomData = ref(db, 'users/userAccount/'+userId+'/roomdata');
+              onValue(roomData, (snapshot) => {
+                let rmdata = snapshot.val();
+                if(rmdata.host == clickedData.clickedId){
+                  document.getElementById('contactHost').style.display = 'block';
+                  document.getElementById('contactHost').setAttribute('href', './bookroom.html');
+                }
+              });
+
+              let carData = ref(db, 'users/userAccount/'+userId+'/cardata');
+              onValue(roomData, (snapshot) => {
+                let crdata = snapshot.val();
+                if(crdata.host == clickedData.clickedId){
+                  document.getElementById('contactHost').style.display = 'block';
+                  document.getElementById('contactHost').setAttribute('href', './bookcar.html');
+                }
+              });
+
+              let tourData = ref(db, 'users/userAccount/'+userId+'/tourdata');
+              onValue(tourData, (snapshot) => {
+                let trdata = snapshot.val();
+                if(trdata.host == clickedData.clickedId){
+                  document.getElementById('contactHost').style.display = 'block';
+                  document.getElementById('contactHost').setAttribute('href', './booktour.html');
+                }
+              });
+
+              // let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
+              // onValue(driverData, (snapshot) => {
+              //   let drdata = snapshot.val();
+              //   let driverRef = ref('bookedDrivers/'+clickedData.username);
+              //   onValue(driverRef, (snapshot) => {
+              //     let drvdata = snapshot.val();
+              //     for(let i = 0; i < drvdata.length; i++){
+              //       if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
+              //         document.getElementById('contactHost').style.display = 'block';
+              //         document.getElementById('contactHost').setAttribute('href', './bookdriver.html');
+              //       }
+              //     }
+              //   });
+                
+              // });
 
             });
               });
