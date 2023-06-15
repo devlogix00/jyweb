@@ -269,8 +269,8 @@
                       let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
 
                       onValue(commentRef, (snapshot) => {
-                        let data = snapshot.val();
-                        if(data != null){
+                        let commentData = snapshot.val();
+                        if(commentdata != null){
                           for(let i = 0; i < commentData.length; i++){
                               let commentProfImg = commentData[i].userImg;
                               let commentProfNm = commentData[i].username;
