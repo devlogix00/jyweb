@@ -79,6 +79,18 @@
           let coord = {};
           let allCoords = [];
           let coordList = [];
+          let LatLng = {};
+
+          function initMap(){
+            // Set map options
+            
+            let mapOptions = {
+            center: LatLng,
+            zoom: 7
+            };
+
+            map = new google.maps.Map(document.getElementById("license"), mapOptions);
+          }
         </script>
         <script type="module">
           // Import the functions you need from the SDKs you need
@@ -160,21 +172,13 @@
                     let newdata = data[i]; 
                     if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
                         
-                    function initMap(){
-                        // Set map options
-                        let LatLng = {lat: newdata.location.lat, lng: newdata.location.lng};
-                        let mapOptions = {
-                        center: LatLng,
-                        zoom: 7
-                        };
-
-                        map = new google.maps.Map(document.getElementById("license"), mapOptions);
-                    }
+                    LatLng.lat = newdata.location.lat;
+                    LatLng.lng = newdata.location.lng;
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
-                    licenseImg.style.width = '150px';
-                    licenseImg.style.height = '150px';
+                    licenseImg.style.width = '200px';
+                    licenseImg.style.height = '200px';
                     document.getElementById('license').appendChild(licenseImg);
                
 
@@ -297,8 +301,8 @@
                   let drvdata = snapshot.val();
                   for(let i = 0; i < drvdata.length; i++){
                     if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
-                      document.getElementById('contactHost').style.display = 'block';
-                      document.getElementById('contactHost').setAttribute('href', './bookdriver.html');
+                      document.getElementById('contactDriver').style.display = 'block';
+                      document.getElementById('contactDriver').setAttribute('href', './bookdriver.html');
                     }
                   }
                 });
