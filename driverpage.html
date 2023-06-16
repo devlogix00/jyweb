@@ -320,12 +320,15 @@
           
         </script> 
     <script>
-        console.log(LatLng);
+        let parsedLatLng = {
+            lat: parseFloat(LatLng.lat),
+            lng: parseFloat(LatLng.lng)
+        }
         function initMap(){
             // Set map options
             
             let mapOptions = {
-            center: LatLng,
+            center: parsedLatLng,
             zoom: 7
             };
 
