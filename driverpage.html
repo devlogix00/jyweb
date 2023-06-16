@@ -86,6 +86,7 @@
           let coord = {};
           let allCoords = [];
           let coordList = [];
+          let mapOptions;
         </script>
         <script type="module">
           // Import the functions you need from the SDKs you need
@@ -167,11 +168,16 @@
                     let newdata = data[i]; 
                     if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
                         
-                    coordList[0] = ''+newdata.location.lat;
-                    coordList[1] = ''+newdata.location.lng;
+                    coordList[0] = newdata.location.lat;
+                    coordList[1] = newdata.location.lng;
 
-                    coordList[0].toString();
-                    coordList[1].toString();
+                    mapOptions = {
+                    center: {
+                        lat: parseFloat(coordList[0]),
+                        lng: parseFloat(coordList[1])
+                    },
+                    zoom: 7
+                    };
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
@@ -326,14 +332,8 @@
        function initMap(){
             // Set map options
            
-            console.log(coordList[0]);
-            let mapOptions = {
-            center: {
-                lat: coordList[0],
-                lng: coordList[1]
-            },
-            zoom: 7
-            };
+            
+            
 
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
         }
