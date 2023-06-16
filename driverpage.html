@@ -34,6 +34,7 @@
               <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
               <div style="padding-left: 6em;">
                 <div id="license" style="border-width: 3em; padding: 3em; display: flex; overflow: auto; flex-direction: row;"></div>
+                <div id="map" style="width: 50%; height: 50%;"></div>
                 <div id="likes" style="display: flex; flex-direction: row; align-items: center;">
                     <button id="likebtn" class="btn btn-white btn-fill btn-round"><span class="material-icons">
                         favorite
@@ -313,7 +314,11 @@
               });
 
              
-              
+              function initMap(){
+                // Set map options
+                console.log(mapOptions);
+                let map = new google.maps.Map(document.getElementById("map"), mapOptions);
+              }
 
               } else {
                 // User is signed out
@@ -325,13 +330,7 @@
           
         </script> 
     <script>
-        function initMap(){
-            // Set map options
-            
-            
-            console.log(mapOptions);
-            let map = new google.maps.Map(document.getElementById("license"), mapOptions);
-        }
+        
        
     </script>
     <!--  Google Maps Plugin    -->
