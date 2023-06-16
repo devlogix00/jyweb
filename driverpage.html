@@ -167,8 +167,11 @@
                     let newdata = data[i]; 
                     if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
                         
-                    coordList[0] = parseFloat(newdata.location.lat);
-                    coordList[1] = parseFloat(newdata.location.lng);
+                    coordList[0] = ''+newdata.location.lat;
+                    coordList[1] = ''+newdata.location.lng;
+
+                    coordList[0].toString();
+                    coordList[1].toString();
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
@@ -322,10 +325,7 @@
        
        function initMap(){
             // Set map options
-            let newLat = coordList[0];
-            let newLng = coordList[1];
-            console.log(newLat);
-            console.log(newLng);
+           
             
             let mapOptions = {
             center: {
