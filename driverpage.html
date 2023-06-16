@@ -34,7 +34,7 @@
               <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
               <div style="padding-left: 6em;">
                 <div id="license" style="border-width: 3em; padding: 3em; display: flex; overflow: auto; flex-direction: row;"></div>
-                <div id="map"></div>
+                <div id="map" style="width: 300px; height: 300px;"></div>
                 <div id="likes" style="display: flex; flex-direction: row; align-items: center;">
                     <button id="likebtn" class="btn btn-white btn-fill btn-round"><span class="material-icons">
                         favorite
@@ -58,7 +58,7 @@
                 LatLng = {lat: 8.090440925828062, lng: -1.6977176080814078};
                 let mapOptions = {
                 center: LatLng,
-                zoom: 2
+                zoom: 7
                 };
 
                 map = new google.maps.Map(document.getElementById("map"), mapOptions);
@@ -175,35 +175,35 @@
                     let newdata = data[i]; 
                     if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
                         
-                        LatLng.lat = newdata.location.lat;
-                        LatLng.lng = newdata.location.lng;
+                    LatLng.lat = parseFloat(newdata.location.lat);
+                    LatLng.lng = parseFloat(newdata.location.lng);
 
-                        let licenseImg = document.createElement('img');
-                        licenseImg.setAttribute('src', newdata.licenseImg);
-                        licenseImg.style.width = '200px';
-                        licenseImg.style.height = '200px';
-                        document.getElementById('license').appendChild(licenseImg);
-                
+                    let licenseImg = document.createElement('img');
+                    licenseImg.setAttribute('src', newdata.licenseImg);
+                    licenseImg.style.width = '200px';
+                    licenseImg.style.height = '200px';
+                    document.getElementById('license').appendChild(licenseImg);
+               
 
-                        let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
-                        onValue(likeRef, (snapshot) => {
-                            let likedata = snapshot.val();
-                            if(likedata == null){
-                                document.getElementById('likecount').innerText = '0';
-                                document.getElementById('likebtn').addEventListener('click', function(){
-                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
-                                    update(ref(db), updates);
-                                });
-                            } else {
-                                document.getElementById('likecount').innerText = likedata+' Likes';
-                                let likedcount = likedata + 1;
-                                document.getElementById('likebtn').addEventListener('click', function(){
-                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                                    update(ref(db), updates);
-                                });
-                            }
-                            
-                        });
+                    let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
+                    onValue(likeRef, (snapshot) => {
+                        let likedata = snapshot.val();
+                        if(likedata == null){
+                            document.getElementById('likecount').innerText = '0';
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                update(ref(db), updates);
+                            });
+                        } else {
+                            document.getElementById('likecount').innerText = likedata+' Likes';
+                            let likedcount = likedata + 1;
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                update(ref(db), updates);
+                            });
+                        }
+                        
+                    });
 
                       
 
