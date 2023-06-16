@@ -53,16 +53,8 @@
         <script>
             let LatLng;
             let map;
-            function initMap(){
-                // Set map options
-                LatLng = {lat: 8.090440925828062, lng: -1.6977176080814078};
-                let mapOptions = {
-                center: LatLng,
-                zoom: 7
-                };
-
-                map = new google.maps.Map(document.getElementById("map"), mapOptions);
-            }
+            LatLng = {};
+            
         </script>
         
         <script src="./js/core/jquery.min.js" type="text/javascript"></script>
@@ -73,8 +65,6 @@
         <script src="./js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
         <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
         <script src="./js/plugins/nouislider.min.js" type="text/javascript"></script>
-        <!--  Google Maps Plugin    -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap&v=weekly" async></script>
         <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
         <script src="./js/plugins/bootstrap-tagsinput.js"></script>
         <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
@@ -328,10 +318,20 @@
           
         </script> 
     <script>
-        
+        function initMap(){
+            // Set map options
+            
+            let mapOptions = {
+            center: LatLng,
+            zoom: 7
+            };
+
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
        
-      </script>
-       
+    </script>
+    <!--  Google Maps Plugin    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap&v=weekly" async></script>
 
       </body>
 </html>
