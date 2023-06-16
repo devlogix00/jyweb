@@ -34,7 +34,6 @@
               <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
               <div style="padding-left: 6em;">
                 <div id="license" style="border-width: 3em; padding: 3em; display: flex; overflow: auto; flex-direction: row;"></div>
-                <div id="map" style="width: 50%; height: 50%;"></div>
                 <div id="likes" style="display: flex; flex-direction: row; align-items: center;">
                     <button id="likebtn" class="btn btn-white btn-fill btn-round"><span class="material-icons">
                         favorite
@@ -51,8 +50,18 @@
           
         </div>
         <script>
-            let LatLng = {};
-            let mapOptions = {};
+            let LatLng;
+            let map;
+            function initMap(){
+                // Set map options
+                LatLng = {lat: 8.090440925828062, lng: -1.6977176080814078};
+                let mapOptions = {
+                center: LatLng,
+                zoom: 7
+                };
+
+                map = new google.maps.Map(document.getElementById("license"), mapOptions);
+            }
         </script>
         
         <script src="./js/core/jquery.min.js" type="text/javascript"></script>
@@ -63,6 +72,8 @@
         <script src="./js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
         <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
         <script src="./js/plugins/nouislider.min.js" type="text/javascript"></script>
+        <!--  Google Maps Plugin    -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap&v=weekly" async></script>
         <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
         <script src="./js/plugins/bootstrap-tagsinput.js"></script>
         <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
@@ -82,9 +93,6 @@
           let coord = {};
           let allCoords = [];
           let coordList = [];
-          
-
-          
         </script>
         <script type="module">
           // Import the functions you need from the SDKs you need
@@ -166,42 +174,35 @@
                     let newdata = data[i]; 
                     if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
                         
-                    LatLng = {
-                      lat: newdata.location.lat,
-                      lng: newdata.location.lng
-                    }
+                        LatLng.lat = newdata.location.lat;
+                        LatLng.lng = newdata.location.lng;
 
-                    mapOptions = {
-                        center: LatLng,
-                        zoom: 7
-                    };
+                        let licenseImg = document.createElement('img');
+                        licenseImg.setAttribute('src', newdata.licenseImg);
+                        licenseImg.style.width = '200px';
+                        licenseImg.style.height = '200px';
+                        document.getElementById('license').appendChild(licenseImg);
+                
 
-                    let licenseImg = document.createElement('img');
-                    licenseImg.setAttribute('src', newdata.licenseImg);
-                    licenseImg.style.width = '200px';
-                    licenseImg.style.height = '200px';
-                    document.getElementById('license').appendChild(licenseImg);
-               
-
-                    let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
-                    onValue(likeRef, (snapshot) => {
-                        let likedata = snapshot.val();
-                        if(likedata == null){
-                            document.getElementById('likecount').innerText = '0';
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
-                                update(ref(db), updates);
-                            });
-                        } else {
-                            document.getElementById('likecount').innerText = likedata+' Likes';
-                            let likedcount = likedata + 1;
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                                update(ref(db), updates);
-                            });
-                        }
-                        
-                    });
+                        let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
+                        onValue(likeRef, (snapshot) => {
+                            let likedata = snapshot.val();
+                            if(likedata == null){
+                                document.getElementById('likecount').innerText = '0';
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                    update(ref(db), updates);
+                                });
+                            } else {
+                                document.getElementById('likecount').innerText = likedata+' Likes';
+                                let likedcount = likedata + 1;
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                    update(ref(db), updates);
+                                });
+                            }
+                            
+                        });
 
                       
 
@@ -314,11 +315,7 @@
               });
 
              
-              function initMap(){
-                // Set map options
-                console.log(mapOptions);
-                let map = new google.maps.Map(document.getElementById("map"), mapOptions);
-              }
+              
 
               } else {
                 // User is signed out
@@ -332,9 +329,7 @@
     <script>
         
        
-    </script>
-    <!--  Google Maps Plugin    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap&v=weekly" async></script>
+      </script>
        
 
       </body>
