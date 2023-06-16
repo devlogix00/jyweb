@@ -321,19 +321,22 @@
     <script>
        
        function initMap(){
-                    // Set map options
-                    console.log(parseFloat(coordList[0]));
-                    
-                    let mapOptions = {
-                    center: {
-                        lat: coordList[0],
-                        lng: coordList[1]
-                    },
-                    zoom: 7
-                    };
+            // Set map options
+            let newLat = coordList[0];
+            let newLng = coordList[1];
+            console.log(newLat);
+            console.log(newLng);
+            
+            let mapOptions = {
+            center: {
+                lat: coordList[0],
+                lng: coordList[1]
+            },
+            zoom: 7
+            };
 
-                    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                }
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
        
        
     </script>
