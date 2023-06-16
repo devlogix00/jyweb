@@ -56,6 +56,14 @@
             let LatLng;
             let map;
             LatLng = {};
+            function initMap(){
+            // Set map options
+           
+            
+            
+
+           
+        }
             
         </script>
         
@@ -63,6 +71,8 @@
         <script src="./js/core/popper.min.js" type="text/javascript"></script>
         <script src="./js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
         <script src="./js/plugins/moment.min.js"></script>
+        <!--  Google Maps Plugin    -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap&v=weekly" async></script>
         <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
         <script src="./js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
         <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
@@ -171,6 +181,9 @@
                     coordList[0] = newdata.location.lat;
                     coordList[1] = newdata.location.lng;
 
+                    console.log(coordList[0]);
+                    console.log(coordList[1]);
+
                     mapOptions = {
                     center: {
                         lat: parseFloat(coordList[0]),
@@ -178,6 +191,8 @@
                     },
                     zoom: 7
                     };
+
+                    map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
@@ -329,19 +344,11 @@
         </script> 
     <script>
        
-       function initMap(){
-            // Set map options
-           
-            
-            
-
-            map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        }
+      
        
        
     </script>
-    <!--  Google Maps Plugin    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkpJhu166GoiLCkiRzVYLZdb-5DvYGuss&callback=initMap&v=weekly" async></script>
+    
 
       </body>
 </html>
