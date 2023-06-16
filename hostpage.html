@@ -248,7 +248,12 @@
                                 update(ref(db), updates);
                             });
                         } else {
-                            document.getElementById('likecount').innerText = likedata+' Likes';
+                            if(likedata > 1){
+                              document.getElementById('likecount').innerText = likedata+' Likes';
+                            } else {
+                              document.getElementById('likecount').innerText = likedata+' Like';
+                            }
+                            
                             let likedcount = likedata + 1;
                             document.getElementById('likebtn').addEventListener('click', function(){
                                 updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
@@ -376,21 +381,7 @@
                 }
               });
 
-              // let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
-              // onValue(driverData, (snapshot) => {
-              //   let drdata = snapshot.val();
-              //   let driverRef = ref('bookedDrivers/'+clickedData.username);
-              //   onValue(driverRef, (snapshot) => {
-              //     let drvdata = snapshot.val();
-              //     for(let i = 0; i < drvdata.length; i++){
-              //       if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
-              //         document.getElementById('contactHost').style.display = 'block';
-              //         document.getElementById('contactHost').setAttribute('href', './bookdriver.html');
-              //       }
-              //     }
-              //   });
-                
-              // });
+              
 
             });
               });
