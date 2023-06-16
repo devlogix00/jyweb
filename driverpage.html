@@ -167,20 +167,8 @@
                     let newdata = data[i]; 
                     if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
                         
-                    LatLng.lat = parseFloat(newdata.location.lat);
-                    LatLng.lng = parseFloat(newdata.location.lng);
-                    
-                    function initMap(){
-                        // Set map options
-                        
-                        let mapOptions = {
-                        center: LatLng,
-                        zoom: 7
-                        };
-
-                        map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                    }
-                    
+                    coordList[0] = parseFloat(newdata.location.lat);
+                    coordList[1] = parseFloat(newdata.location.lng);
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
@@ -333,7 +321,16 @@
         </script> 
     <script>
        
-       
+        function initMap(){
+            // Set map options
+            console.log(coordList);
+            let mapOptions = {
+            center: LatLng,
+            zoom: 7
+            };
+
+            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
        
     </script>
     <!--  Google Maps Plugin    -->
