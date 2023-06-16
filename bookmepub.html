@@ -575,11 +575,33 @@
                                                         profile_picture: profImg,
                                                         username: profNm
                                                     });
-                                                    let clickedRef = sRef(db, 'hosts/hostAccount/'+clickedId);
-                                                    onValue(clickedRef, (snapshot) => {
+                                                    let hostrmRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/rooms');
+                                                    let hostcrRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/cars');
+                                                    let hosttrRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/tours')
+                                                    onValue(hostrmRef, (snapshot) => {
                                                         let clickedData = snapshot.val();
                                                         if(clickedData != null){
                                                             window.location = './hostpage.html';
+                                                        }
+                                                    });
+                                                    onValue(hostcrRef, (snapshot) => {
+                                                        let clickedData = snapshot.val();
+                                                        if(clickedData != null){
+                                                            window.location = './hostpage.html';
+                                                        }
+                                                    });
+                                                    onValue(hosttrRef, (snapshot) => {
+                                                        let clickedData = snapshot.val();
+                                                        if(clickedData != null){
+                                                            window.location = './hostpage.html';
+                                                        }
+                                                    });
+
+                                                    let hostdrRef = sRef(db, 'drivers/driverAccount/'+clickedId+'/profile');
+                                                    onValue(hostdrRef, (snapshot) => {
+                                                        let clickedData = snapshot.val();
+                                                        if(clickedData != null){
+                                                            window.location = './driverpage.html';
                                                         }
                                                     });
                                                 });
