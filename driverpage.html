@@ -308,20 +308,6 @@
               });
 
              
-              function initMap(){
-                    // Set map options
-                    console.log(coordList[0]);
-                    
-                    let mapOptions = {
-                    center: {
-                        lat: coordList[0],
-                        lng: coordList[1]
-                    },
-                    zoom: 7
-                    };
-
-                    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                }
 
               } else {
                 // User is signed out
@@ -334,6 +320,20 @@
         </script> 
     <script>
        
+       function initMap(){
+                    // Set map options
+                    console.log(parseFloat(coordList[0]));
+                    
+                    let mapOptions = {
+                    center: {
+                        lat: coordList[0],
+                        lng: coordList[1]
+                    },
+                    zoom: 7
+                    };
+
+                    map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                }
        
        
     </script>
