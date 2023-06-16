@@ -35,7 +35,7 @@
               <div style="padding-left: 6em;">
                 <div style="display: flex; flex-direction: row;">
                     <div id="map" style="width: 300px; height: 300px;"></div>
-                    <div id="license" style="border-width: 3em; padding: 3em; display: flex; overflow: auto; flex-direction: row;"></div>
+                    <div id="license" style="border-width: 3em; padding: 3em; display: flex; padding-top: 5em; flex-direction: row;"></div>
                 </div>
                 <div id="likes" style="display: flex; flex-direction: row; align-items: center;">
                     <button id="likebtn" class="btn btn-white btn-fill btn-round"><span class="material-icons">
@@ -54,16 +54,11 @@
         </div>
         <script>
             let LatLng;
-            let map;
+            let map; 
             LatLng = {};
             function initMap(){
-            // Set map options
-           
-            
-            
-
-           
-        }
+             // Set map options
+            }
             
         </script>
         
@@ -196,8 +191,8 @@
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
-                    licenseImg.style.width = '200px';
-                    licenseImg.style.height = '200px';
+                    licenseImg.style.width = '300px';
+                    licenseImg.style.height = '300px';
                     document.getElementById('license').appendChild(licenseImg);
                
 
