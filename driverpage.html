@@ -290,7 +290,7 @@
               let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
               onValue(driverData, (snapshot) => {
                 let drdata = snapshot.val();
-                let driverRef = ref('bookedDrivers/'+clickedData.username);
+                let driverRef = ref(db, 'bookedDrivers/'+clickedData.username);
                 onValue(driverRef, (snapshot) => {
                   let drvdata = snapshot.val();
                   for(let i = 0; i < drvdata.length; i++){
