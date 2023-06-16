@@ -397,13 +397,13 @@
               let updates = {};
 
 
-                document.getElementById('statusbtn').addEventListener('click', e => {
-                  e.preventDefault();
-                  let status = document.getElementById('status').value;
-            
-                  updates['hosts/hostAccount/'+userId+'/status'] = status;
-                  update(ref(db), updates);
-                });
+              document.getElementById('statusbtn').addEventListener('click', e => {
+                e.preventDefault();
+                let status = document.getElementById('status').value;
+          
+                updates['hosts/hostAccount/'+userId+'/status'] = status;
+                update(ref(db), updates);
+              });
               
 
               let mediaCaptureElement = document.getElementById('mediaCapture');
@@ -458,14 +458,7 @@
                     })
                   }
                 )
-                // const formData = new FormData();
-                // formData.append("file", file);
-                // fetch("https://www.buorgoldengreenresorts.homes/upload_files", {
-                //   method: 'POST',
-                //   body: formData
-                // })
-                // .then((res) => console.log(res))
-                // .then((err) => ("Error occured ", err));
+                
               }
               function generateId(length) {
                 var result           = '';
