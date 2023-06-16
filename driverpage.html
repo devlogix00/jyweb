@@ -323,9 +323,13 @@
        
         function initMap(){
             // Set map options
-            console.log(coordList);
+            console.log(coordList[0]);
+            
             let mapOptions = {
-            center: LatLng,
+            center: {
+                lat: coordList[0],
+                lng: coordList[1]
+            },
             zoom: 7
             };
 
