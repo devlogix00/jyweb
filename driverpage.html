@@ -169,6 +169,18 @@
                         
                     LatLng.lat = parseFloat(newdata.location.lat);
                     LatLng.lng = parseFloat(newdata.location.lng);
+                    
+                    function initMap(){
+                        // Set map options
+                        
+                        let mapOptions = {
+                        center: LatLng,
+                        zoom: 7
+                        };
+
+                        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                    }
+                    
 
                     let licenseImg = document.createElement('img');
                     licenseImg.setAttribute('src', newdata.licenseImg);
@@ -320,19 +332,8 @@
           
         </script> 
     <script>
-        console.log(LatLng);
-     
-        let parsedLatLng = LatLng;
-        function initMap(){
-            // Set map options
-            
-            let mapOptions = {
-            center: parsedLatLng,
-            zoom: 7
-            };
-
-            map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        }
+       
+       
        
     </script>
     <!--  Google Maps Plugin    -->
