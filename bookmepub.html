@@ -604,6 +604,14 @@
                                                             window.location = './driverpage.html';
                                                         }
                                                     });
+
+                                                    let guestRef = sRef(db, 'users/userAccount/'+clickedId);
+                                                    onValue(guestRef, (snapshot) => {
+                                                        let clickedData = snapshot.val();
+                                                        if(clickedData != null){
+                                                            window.location = './guestpage.html';
+                                                        }
+                                                    });
                                                 });
                                             }
                                         });
