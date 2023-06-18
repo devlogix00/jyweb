@@ -22,11 +22,17 @@
       </head>
 
       <body class="sidebar-collapse">        
-        <!-- <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+        <nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
           <div class="container">
-            <div class="navbar-translate" ></div>          
+            <div class="navbar-translate" ></div>  
+            <div class="form-group" style="padding-top: 1em;">
+              <form >
+                <input id="status" type="text" placeholder="status"/>
+                <button id="statusbtn" class="btn btn-white btn-fill btn-round">Update</button>
+              </form>
+            </div>        
           </div>
-        </nav> -->
+        </nav>
         <div style="margin: 1em;">
         <div style="display:flex; margin: 1em; justify-content: space-between;">
             <h2 id="welcome"></h2>  
@@ -34,12 +40,6 @@
               <i class="material-icons" style="color: #6849da;" onclick="openChat()">mail</i>          
               <i id="signout" onclick="signout()" style="padding: 1em; font-size: 27px;" class="fa fa-sign-out" aria-hidden="true"></i>
             </div>  
-        </div>
-        <div class="form-group" style="padding-top: 1em;">
-          <form >
-            <input id="status" type="text" placeholder="status"/>
-            <button id="statusbtn" class="btn btn-white btn-fill btn-round">Update</button>
-          </form>
         </div>
         <div id="packages">
           <div class="row">
