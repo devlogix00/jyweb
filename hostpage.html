@@ -42,8 +42,8 @@
                     <span id="likecount" style="font-size: xx-large; padding-left: 0.5em;"></span>
                 </div>
                 <form >
-                    <input id="comment" type="text" placeholder="Leave A Review" class="form-control"/>
-                    <button id="reviewbtn" class="btn btn-white btn-fill btn-round">Submit</button>
+                    <input id="comment" type="text" placeholder="Leave A Comment" class="form-control"/>
+                    <button id="commentbtn" class="btn btn-white btn-fill btn-round">Submit</button>
                 </form>
                 <div id="comments">
 
@@ -323,7 +323,7 @@
               onValue(commentRef, (snapshot) => {
                 let commentData = snapshot.val();
                 if(commentData == null){
-                  document.getElementById('reviewbtn').addEventListener('click', function(){
+                  document.getElementById('commentbtn').addEventListener('click', function(){
                     let comment = document.getElementById('comment').value;
                     let commentObj = {
                       userImg: user.photoURL,
@@ -337,7 +337,7 @@
                   // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
                   // update(ref(db), updates);
                 } else {
-                  document.getElementById('reviewbtn').addEventListener('click', function(){
+                  document.getElementById('commentbtn').addEventListener('click', function(){
                     let comment = document.getElementById('comment').value;
                     let commentObj = {
                       userImg: user.photoURL,
