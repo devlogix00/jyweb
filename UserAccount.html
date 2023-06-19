@@ -42,7 +42,7 @@
           </form>
           <form id="image-form">
             <input id="mediaCapture" type="file" accept="image/*" capture="camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white" style="border-width: 0em;">
               <span id="cam" class="material-icons" style="font-size: xx-large;" type="file" accept="image/*" capture="camera">
                 camera_enhance
               </span>
@@ -452,7 +452,7 @@
               }
 
               async function saveImage(file){
-                  const storageRef = sRef(storage, 'images/'+ file.name);
+                  const storageRef = ref(storage, 'images/'+ file.name);
                   const uploadTask = uploadBytesResumable(storageRef, file);
 
                   uploadTask.on('state_changed', 
