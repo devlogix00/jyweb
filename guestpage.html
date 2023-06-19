@@ -164,6 +164,8 @@
                         for(let i = 0; i < experienceData.length; i++){
                             let outerDiv = document.createElement('div');
                             outerDiv.style.borderWidth = '3em';
+                            outerDiv.style.width = '40%';
+                            outerDiv.style.height = '300px';
                             let imgDiv = document.createElement('div');
                             imgDiv.style.borderWidth = '1em';
                             imgDiv.setAttribute('src', experienceData[i]);
@@ -177,6 +179,7 @@
                             innerDiv.appendChild(likebtn);
                             innerDiv.appendChild(likeCount);
                             outerDiv.appendChild(innerDiv);
+                            document.getElementById('experiences').appendChild(outerDiv);
                         }
                         
                     }
