@@ -426,18 +426,20 @@
               document.getElementById('cam').addEventListener('click', function onMediaFileSelected(e){
                 
                 console.log('camera clicked!');
-               
-                e.preventDefault();
-                let file = e.target.files[0];
-                //imageFormElement.reset();
-                if(!file.type.match('image.*')){
-                  let data = {
-                    message: 'You can only share images',
-                    timeout: 2000
-                  };
-                  return;
+                mediaCaptureElement.addEventListener('change', onImageFileSelected);
+                function onImageFileSelected(){
+                  e.preventDefault();
+                  let file = e.target.files[0];
+                  //imageFormElement.reset();
+                  if(!file.type.match('image.*')){
+                    let data = {
+                      message: 'You can only share images',
+                      timeout: 2000
+                    };
+                    return;
+                  }
+                  saveImage(file);
                 }
-                saveImage(file);
                 
                 async function saveImage(file){
                   const storageRef = sRef(storage, 'images/'+ file.name);
