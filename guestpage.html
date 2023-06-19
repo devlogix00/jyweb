@@ -42,7 +42,7 @@
               </div>
               <div style="padding-left: 6em;">
                 <h1>BOOKME EXPERIENCES</h1>
-                <div id="experiences" style="border-width: 3em; padding: 3em; display: flex; overflow: auto;"></div>
+                <div id="experiences" style="border-width: 3em; padding: 3em; display: flex; flex-wrap: wrap; justify-content: space-evenly;"></div>
                 
                 <form >
                     <input id="comment" type="text" placeholder="Leave A Comment" class="form-control"/>
@@ -177,7 +177,7 @@
                             imgDiv.style.height = '400px';
                             imgDiv.setAttribute('src', experienceData[i]);
                             let likebtn = document.createElement('button');
-                            likebtn.innerHTML = `<span class="material-icons" style="font-size: large;">
+                            likebtn.innerHTML = `<span class="material-icons" style="font-size: xx-large;">
                                 favorite
                             </span>`;
                             likebtn.style.borderWidth = '0em';
