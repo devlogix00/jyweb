@@ -423,64 +423,67 @@
 
               displayBookedDriver();
 
-              document.getElementById('cam').addEventListener('click', function(){
+              document.getElementById('cam').addEventListener('click', function(e){
+                e.preventDefault();
+                document.getElementById('cam').click();
+              });
                 
-                document.getElementById('cam').addEventListener('change', onMediaFileSelected);
-                function onMediaFileSelected(e){
-                  e.preventDefault();
-                  let file = e.target.files[0];
-                  //imageFormElement.reset();
-                  if(!file.type.match('image.*')){
-                    let data = {
-                      message: 'You can only share images',
-                      timeout: 2000
-                    };
-                    return;
-                  }
-                  saveImage(file);
+              document.getElementById('cam').addEventListener('change', onMediaFileSelected);
+              function onMediaFileSelected(e){
+                e.preventDefault();
+                let file = e.target.files[0];
+                //imageFormElement.reset();
+                if(!file.type.match('image.*')){
+                  let data = {
+                    message: 'You can only share images',
+                    timeout: 2000
+                  };
+                  return;
                 }
-                async function saveImage(file){
-                  const storageRef = sRef(storage, 'images/'+ file.name);
-                  const uploadTask = uploadBytesResumable(storageRef, file);
+                saveImage(file);
+              }
+              async function saveImage(file){
+                const storageRef = sRef(storage, 'images/'+ file.name);
+                const uploadTask = uploadBytesResumable(storageRef, file);
 
-                  uploadTask.on('state_changed', 
-                    (snapshot) => {
-                      // Observe state change events such as progress, pause, and resume
-                      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                      
-                      switch (snapshot.state) {
-                      case 'paused':
-                        break;
-                      case 'running':
-                        break;
-                      }
-                    },
-                    (error) => {
-                      // Handle unsuccessful uploads
-                    },
-                    () => {
-                      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        let experienceRef = ref('users/userAccount/'+userId+'/experiences');
-                        let updates = {};
-                        onValue(experienceRef, (snapshot) => {
-                          let experienceData = snapshot.val();
-                          if(experienceData.length == null){
-                            updates['users/userAccount/'+userId+'/experiences/0'] = downloadURL;
-                            update(ref(db), updates);
-                          } else {
-                            let dataLen = experienceData.length;
-                            updates['users/userAccount/'+userId+'/experiences/'+dataLen] = downloadURL;
-                            update(ref(db), updates);
-                          }
-                        }, {
-                          onlyOnce: true
-                        });
+                uploadTask.on('state_changed', 
+                  (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    
+                    switch (snapshot.state) {
+                    case 'paused':
+                      break;
+                    case 'running':
+                      break;
+                    }
+                  },
+                  (error) => {
+                    // Handle unsuccessful uploads
+                  },
+                  () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                      let experienceRef = ref('users/userAccount/'+userId+'/experiences');
+                      let updates = {};
+                      onValue(experienceRef, (snapshot) => {
+                        let experienceData = snapshot.val();
+                        if(experienceData.length == null){
+                          updates['users/userAccount/'+userId+'/experiences/0'] = downloadURL;
+                          update(ref(db), updates);
+                        } else {
+                          let dataLen = experienceData.length;
+                          updates['users/userAccount/'+userId+'/experiences/'+dataLen] = downloadURL;
+                          update(ref(db), updates);
+                        }
+                      }, {
+                        onlyOnce: true
                       });
                     });
-                
-                }
-              });
+                  });
+              
+              }
+           
                
             } else {
               // User is signed out
