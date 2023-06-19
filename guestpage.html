@@ -126,7 +126,31 @@
               let profDiv = document.createElement('div');
               profDiv.style.display = 'flex';
               profDiv.style.flexDirection = 'column';
+
               let updates = {};
+
+              let experienceRef = ref(db, 'users/userAccount/'+userId+'/experiences');
+              onValue(experienceRef, (snapshot) => {
+                let experienceData = snapshot.val();
+                if(experienceData != null){
+                    let outerDiv = document.createElement('div');
+                    outerDiv.style.borderWidth = '3em';
+                    let imgDiv = document.createElement('div');
+                    imgDiv.style.borderWidth = '1em';
+                    imgDiv.setAttribute('src', experienceData[i]);
+                    let likebtn = document.createElement('button');
+                    likebtn.innerHTML = `<span class="material-icons">
+                        favorite
+                    </span>`;
+                    let likeCount = document.createElement('h4');
+                    let innerDiv = document.createElement('div');
+                    outerDiv.appendChild(imgDiv);
+                    innerDiv.appendChild(likebtn);
+                    innerDiv.appendChild(likeCount);
+                    outerDiv.appendChild(innerDiv);
+                    
+                }
+              });
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -144,7 +168,6 @@
                 imgDiv.appendChild(profimg);
                 profDiv.appendChild(profnm)
                 document.getElementById('profile').appendChild(imgDiv);
-             
 
                 let guestRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/status');
                 onValue(guestRef, (snapshot) => {
@@ -152,34 +175,33 @@
                     profstat.innerText = statusdata;
                     profstat.style.paddingLeft = '1em';
                     profDiv.appendChild(profstat);
-                    
                 });
                 document.getElementById('profile').appendChild(profDiv);
                    
                 let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/likes');
-                    onValue(likeRef, (snapshot) => {
-                        let likedata = snapshot.val();
-                        if(likedata == null){
-                            document.getElementById('likecount').innerText = '0';
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['users/userAccount/'+clickedData.clickedId+'/likes'] = 1;
-                                update(ref(db), updates);
-                            });
+                onValue(likeRef, (snapshot) => {
+                    let likedata = snapshot.val();
+                    if(likedata == null){
+                        document.getElementById('likecount').innerText = '0';
+                        document.getElementById('likebtn').addEventListener('click', function(){
+                            updates['users/userAccount/'+clickedData.clickedId+'/likes'] = 1;
+                            update(ref(db), updates);
+                        });
+                    } else {
+                        if(likedata > 1){
+                            document.getElementById('likecount').innerText = likedata+' Likes';
                         } else {
-                            if(likedata > 1){
-                                document.getElementById('likecount').innerText = likedata+' Likes';
-                            } else {
-                                document.getElementById('likecount').innerText = likedata+' Like';
-                            }
-                            
-                            let likedcount = likedata + 1;
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['users/userAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                                update(ref(db), updates);
-                            });
+                            document.getElementById('likecount').innerText = likedata+' Like';
                         }
                         
-                    });
+                        let likedcount = likedata + 1;
+                        document.getElementById('likebtn').addEventListener('click', function(){
+                            updates['users/userAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                            update(ref(db), updates);
+                        });
+                    }
+                    
+                });
 
               let commImg = document.createElement('img');
               let commNm = document.createElement('h3');
