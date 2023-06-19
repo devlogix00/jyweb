@@ -190,18 +190,14 @@
                                     if(likeData == null){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
                                         update(ref(db), updates);
+                                        likeCount.innerText = likeData+' Like';
                                     } else {
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
                                         update(ref(db), updates);
+                                        likeCount.innerText = likeData+' Likes';
                                     }
                                 });
-                                if(likeData == 1){
-                                    likeCount.innerText = likeData+' Like';
-                                } else if (likeData > 1){
-                                    likeCount.innerText = likeData+' Likes';
-                                } else if (likeData == null){
-                                    likeCount.style.display = 'none';
-                                }
+                               
                                 
                             }, {
                                 onlyOnce: true
