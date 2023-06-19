@@ -197,8 +197,10 @@
                                 });
                                 if(likeData == 1){
                                     likeCount.innerText = likeData+' Like';
-                                } else {
+                                } else if (likeData > 1){
                                     likeCount.innerText = likeData+' Likes';
+                                } else if (likeData == null){
+                                    likeCount.style.display = 'none';
                                 }
                                 
                             }, {
