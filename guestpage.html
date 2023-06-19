@@ -191,27 +191,37 @@
                                     likebtn.addEventListener('click', function(){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
                                         update(ref(db), updates);
-                                        if(likeData > 1){
-                                            likeCount.innerText = likeData+' Likes';
-                                        } else {
-                                            likeCount.innerText = likeData+' Like';
-                                        }
+                                        onValue(likeRef, (snapshot) => {
+                                            let nwLike = snapshot.val();
+                                            if(likeData > 1){
+                                                likeCount.innerText = nwLike+' Likes';
+                                            } else {
+                                                likeCount.innerText = nwLike+' Like';
+                                            }
+                                        });
                                     });
                                 } else {
-                                    if(likeData > 1){
-                                            likeCount.innerText = likeData+' Likes';
+                                    onValue(likeRef, (snapshot) => {
+                                        let nwLike = snapshot.val();
+                                        if(likeData > 1){
+                                            likeCount.innerText = nwLike+' Likes';
                                         } else {
-                                            likeCount.innerText = likeData+' Like';
+                                            likeCount.innerText = nwLike+' Like';
                                         }
+                                    });
                                     likebtn.addEventListener('click', function(){
+                                        
                                         let likedcount = likeData + 1;
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likedcount;
                                         update(ref(db), updates);
-                                        if(likeData > 1){
-                                            likeCount.innerText = likeData+' Likes';
-                                        } else {
-                                            likeCount.innerText = likeData+' Like';
-                                        }
+                                        onValue(likeRef, (snapshot) => {
+                                            let nwLike = snapshot.val();
+                                            if(likeData > 1){
+                                                likeCount.innerText = nwLike+' Likes';
+                                            } else {
+                                                likeCount.innerText = nwLike+' Like';
+                                            }
+                                        });
                                     });
                                 }
                                 // likebtn.addEventListener('click', function(){
