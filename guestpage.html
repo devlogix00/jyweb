@@ -182,23 +182,29 @@
                             </span>`;
                             likebtn.style.borderWidth = '0em';
                             let likeCount = document.createElement('h4');
-                            likebtn.addEventListener('click', function(){
-                                let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
-                                onValue(likeRef, (snapshot) => {
-                                    let likeData = snapshot.val();
+                            
+                            let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
+                            onValue(likeRef, (snapshot) => {
+                                let likeData = snapshot.val();
+                                likebtn.addEventListener('click', function(){
                                     if(likeData == null){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
                                         update(ref(db), updates);
-                                        likeCount.innerText = likeData +' Like';
                                     } else {
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
                                         update(ref(db), updates);
-                                        likeCount.innerText = likeData +' Likes';
                                     }
-                                }, {
-                                    onlyOnce: true
                                 });
+                                if(likeData == 1){
+                                    likeCount.innerText = likeData+' Like';
+                                } else {
+                                    likeCount.innerText = likeData+' Likes';
+                                }
+                                
+                            }, {
+                                onlyOnce: true
                             });
+                           
                            
                             let innerDiv = document.createElement('div');
                             innerDiv.style.paddingTop = '2em';
