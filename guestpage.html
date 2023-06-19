@@ -181,22 +181,41 @@
                                 favorite
                             </span>`;
                             likebtn.style.borderWidth = '0em';
-                            let likeCount = document.createElement('h4');
+                            let likeCount = document.createElement('h3');
                             
                             let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
                             onValue(likeRef, (snapshot) => {
                                 let likeData = snapshot.val();
-                                likebtn.addEventListener('click', function(){
-                                    if(likeData == null){
+                                if(likedata == null){
+                                    likeCount.innerText = '0';
+                                    likebtn.addEventListener('click', function(){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
                                         update(ref(db), updates);
-                                        likeCount.innerText = likeData+' Like';
-                                    } else {
-                                        updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
-                                        update(ref(db), updates);
+                                    });
+                                } else {
+                                    if(likedata > 1){
                                         likeCount.innerText = likeData+' Likes';
+                                    } else {
+                                        likeCount.innerText = likeData+' Like';
                                     }
-                                });
+                                    
+                                    let likedcount = likedata + 1;
+                                    likebtn.addEventListener('click', function(){
+                                        updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likedcount;
+                                        update(ref(db), updates);
+                                    });
+                                }
+                                // likebtn.addEventListener('click', function(){
+                                //     if(likeData == null){
+                                //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
+                                //         update(ref(db), updates);
+                                //         likeCount.innerText = likeData+' Like';
+                                //     } else {
+                                //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
+                                //         update(ref(db), updates);
+                                //         likeCount.innerText = likeData+' Likes';
+                                //     }
+                                // });
                                
                                 
                             }, {
