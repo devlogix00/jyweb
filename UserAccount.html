@@ -474,7 +474,7 @@
                     },
                     () => {
                       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        let experienceRef = ref('users/userAccount/'+userId+'/experiences');
+                        let experienceRef = ref(db, 'users/userAccount/'+userId+'/experiences');
                         let updates = {};
                         onValue(experienceRef, (snapshot) => {
                           let experienceData = snapshot.val();
