@@ -129,28 +129,7 @@
 
               let updates = {};
 
-              let experienceRef = ref(db, 'users/userAccount/'+userId+'/experiences');
-              onValue(experienceRef, (snapshot) => {
-                let experienceData = snapshot.val();
-                if(experienceData != null){
-                    let outerDiv = document.createElement('div');
-                    outerDiv.style.borderWidth = '3em';
-                    let imgDiv = document.createElement('div');
-                    imgDiv.style.borderWidth = '1em';
-                    imgDiv.setAttribute('src', experienceData[i]);
-                    let likebtn = document.createElement('button');
-                    likebtn.innerHTML = `<span class="material-icons">
-                        favorite
-                    </span>`;
-                    let likeCount = document.createElement('h4');
-                    let innerDiv = document.createElement('div');
-                    outerDiv.appendChild(imgDiv);
-                    innerDiv.appendChild(likebtn);
-                    innerDiv.appendChild(likeCount);
-                    outerDiv.appendChild(innerDiv);
-                    
-                }
-              });
+             
 
               let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
               onValue(clickedRef, (snapshot) => {
@@ -177,6 +156,33 @@
                     profDiv.appendChild(profstat);
                 });
                 document.getElementById('profile').appendChild(profDiv);
+
+                let experienceRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences');
+                onValue(experienceRef, (snapshot) => {
+                    let experienceData = snapshot.val();
+                    if(experienceData != null){
+                        for(let i = 0; i < experienceData.length; i++){
+                            let outerDiv = document.createElement('div');
+                            outerDiv.style.borderWidth = '3em';
+                            let imgDiv = document.createElement('div');
+                            imgDiv.style.borderWidth = '1em';
+                            imgDiv.setAttribute('src', experienceData[i]);
+                            let likebtn = document.createElement('button');
+                            likebtn.innerHTML = `<span class="material-icons">
+                                favorite
+                            </span>`;
+                            let likeCount = document.createElement('h4');
+                            let innerDiv = document.createElement('div');
+                            outerDiv.appendChild(imgDiv);
+                            innerDiv.appendChild(likebtn);
+                            innerDiv.appendChild(likeCount);
+                            outerDiv.appendChild(innerDiv);
+                        }
+                        
+                    }
+                }, {
+                    onlyOnce: true
+                });
                    
                 let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/likes');
                 onValue(likeRef, (snapshot) => {
