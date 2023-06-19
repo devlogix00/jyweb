@@ -31,16 +31,19 @@
                       </div> 
                 </div>
               </nav>
-              <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
+              <div style="display: flex; justify-content: space-between;">
+                <div id="profile" style="border-width: 3em; padding: 6em; display: flex;"></div>
+                <div id="likes" style="display: flex; flex-direction: row; align-items: center;">
+                  <button id="likebtn" class="btn btn-white btn-fill btn-round"><span class="material-icons">
+                      favorite
+                  </span></button>
+                  <span id="likecount" style="font-size: xx-large; padding-left: 0.5em;"></span>
+                </div>
+              </div>
               <div style="padding-left: 6em;">
                 <h1>BOOKME EXPERIENCES</h1>
                 <div id="experiences" style="border-width: 3em; padding: 3em; display: flex;"></div>
-                <div id="likes" style="display: flex; flex-direction: row; align-items: center;">
-                    <button id="likebtn" class="btn btn-white btn-fill btn-round"><span class="material-icons">
-                        favorite
-                    </span></button>
-                    <span id="likecount" style="font-size: xx-large; padding-left: 0.5em;"></span>
-                </div>
+                
                 <form >
                     <input id="comment" type="text" placeholder="Leave A Comment" class="form-control"/>
                     <button id="commentbtn" class="btn btn-white btn-fill btn-round">Submit</button>
@@ -166,7 +169,7 @@
                             outerDiv.style.borderWidth = '3em';
                             outerDiv.style.width = '40%';
                             outerDiv.style.height = '300px';
-                            let imgDiv = document.createElement('div');
+                            let imgDiv = document.createElement('img');
                             imgDiv.style.borderWidth = '1em';
                             imgDiv.setAttribute('src', experienceData[i]);
                             let likebtn = document.createElement('button');
