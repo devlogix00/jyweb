@@ -186,20 +186,20 @@
                             let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
                             onValue(likeRef, (snapshot) => {
                                 let likeData = snapshot.val();
-                                if(likedata == null){
+                                if(likeData == null){
                                     likeCount.innerText = '0';
                                     likebtn.addEventListener('click', function(){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
                                         update(ref(db), updates);
                                     });
                                 } else {
-                                    if(likedata > 1){
+                                    if(likeData > 1){
                                         likeCount.innerText = likeData+' Likes';
                                     } else {
                                         likeCount.innerText = likeData+' Like';
                                     }
                                     
-                                    let likedcount = likedata + 1;
+                                    let likedcount = likeData + 1;
                                     likebtn.addEventListener('click', function(){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likedcount;
                                         update(ref(db), updates);
