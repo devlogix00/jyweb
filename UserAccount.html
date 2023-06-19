@@ -426,7 +426,7 @@
               document.getElementById('cam').addEventListener('click', function onMediaFileSelected(e){
                 
                 console.log('camera clicked!');
-                mediaCaptureElement.addEventListener('change', onImageFileSelected);
+                document.getElementById('cam').addEventListener('change', onImageFileSelected);
                 function onImageFileSelected(){
                   e.preventDefault();
                   let file = e.target.files[0];
