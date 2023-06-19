@@ -40,9 +40,15 @@
             <input id="status" type="text" placeholder="status"/>
             <button id="statusbtn" class="btn btn-white btn-fill btn-round">Update</button>
           </form>
+          <!-- <form id="image-form">
+            <input id="mediaCapture" type="file" accept="image/*" capture="camera">
+            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+             
+            </button>
+          </form> -->
           <span id="cam" class="material-icons" style="font-size: xx-large;" type="file" accept="image/*" capture="camera">
             camera_enhance
-            </span>
+          </span>
         </div>
         <div id="packages">
           <div class="row">
@@ -441,7 +447,10 @@
                   saveImage(file);
                 }
                 
-                async function saveImage(file){
+                
+              });
+
+              async function saveImage(file){
                   const storageRef = sRef(storage, 'images/'+ file.name);
                   const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -482,7 +491,6 @@
                     });
                 
                 }
-              });
                
             } else {
               // User is signed out
