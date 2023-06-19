@@ -187,7 +187,7 @@
                             onValue(likeRef, (snapshot) => {
                                 let likeData = snapshot.val();
                                 if(likeData == null){
-                                    likeCount.innerText = '0';
+                                    likeCount.innerText = '';
                                     likebtn.addEventListener('click', function(){
                                         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
                                         update(ref(db), updates);
