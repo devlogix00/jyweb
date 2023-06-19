@@ -200,7 +200,6 @@
                                 });
                             });
                            
-                           
                             let innerDiv = document.createElement('div');
                             innerDiv.style.paddingTop = '2em';
                             innerDiv.style.display = 'flex';
@@ -209,7 +208,10 @@
                             innerDiv.appendChild(likebtn);
                             innerDiv.appendChild(likeCount);
                             outerDiv.appendChild(innerDiv);
-                            document.getElementById('experiences').appendChild(outerDiv);
+                            let outerOuterDiv = document.createElement('div');
+                            outerOuterDiv.style.padding = '2em';
+                            outerOuterDiv.appendChild(outerDiv);
+                            document.getElementById('experiences').appendChild(outerOuterDiv);
                         }
                         
                     }
