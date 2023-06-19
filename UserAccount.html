@@ -479,11 +479,11 @@
                         onValue(experienceRef, (snapshot) => {
                           let experienceData = snapshot.val();
                           if(experienceData == null){
-                            updates['users/userAccount/'+userId+'/experiences/0'] = downloadURL;
+                            updates['users/userAccount/'+userId+'/experiences/0/img'] = downloadURL;
                             update(ref(db), updates);
                           } else {
                             let dataLen = experienceData.length;
-                            updates['users/userAccount/'+userId+'/experiences/'+dataLen] = downloadURL;
+                            updates['users/userAccount/'+userId+'/experiences/'+dataLen+'/img'] = downloadURL;
                             update(ref(db), updates);
                           }
                         }, {

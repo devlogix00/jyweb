@@ -175,7 +175,7 @@
                             imgDiv.style.borderWidth = '1em';
                             imgDiv.style.width = '423px';
                             imgDiv.style.height = '400px';
-                            imgDiv.setAttribute('src', experienceData[i]);
+                            imgDiv.setAttribute('src', experienceData[i]+'/img');
                             let likebtn = document.createElement('button');
                             likebtn.innerHTML = `<span class="material-icons" style="font-size: xxx-large;">
                                 favorite
@@ -195,6 +195,8 @@
                                         update(ref(db), updates);
                                         likeCount.innerText = likeData +' Likes';
                                     }
+                                }, {
+                                    onlyOnce: true
                                 });
                             });
                            
