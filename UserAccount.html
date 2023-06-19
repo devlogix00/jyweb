@@ -478,7 +478,7 @@
                         let updates = {};
                         onValue(experienceRef, (snapshot) => {
                           let experienceData = snapshot.val();
-                          if(experienceData.length == null){
+                          if(experienceData == null){
                             updates['users/userAccount/'+userId+'/experiences/0'] = downloadURL;
                             update(ref(db), updates);
                           } else {
