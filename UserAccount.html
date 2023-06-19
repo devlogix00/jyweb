@@ -40,15 +40,14 @@
             <input id="status" type="text" placeholder="status"/>
             <button id="statusbtn" class="btn btn-white btn-fill btn-round">Update</button>
           </form>
-          <!-- <form id="image-form">
+          <form id="image-form">
             <input id="mediaCapture" type="file" accept="image/*" capture="camera">
             <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-             
+              <span id="cam" class="material-icons" style="font-size: xx-large;" type="file" accept="image/*" capture="camera">
+                camera_enhance
+              </span>
             </button>
-          </form> -->
-          <span id="cam" class="material-icons" style="font-size: xx-large;" type="file" accept="image/*" capture="camera">
-            camera_enhance
-          </span>
+          </form>
         </div>
         <div id="packages">
           <div class="row">
@@ -429,26 +428,28 @@
 
               displayBookedDriver();
 
-              document.getElementById('cam').addEventListener('click', function onMediaFileSelected(e){
-                
-                console.log('camera clicked!');
-                document.getElementById('cam').addEventListener('change', onImageFileSelected);
-                function onImageFileSelected(){
-                  e.preventDefault();
-                  let file = e.target.files[0];
-                  //imageFormElement.reset();
-                  if(!file.type.match('image.*')){
-                    let data = {
-                      message: 'You can only share images',
-                      timeout: 2000
-                    };
-                    return;
-                  }
-                  saveImage(file);
-                }
-                
-                
+              let mediaCaptureElement = document.getElementById('mediaCapture');
+              let imageButtonElement = document.getElementById('submitImage');
+
+              imageButtonElement.addEventListener('click', function (e) {
+                e.preventDefault();
+                mediaCaptureElement.click();
               });
+
+              mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+              function onMediaFileSelected(e){
+                e.preventDefault();
+                let file = e.target.files[0];
+                //imageFormElement.reset();
+                if(!file.type.match('image.*')){
+                  let data = {
+                    message: 'You can only share images',
+                    timeout: 2000
+                  };
+                  return;
+                }
+                saveImage(file);
+              }
 
               async function saveImage(file){
                   const storageRef = sRef(storage, 'images/'+ file.name);
