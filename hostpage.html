@@ -597,32 +597,7 @@
                     }
                   });
 
-                  let roomData = ref(db, 'users/userAccount/'+userId+'/roomdata');
-                  onValue(roomData, (snapshot) => {
-                    let rmdata = snapshot.val();
-                    if(rmdata.host == clickedData.clickedId){
-                      document.getElementById('contactHost').style.display = 'block';
-                      document.getElementById('contactHost').setAttribute('href', './bookroom.html');
-                    }
-                  });
-
-                  let carData = ref(db, 'users/userAccount/'+userId+'/cardata');
-                  onValue(roomData, (snapshot) => {
-                    let crdata = snapshot.val();
-                    if(crdata.host == clickedData.clickedId){
-                      document.getElementById('contactHost').style.display = 'block';
-                      document.getElementById('contactHost').setAttribute('href', './bookcar.html');
-                    }
-                  });
-
-                  let tourData = ref(db, 'users/userAccount/'+userId+'/tourdata');
-                  onValue(tourData, (snapshot) => {
-                    let trdata = snapshot.val();
-                    if(trdata.host == clickedData.clickedId){
-                      document.getElementById('contactHost').style.display = 'block';
-                      document.getElementById('contactHost').setAttribute('href', './booktour.html');
-                    }
-                  });
+                  
 
                   
 

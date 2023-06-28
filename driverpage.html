@@ -492,21 +492,7 @@
                     }
                   });
 
-                  let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
-                  onValue(driverData, (snapshot) => {
-                    let drdata = snapshot.val();
-                    let driverRef = ref(db, 'bookedDrivers/'+clickedData.username);
-                    onValue(driverRef, (snapshot) => {
-                      let drvdata = snapshot.val();
-                      for(let i = 0; i < drvdata.length; i++){
-                        if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
-                          document.getElementById('contactDriver').style.display = 'block';
-                          document.getElementById('contactDriver').setAttribute('href', './bookdriver.html');
-                        }
-                      }
-                    });
-                    
-                  });
+                  
 
                 });
                   });
