@@ -130,519 +130,506 @@
               profDiv.style.flexDirection = 'column';
               let updates = {};
 
-              let userclickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
-              onValue(userclickedRef, (snapshot) => {
-                let clickedData = snapshot.val();
+              let userRef = ref(db, 'users/userAccount/'+userId);
+              onValue(userRef, (snapshot) => {
+                if(snapshot.val() != null){
+                  let userclickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
+                  onValue(userclickedRef, (snapshot) => {
+                    let clickedData = snapshot.val();
 
-                hostProfImg = clickedData.profile_picture;
-                hostName = clickedData.username;
+                    hostProfImg = clickedData.profile_picture;
+                    hostName = clickedData.username;
+                    
+                    profimg.setAttribute('src', hostProfImg);
+                    profnm.innerText = hostName;
+                    profnm.style.paddingLeft = '1em';
+                    profimg.style.width = '150px';
+                    profimg.style.height = '150px';
+                    profimg.style.borderRadius = '120px';
+                    imgDiv.appendChild(profimg);
+                    profDiv.appendChild(profnm)
+                    document.getElementById('profile').appendChild(imgDiv);
                 
-                profimg.setAttribute('src', hostProfImg);
-                profnm.innerText = hostName;
-                profnm.style.paddingLeft = '1em';
-                profimg.style.width = '150px';
-                profimg.style.height = '150px';
-                profimg.style.borderRadius = '120px';
-                imgDiv.appendChild(profimg);
-                profDiv.appendChild(profnm)
-                document.getElementById('profile').appendChild(imgDiv);
-             
 
-                let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
-                onValue(hostRef, (snapshot) => {
-                    let statusdata = snapshot.val();
-                    profstat.innerText = statusdata;
-                    profstat.style.paddingLeft = '1em';
-                    profDiv.appendChild(profstat);
-                    
-                });
-                document.getElementById('profile').appendChild(profDiv);
-
-                const listingsRef = ref(db, 'listings/listings/');
-                onValue(listingsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    for(let i = 0; i < data.length; i++){
-                    let newdata = data[i]; 
-                    if(newdata != null && newdata.listingImg != 'undefined' && newdata.host === clickedData.clickedId){
-                   
-                    let cardOuter = document.createElement('div');
-                    cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
-                    
-                    cardOuter.style.margin = '1em';
-
-                    let rcc = document.createElement('div');
-                    rcc.setAttribute('class', "rotating-card-container");
-                    rcc.setAttribute('id', data[i].itemId);
-                    rcc.style.marginBottom = '30px';
-
-                    let cardInnerInner = document.createElement('div');
-                    cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
-
-                    let cardImg = document.createElement('img');
-                    cardImg.setAttribute('src', newdata.listingImg);
-
-                    let front = document.createElement('div');
-                    front.setAttribute('class', 'front');
-                    front.setAttribute('id', data[i].listingName+'-front');
-
-                    let cardBody = document.createElement('div');
-                    cardBody.setAttribute('class', 'card-body');
-                    cardBody.style.padding = '3em';
-
-
-                    let back = document.createElement('h6');
-                    back.setAttribute('class', "back");
-                    back.setAttribute('id', data[i].listingName+'-back');
-                    back.innerText = data[i].listingName;
-                    back.style.paddingTop = '3em';
-
-                    let price = document.createElement('h5');
-                    price.setAttribute('class', "price");
-                    price.setAttribute('id', data[i].listingName+'-price');
-                    price.innerText = '$'+data[i].listingPrice+'/night';
-                    price.style.paddingTop = '3em';
-                    price.style.color = 'black';
-                    
-
-                    let cardTitle = document.createElement('h4');
-                    cardTitle.setAttribute('class', 'card-body');
-                    cardTitle.style.paddingBottom = '3em';
-
-                    let cardButton = document.createElement('button');
-                    cardButton.setAttribute('class', 'btn btn-white btn-fill btn-round');
-                    cardButton.setAttribute('id', data[i].listingName);
-                    cardButton.innerText = 'BookMe';
-
-                    cardTitle.appendChild(cardButton);
-                    back.appendChild(cardTitle);
-                    cardInnerInner.appendChild(back);
-                    back.appendChild(price);
-
-                    front.appendChild(cardImg);
-                    cardInnerInner.appendChild(front);
-                    rcc.appendChild(cardInnerInner);
-                    cardOuter.appendChild(rcc);
-                    document.getElementById('listings').appendChild(cardOuter);
-                    
-                    if(data[i].listingType == 'room'){
-                        cardButton.addEventListener('click', function(){
-                            window.location = 'https://www.buorgoldengreenresorts.homes/rooms.html'
-                        });
-                    } else if(data[i].listingType == 'car'){
-                        cardButton.addEventListener('click', function(){
-                            window.location = 'https://www.buorgoldengreenresorts.homes/cars.html'
-                        });
-                    }else if(data[i].listingType == 'tour'){
-                        cardButton.addEventListener('click', function(){
-                            window.location = 'https://www.buorgoldengreenresorts.homes/tourism.html'
-                        });
-                    }
-
-                    let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
-                    onValue(likeRef, (snapshot) => {
-                        let likedata = snapshot.val();
-                        if(likedata == null){
-                            document.getElementById('likecount').innerText = '0';
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
-                                update(ref(db), updates);
-                            });
-                        } else {
-                            if(likedata > 1){
-                              document.getElementById('likecount').innerText = likedata+' Likes';
-                            } else {
-                              document.getElementById('likecount').innerText = likedata+' Like';
-                            }
-                            
-                            let likedcount = likedata + 1;
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                                update(ref(db), updates);
-                            });
-                        }
+                    let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
+                    onValue(hostRef, (snapshot) => {
+                        let statusdata = snapshot.val();
+                        profstat.innerText = statusdata;
+                        profstat.style.paddingLeft = '1em';
+                        profDiv.appendChild(profstat);
                         
                     });
+                    document.getElementById('profile').appendChild(profDiv);
 
+                    const listingsRef = ref(db, 'listings/listings/');
+                    onValue(listingsRef, (snapshot) => {
+                        const data = snapshot.val();
+                        for(let i = 0; i < data.length; i++){
+                        let newdata = data[i]; 
+                        if(newdata != null && newdata.listingImg != 'undefined' && newdata.host === clickedData.clickedId){
                       
+                        let cardOuter = document.createElement('div');
+                        cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
+                        
+                        cardOuter.style.margin = '1em';
 
-                     
-                    
-                    
+                        let rcc = document.createElement('div');
+                        rcc.setAttribute('class', "rotating-card-container");
+                        rcc.setAttribute('id', data[i].itemId);
+                        rcc.style.marginBottom = '30px';
 
-                    
+                        let cardInnerInner = document.createElement('div');
+                        cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
 
-                }
+                        let cardImg = document.createElement('img');
+                        cardImg.setAttribute('src', newdata.listingImg);
 
-              }
+                        let front = document.createElement('div');
+                        front.setAttribute('class', 'front');
+                        front.setAttribute('id', data[i].listingName+'-front');
 
-              let commImg = document.createElement('img');
-              let commNm = document.createElement('h3');
-              let comm = document.createElement('h4');
-              let commDiv = document.createElement('div');
-              let picDiv = document.createElement('div');
-              let mainCommDiv = document.createElement('div');
-              let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
-
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData != null){
-                  for(let i = 0; i < commentData.length; i++){
-                      commImg.setAttribute('src', commentData[i].userImg);
-                      commImg.style.borderRadius = '120px';
-                      commImg.style.width = '100px';
-                      commImg.style.height = '100px';
-
-                      commNm.innerText = commentData[i].username+':';
-                      commNm.style.padding = '0.5em';
-                      commNm.style.fontStyle = 'italic';
-
-                      comm.innerText = commentData[i].comment;
-                      comm.style.padding = '1em';
-                      comm.style.display = 'flex';
-                      comm.style.alignItems = 'center';
-
-                      picDiv.appendChild(commImg);
-                      commDiv.appendChild(commNm);
-                      commDiv.appendChild(comm);
-                      mainCommDiv.appendChild(picDiv);
-                      mainCommDiv.appendChild(commDiv);
-
-                      mainCommDiv.style.display = 'flex';
-                      mainCommDiv.style.flexDirection = 'row';
-                      commDiv.style.display = 'flex';
-                      commDiv.style.flexDirection = 'row';
-                    
-                      document.getElementById('comments').appendChild(mainCommDiv);
-                 
-                }
-                    
-                }
-                
-              });
-
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData == null){
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
-                    }
-                    set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
-                    
-                  });
-                  
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
-                  // update(ref(db), updates);
-                } else {
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
-                    }
-                    let commentLen = commentData.length;
-                    set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
-                    
-                  });
-                  
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
-                  // update(ref(db), updates);
-                }
-              });
-
-              let roomData = ref(db, 'users/userAccount/'+userId+'/roomdata');
-              onValue(roomData, (snapshot) => {
-                let rmdata = snapshot.val();
-                if(rmdata.host == clickedData.clickedId){
-                  document.getElementById('contactHost').style.display = 'block';
-                  document.getElementById('contactHost').setAttribute('href', './bookroom.html');
-                }
-              });
-
-              let carData = ref(db, 'users/userAccount/'+userId+'/cardata');
-              onValue(roomData, (snapshot) => {
-                let crdata = snapshot.val();
-                if(crdata.host == clickedData.clickedId){
-                  document.getElementById('contactHost').style.display = 'block';
-                  document.getElementById('contactHost').setAttribute('href', './bookcar.html');
-                }
-              });
-
-              let tourData = ref(db, 'users/userAccount/'+userId+'/tourdata');
-              onValue(tourData, (snapshot) => {
-                let trdata = snapshot.val();
-                if(trdata.host == clickedData.clickedId){
-                  document.getElementById('contactHost').style.display = 'block';
-                  document.getElementById('contactHost').setAttribute('href', './booktour.html');
-                }
-              });
-
-              
-
-            });
-              });
-
-              let hostclickedRef = ref(db, 'hosts/hostAccount/'+userId+'/clicks');
-              onValue(hostclickedRef, (snapshot) => {
-                let clickedData = snapshot.val();
-
-                hostProfImg = clickedData.profile_picture;
-                hostName = clickedData.username;
-                
-                profimg.setAttribute('src', hostProfImg);
-                profnm.innerText = hostName;
-                profnm.style.paddingLeft = '1em';
-                profimg.style.width = '150px';
-                profimg.style.height = '150px';
-                profimg.style.borderRadius = '120px';
-                imgDiv.appendChild(profimg);
-                profDiv.appendChild(profnm)
-                document.getElementById('profile').appendChild(imgDiv);
-             
-
-                let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
-                onValue(hostRef, (snapshot) => {
-                    let statusdata = snapshot.val();
-                    profstat.innerText = statusdata;
-                    profstat.style.paddingLeft = '1em';
-                    profDiv.appendChild(profstat);
-                    
-                });
-                document.getElementById('profile').appendChild(profDiv);
-
-                const listingsRef = ref(db, 'listings/listings/');
-                onValue(listingsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    for(let i = 0; i < data.length; i++){
-                    let newdata = data[i]; 
-                    if(newdata != null && newdata.listingImg != 'undefined' && newdata.host === clickedData.clickedId){
-                   
-                    let cardOuter = document.createElement('div');
-                    cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
-                    
-                    cardOuter.style.margin = '1em';
-
-                    let rcc = document.createElement('div');
-                    rcc.setAttribute('class', "rotating-card-container");
-                    rcc.setAttribute('id', data[i].itemId);
-                    rcc.style.marginBottom = '30px';
-
-                    let cardInnerInner = document.createElement('div');
-                    cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
-
-                    let cardImg = document.createElement('img');
-                    cardImg.setAttribute('src', newdata.listingImg);
-
-                    let front = document.createElement('div');
-                    front.setAttribute('class', 'front');
-                    front.setAttribute('id', data[i].listingName+'-front');
-
-                    let cardBody = document.createElement('div');
-                    cardBody.setAttribute('class', 'card-body');
-                    cardBody.style.padding = '3em';
+                        let cardBody = document.createElement('div');
+                        cardBody.setAttribute('class', 'card-body');
+                        cardBody.style.padding = '3em';
 
 
-                    let back = document.createElement('h6');
-                    back.setAttribute('class', "back");
-                    back.setAttribute('id', data[i].listingName+'-back');
-                    back.innerText = data[i].listingName;
-                    back.style.paddingTop = '3em';
+                        let back = document.createElement('h6');
+                        back.setAttribute('class', "back");
+                        back.setAttribute('id', data[i].listingName+'-back');
+                        back.innerText = data[i].listingName;
+                        back.style.paddingTop = '3em';
 
-                    let price = document.createElement('h5');
-                    price.setAttribute('class', "price");
-                    price.setAttribute('id', data[i].listingName+'-price');
-                    price.innerText = '$'+data[i].listingPrice+'/night';
-                    price.style.paddingTop = '3em';
-                    price.style.color = 'black';
-                    
+                        let price = document.createElement('h5');
+                        price.setAttribute('class', "price");
+                        price.setAttribute('id', data[i].listingName+'-price');
+                        price.innerText = '$'+data[i].listingPrice+'/night';
+                        price.style.paddingTop = '3em';
+                        price.style.color = 'black';
+                        
 
-                    let cardTitle = document.createElement('h4');
-                    cardTitle.setAttribute('class', 'card-body');
-                    cardTitle.style.paddingBottom = '3em';
+                        let cardTitle = document.createElement('h4');
+                        cardTitle.setAttribute('class', 'card-body');
+                        cardTitle.style.paddingBottom = '3em';
 
-                    let cardButton = document.createElement('button');
-                    cardButton.setAttribute('class', 'btn btn-white btn-fill btn-round');
-                    cardButton.setAttribute('id', data[i].listingName);
-                    cardButton.innerText = 'BookMe';
+                        let cardButton = document.createElement('button');
+                        cardButton.setAttribute('class', 'btn btn-white btn-fill btn-round');
+                        cardButton.setAttribute('id', data[i].listingName);
+                        cardButton.innerText = 'BookMe';
 
-                    cardTitle.appendChild(cardButton);
-                    back.appendChild(cardTitle);
-                    cardInnerInner.appendChild(back);
-                    back.appendChild(price);
+                        cardTitle.appendChild(cardButton);
+                        back.appendChild(cardTitle);
+                        cardInnerInner.appendChild(back);
+                        back.appendChild(price);
 
-                    front.appendChild(cardImg);
-                    cardInnerInner.appendChild(front);
-                    rcc.appendChild(cardInnerInner);
-                    cardOuter.appendChild(rcc);
-                    document.getElementById('listings').appendChild(cardOuter);
-                    
-                    if(data[i].listingType == 'room'){
-                        cardButton.addEventListener('click', function(){
-                            window.location = 'https://www.buorgoldengreenresorts.homes/rooms.html'
-                        });
-                    } else if(data[i].listingType == 'car'){
-                        cardButton.addEventListener('click', function(){
-                            window.location = 'https://www.buorgoldengreenresorts.homes/cars.html'
-                        });
-                    }else if(data[i].listingType == 'tour'){
-                        cardButton.addEventListener('click', function(){
-                            window.location = 'https://www.buorgoldengreenresorts.homes/tourism.html'
-                        });
-                    }
-
-                    let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
-                    onValue(likeRef, (snapshot) => {
-                        let likedata = snapshot.val();
-                        if(likedata == null){
-                            document.getElementById('likecount').innerText = '0';
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
-                                update(ref(db), updates);
+                        front.appendChild(cardImg);
+                        cardInnerInner.appendChild(front);
+                        rcc.appendChild(cardInnerInner);
+                        cardOuter.appendChild(rcc);
+                        document.getElementById('listings').appendChild(cardOuter);
+                        
+                        if(data[i].listingType == 'room'){
+                            cardButton.addEventListener('click', function(){
+                                window.location = 'https://www.buorgoldengreenresorts.homes/rooms.html'
                             });
-                        } else {
-                            if(likedata > 1){
-                              document.getElementById('likecount').innerText = likedata+' Likes';
-                            } else {
-                              document.getElementById('likecount').innerText = likedata+' Like';
-                            }
-                            
-                            let likedcount = likedata + 1;
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                                update(ref(db), updates);
+                        } else if(data[i].listingType == 'car'){
+                            cardButton.addEventListener('click', function(){
+                                window.location = 'https://www.buorgoldengreenresorts.homes/cars.html'
+                            });
+                        }else if(data[i].listingType == 'tour'){
+                            cardButton.addEventListener('click', function(){
+                                window.location = 'https://www.buorgoldengreenresorts.homes/tourism.html'
                             });
                         }
+
+                        let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
+                        onValue(likeRef, (snapshot) => {
+                            let likedata = snapshot.val();
+                            if(likedata == null){
+                                document.getElementById('likecount').innerText = '0';
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                    update(ref(db), updates);
+                                });
+                            } else {
+                                if(likedata > 1){
+                                  document.getElementById('likecount').innerText = likedata+' Likes';
+                                } else {
+                                  document.getElementById('likecount').innerText = likedata+' Like';
+                                }
+                                
+                                let likedcount = likedata + 1;
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                    update(ref(db), updates);
+                                });
+                            }
+                            
+                        });
+
+                    }
+
+                  }
+
+                  let commImg = document.createElement('img');
+                  let commNm = document.createElement('h3');
+                  let comm = document.createElement('h4');
+                  let commDiv = document.createElement('div');
+                  let picDiv = document.createElement('div');
+                  let mainCommDiv = document.createElement('div');
+                  let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData != null){
+                      for(let i = 0; i < commentData.length; i++){
+                          commImg.setAttribute('src', commentData[i].userImg);
+                          commImg.style.borderRadius = '120px';
+                          commImg.style.width = '100px';
+                          commImg.style.height = '100px';
+
+                          commNm.innerText = commentData[i].username+':';
+                          commNm.style.padding = '0.5em';
+                          commNm.style.fontStyle = 'italic';
+
+                          comm.innerText = commentData[i].comment;
+                          comm.style.padding = '1em';
+                          comm.style.display = 'flex';
+                          comm.style.alignItems = 'center';
+
+                          picDiv.appendChild(commImg);
+                          commDiv.appendChild(commNm);
+                          commDiv.appendChild(comm);
+                          mainCommDiv.appendChild(picDiv);
+                          mainCommDiv.appendChild(commDiv);
+
+                          mainCommDiv.style.display = 'flex';
+                          mainCommDiv.style.flexDirection = 'row';
+                          commDiv.style.display = 'flex';
+                          commDiv.style.flexDirection = 'row';
+                        
+                          document.getElementById('comments').appendChild(mainCommDiv);
+                    
+                    }
+                        
+                    }
+                    
+                  });
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData == null){
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                      // update(ref(db), updates);
+                    } else {
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        let commentLen = commentData.length;
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                      // update(ref(db), updates);
+                    }
+                  });
+
+                  let roomData = ref(db, 'users/userAccount/'+userId+'/roomdata');
+                  onValue(roomData, (snapshot) => {
+                    let rmdata = snapshot.val();
+                    if(rmdata.host == clickedData.clickedId){
+                      document.getElementById('contactHost').style.display = 'block';
+                      document.getElementById('contactHost').setAttribute('href', './bookroom.html');
+                    }
+                  });
+
+                  let carData = ref(db, 'users/userAccount/'+userId+'/cardata');
+                  onValue(roomData, (snapshot) => {
+                    let crdata = snapshot.val();
+                    if(crdata.host == clickedData.clickedId){
+                      document.getElementById('contactHost').style.display = 'block';
+                      document.getElementById('contactHost').setAttribute('href', './bookcar.html');
+                    }
+                  });
+
+                  let tourData = ref(db, 'users/userAccount/'+userId+'/tourdata');
+                  onValue(tourData, (snapshot) => {
+                    let trdata = snapshot.val();
+                    if(trdata.host == clickedData.clickedId){
+                      document.getElementById('contactHost').style.display = 'block';
+                      document.getElementById('contactHost').setAttribute('href', './booktour.html');
+                    }
+                  });
+
+                  
+
+                });
+                  });
+                } else {
+                  let hostclickedRef = ref(db, 'hosts/hostAccount/'+userId+'/clicks');
+                  onValue(hostclickedRef, (snapshot) => {
+                    let clickedData = snapshot.val();
+
+                    hostProfImg = clickedData.profile_picture;
+                    hostName = clickedData.username;
+                    
+                    profimg.setAttribute('src', hostProfImg);
+                    profnm.innerText = hostName;
+                    profnm.style.paddingLeft = '1em';
+                    profimg.style.width = '150px';
+                    profimg.style.height = '150px';
+                    profimg.style.borderRadius = '120px';
+                    imgDiv.appendChild(profimg);
+                    profDiv.appendChild(profnm)
+                    document.getElementById('profile').appendChild(imgDiv);
+             
+
+                    let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
+                    onValue(hostRef, (snapshot) => {
+                        let statusdata = snapshot.val();
+                        profstat.innerText = statusdata;
+                        profstat.style.paddingLeft = '1em';
+                        profDiv.appendChild(profstat);
                         
                     });
+                    document.getElementById('profile').appendChild(profDiv);
 
+                    const listingsRef = ref(db, 'listings/listings/');
+                    onValue(listingsRef, (snapshot) => {
+                        const data = snapshot.val();
+                        for(let i = 0; i < data.length; i++){
+                        let newdata = data[i]; 
+                        if(newdata != null && newdata.listingImg != 'undefined' && newdata.host === clickedData.clickedId){
                       
+                        let cardOuter = document.createElement('div');
+                        cardOuter.setAttribute('class', 'col-md-6 col-lg-4');
+                        
+                        cardOuter.style.margin = '1em';
 
-                     
-                    
-                    
+                        let rcc = document.createElement('div');
+                        rcc.setAttribute('class', "rotating-card-container");
+                        rcc.setAttribute('id', data[i].itemId);
+                        rcc.style.marginBottom = '30px';
 
-                    
+                        let cardInnerInner = document.createElement('div');
+                        cardInnerInner.setAttribute('class', 'card card-rotate bg-rose');
 
-                }
+                        let cardImg = document.createElement('img');
+                        cardImg.setAttribute('src', newdata.listingImg);
 
-              }
+                        let front = document.createElement('div');
+                        front.setAttribute('class', 'front');
+                        front.setAttribute('id', data[i].listingName+'-front');
 
-              let commImg = document.createElement('img');
-              let commNm = document.createElement('h3');
-              let comm = document.createElement('h4');
-              let commDiv = document.createElement('div');
-              let picDiv = document.createElement('div');
-              let mainCommDiv = document.createElement('div');
-              let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
+                        let cardBody = document.createElement('div');
+                        cardBody.setAttribute('class', 'card-body');
+                        cardBody.style.padding = '3em';
 
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData != null){
-                  for(let i = 0; i < commentData.length; i++){
-                      commImg.setAttribute('src', commentData[i].userImg);
-                      commImg.style.borderRadius = '120px';
-                      commImg.style.width = '100px';
-                      commImg.style.height = '100px';
 
-                      commNm.innerText = commentData[i].username+':';
-                      commNm.style.padding = '0.5em';
-                      commNm.style.fontStyle = 'italic';
+                        let back = document.createElement('h6');
+                        back.setAttribute('class', "back");
+                        back.setAttribute('id', data[i].listingName+'-back');
+                        back.innerText = data[i].listingName;
+                        back.style.paddingTop = '3em';
 
-                      comm.innerText = commentData[i].comment;
-                      comm.style.padding = '1em';
-                      comm.style.display = 'flex';
-                      comm.style.alignItems = 'center';
+                        let price = document.createElement('h5');
+                        price.setAttribute('class', "price");
+                        price.setAttribute('id', data[i].listingName+'-price');
+                        price.innerText = '$'+data[i].listingPrice+'/night';
+                        price.style.paddingTop = '3em';
+                        price.style.color = 'black';
+                        
 
-                      picDiv.appendChild(commImg);
-                      commDiv.appendChild(commNm);
-                      commDiv.appendChild(comm);
-                      mainCommDiv.appendChild(picDiv);
-                      mainCommDiv.appendChild(commDiv);
+                        let cardTitle = document.createElement('h4');
+                        cardTitle.setAttribute('class', 'card-body');
+                        cardTitle.style.paddingBottom = '3em';
 
-                      mainCommDiv.style.display = 'flex';
-                      mainCommDiv.style.flexDirection = 'row';
-                      commDiv.style.display = 'flex';
-                      commDiv.style.flexDirection = 'row';
-                    
-                      document.getElementById('comments').appendChild(mainCommDiv);
-                 
-                }
-                    
-                }
-                
-              });
+                        let cardButton = document.createElement('button');
+                        cardButton.setAttribute('class', 'btn btn-white btn-fill btn-round');
+                        cardButton.setAttribute('id', data[i].listingName);
+                        cardButton.innerText = 'BookMe';
 
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData == null){
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
+                        cardTitle.appendChild(cardButton);
+                        back.appendChild(cardTitle);
+                        cardInnerInner.appendChild(back);
+                        back.appendChild(price);
+
+                        front.appendChild(cardImg);
+                        cardInnerInner.appendChild(front);
+                        rcc.appendChild(cardInnerInner);
+                        cardOuter.appendChild(rcc);
+                        document.getElementById('listings').appendChild(cardOuter);
+                        
+                        if(data[i].listingType == 'room'){
+                            cardButton.addEventListener('click', function(){
+                                window.location = 'https://www.buorgoldengreenresorts.homes/rooms.html'
+                            });
+                        } else if(data[i].listingType == 'car'){
+                            cardButton.addEventListener('click', function(){
+                                window.location = 'https://www.buorgoldengreenresorts.homes/cars.html'
+                            });
+                        }else if(data[i].listingType == 'tour'){
+                            cardButton.addEventListener('click', function(){
+                                window.location = 'https://www.buorgoldengreenresorts.homes/tourism.html'
+                            });
+                        }
+
+                        let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
+                        onValue(likeRef, (snapshot) => {
+                            let likedata = snapshot.val();
+                            if(likedata == null){
+                                document.getElementById('likecount').innerText = '0';
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                    update(ref(db), updates);
+                                });
+                            } else {
+                                if(likedata > 1){
+                                  document.getElementById('likecount').innerText = likedata+' Likes';
+                                } else {
+                                  document.getElementById('likecount').innerText = likedata+' Like';
+                                }
+                                
+                                let likedcount = likedata + 1;
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                    update(ref(db), updates);
+                                });
+                            }
+                            
+                        });
+
                     }
-                    set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+
+                  }
+
+                  let commImg = document.createElement('img');
+                  let commNm = document.createElement('h3');
+                  let comm = document.createElement('h4');
+                  let commDiv = document.createElement('div');
+                  let picDiv = document.createElement('div');
+                  let mainCommDiv = document.createElement('div');
+                  let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData != null){
+                      for(let i = 0; i < commentData.length; i++){
+                          commImg.setAttribute('src', commentData[i].userImg);
+                          commImg.style.borderRadius = '120px';
+                          commImg.style.width = '100px';
+                          commImg.style.height = '100px';
+
+                          commNm.innerText = commentData[i].username+':';
+                          commNm.style.padding = '0.5em';
+                          commNm.style.fontStyle = 'italic';
+
+                          comm.innerText = commentData[i].comment;
+                          comm.style.padding = '1em';
+                          comm.style.display = 'flex';
+                          comm.style.alignItems = 'center';
+
+                          picDiv.appendChild(commImg);
+                          commDiv.appendChild(commNm);
+                          commDiv.appendChild(comm);
+                          mainCommDiv.appendChild(picDiv);
+                          mainCommDiv.appendChild(commDiv);
+
+                          mainCommDiv.style.display = 'flex';
+                          mainCommDiv.style.flexDirection = 'row';
+                          commDiv.style.display = 'flex';
+                          commDiv.style.flexDirection = 'row';
+                        
+                          document.getElementById('comments').appendChild(mainCommDiv);
+                    
+                    }
+                        
+                    }
                     
                   });
-                  
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
-                  // update(ref(db), updates);
-                } else {
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData == null){
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                      // update(ref(db), updates);
+                    } else {
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        let commentLen = commentData.length;
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                      // update(ref(db), updates);
                     }
-                    let commentLen = commentData.length;
-                    set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
-                    
                   });
+
+                  let roomData = ref(db, 'users/userAccount/'+userId+'/roomdata');
+                  onValue(roomData, (snapshot) => {
+                    let rmdata = snapshot.val();
+                    if(rmdata.host == clickedData.clickedId){
+                      document.getElementById('contactHost').style.display = 'block';
+                      document.getElementById('contactHost').setAttribute('href', './bookroom.html');
+                    }
+                  });
+
+                  let carData = ref(db, 'users/userAccount/'+userId+'/cardata');
+                  onValue(roomData, (snapshot) => {
+                    let crdata = snapshot.val();
+                    if(crdata.host == clickedData.clickedId){
+                      document.getElementById('contactHost').style.display = 'block';
+                      document.getElementById('contactHost').setAttribute('href', './bookcar.html');
+                    }
+                  });
+
+                  let tourData = ref(db, 'users/userAccount/'+userId+'/tourdata');
+                  onValue(tourData, (snapshot) => {
+                    let trdata = snapshot.val();
+                    if(trdata.host == clickedData.clickedId){
+                      document.getElementById('contactHost').style.display = 'block';
+                      document.getElementById('contactHost').setAttribute('href', './booktour.html');
+                    }
+                  });
+
                   
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
-                  // update(ref(db), updates);
+
+                });
+                  });
                 }
               });
-
-              let roomData = ref(db, 'users/userAccount/'+userId+'/roomdata');
-              onValue(roomData, (snapshot) => {
-                let rmdata = snapshot.val();
-                if(rmdata.host == clickedData.clickedId){
-                  document.getElementById('contactHost').style.display = 'block';
-                  document.getElementById('contactHost').setAttribute('href', './bookroom.html');
-                }
-              });
-
-              let carData = ref(db, 'users/userAccount/'+userId+'/cardata');
-              onValue(roomData, (snapshot) => {
-                let crdata = snapshot.val();
-                if(crdata.host == clickedData.clickedId){
-                  document.getElementById('contactHost').style.display = 'block';
-                  document.getElementById('contactHost').setAttribute('href', './bookcar.html');
-                }
-              });
-
-              let tourData = ref(db, 'users/userAccount/'+userId+'/tourdata');
-              onValue(tourData, (snapshot) => {
-                let trdata = snapshot.val();
-                if(trdata.host == clickedData.clickedId){
-                  document.getElementById('contactHost').style.display = 'block';
-                  document.getElementById('contactHost').setAttribute('href', './booktour.html');
-                }
-              });
-
-              
-
-            });
-              });
-             
-              
 
               } else {
                 // User is signed out

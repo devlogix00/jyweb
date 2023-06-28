@@ -138,198 +138,382 @@
               profDiv.style.flexDirection = 'column';
               let updates = {};
 
-              let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
-              onValue(clickedRef, (snapshot) => {
-                let clickedData = snapshot.val();
+              let userRef = ref(db, 'users/userAccount/'+userId);
+              onValue(userRef, (snapshot) => {
+                if(snapshot.val() != null){
+                  let userclickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
+                  onValue(userclickedRef, (snapshot) => {
+                    let clickedData = snapshot.val();
 
-                driverProfImg = clickedData.profile_picture;
-                driverName = clickedData.username;
-                
-                profimg.setAttribute('src', driverProfImg);
-                profnm.innerText = driverName;
-                profnm.style.paddingLeft = '1em';
-                profimg.style.width = '150px';
-                profimg.style.height = '150px';
-                profimg.style.borderRadius = '120px';
-                imgDiv.appendChild(profimg);
-                profDiv.appendChild(profnm)
-                document.getElementById('profile').appendChild(imgDiv);
-             
-
-                let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
-                onValue(hostRef, (snapshot) => {
-                    let statusdata = snapshot.val();
-                    profstat.innerText = statusdata;
-                    profstat.style.paddingLeft = '1em';
-                    profDiv.appendChild(profstat);
+                    driverProfImg = clickedData.profile_picture;
+                    driverName = clickedData.username;
                     
-                });
-                document.getElementById('profile').appendChild(profDiv);
+                    profimg.setAttribute('src', driverProfImg);
+                    profnm.innerText = driverName;
+                    profnm.style.paddingLeft = '1em';
+                    profimg.style.width = '150px';
+                    profimg.style.height = '150px';
+                    profimg.style.borderRadius = '120px';
+                    imgDiv.appendChild(profimg);
+                    profDiv.appendChild(profnm)
+                    document.getElementById('profile').appendChild(imgDiv);
+                
 
-                const profilesRef = ref(db, 'profiles/profiles/');
-                onValue(profilesRef, (snapshot) => {
-                    const data = snapshot.val();
-                    for(let i = 0; i < data.length; i++){
-                    let newdata = data[i]; 
-                    if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
-                        
-                    coordList[0] = newdata.location.lat;
-                    coordList[1] = newdata.location.lng;
-
-                    console.log(coordList[0]);
-                    console.log(coordList[1]);
-
-                    mapOptions = {
-                    center: {
-                        lat: parseFloat(coordList[0]),
-                        lng: parseFloat(coordList[1])
-                    },
-                    zoom: 7
-                    };
-
-                    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-                    let licenseImg = document.createElement('img');
-                    licenseImg.setAttribute('src', newdata.licenseImg);
-                    licenseImg.style.width = '600px';
-                    licenseImg.style.height = '300px';
-                    document.getElementById('license').appendChild(licenseImg);
-               
-
-                    let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
-                    onValue(likeRef, (snapshot) => {
-                        let likedata = snapshot.val();
-                        if(likedata == null){
-                            document.getElementById('likecount').innerText = '0';
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
-                                update(ref(db), updates);
-                            });
-                        } else {
-                            if(likedata > 1){
-                                document.getElementById('likecount').innerText = likedata+' Likes';
-                            } else {
-                                document.getElementById('likecount').innerText = likedata+' Like';
-                            }
-                            
-                            let likedcount = likedata + 1;
-                            document.getElementById('likebtn').addEventListener('click', function(){
-                                updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                                update(ref(db), updates);
-                            });
-                        }
+                    let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
+                    onValue(hostRef, (snapshot) => {
+                        let statusdata = snapshot.val();
+                        profstat.innerText = statusdata;
+                        profstat.style.paddingLeft = '1em';
+                        profDiv.appendChild(profstat);
                         
                     });
+                    document.getElementById('profile').appendChild(profDiv);
 
-                      
+                    const profilesRef = ref(db, 'profiles/profiles/');
+                    onValue(profilesRef, (snapshot) => {
+                        const data = snapshot.val();
+                        for(let i = 0; i < data.length; i++){
+                        let newdata = data[i]; 
+                        if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
+                            
+                        coordList[0] = newdata.location.lat;
+                        coordList[1] = newdata.location.lng;
 
-                     
-                    
-                    
+                        console.log(coordList[0]);
+                        console.log(coordList[1]);
 
-                    
+                        mapOptions = {
+                        center: {
+                            lat: parseFloat(coordList[0]),
+                            lng: parseFloat(coordList[1])
+                        },
+                        zoom: 7
+                        };
 
-                }
+                        map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-              }
-
-              let commImg = document.createElement('img');
-              let commNm = document.createElement('h3');
-              let comm = document.createElement('h4');
-              let commDiv = document.createElement('div');
-              let picDiv = document.createElement('div');
-              let mainCommDiv = document.createElement('div');
-              let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
-
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData != null){
-                  for(let i = 0; i < commentData.length; i++){
-                      commImg.setAttribute('src', commentData[i].userImg);
-                      commImg.style.borderRadius = '120px';
-                      commImg.style.width = '100px';
-                      commImg.style.height = '100px';
-
-                      commNm.innerText = commentData[i].username+':';
-                      commNm.style.padding = '0.5em';
-                      commNm.style.fontStyle = 'italic';
-
-                      comm.innerText = commentData[i].comment;
-                      comm.style.padding = '1em';
-                      comm.style.display = 'flex';
-                      comm.style.alignItems = 'center';
-
-                      picDiv.appendChild(commImg);
-                      commDiv.appendChild(commNm);
-                      commDiv.appendChild(comm);
-                      mainCommDiv.appendChild(picDiv);
-                      mainCommDiv.appendChild(commDiv);
-
-                      mainCommDiv.style.display = 'flex';
-                      mainCommDiv.style.flexDirection = 'row';
-                      commDiv.style.display = 'flex';
-                      commDiv.style.flexDirection = 'row';
-                    
-                      document.getElementById('comments').appendChild(mainCommDiv);
-                 
-                }
-                    
-                }
-                
-              });
-
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData == null){
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
-                    }
-                    set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
-                    
-                  });
+                        let licenseImg = document.createElement('img');
+                        licenseImg.setAttribute('src', newdata.licenseImg);
+                        licenseImg.style.width = '600px';
+                        licenseImg.style.height = '300px';
+                        document.getElementById('license').appendChild(licenseImg);
                   
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
-                  // update(ref(db), updates);
-                } else {
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
-                    }
-                    let commentLen = commentData.length;
-                    set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
-                    
-                  });
-                  
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
-                  // update(ref(db), updates);
-                }
-              });
 
-              let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
-              onValue(driverData, (snapshot) => {
-                let drdata = snapshot.val();
-                let driverRef = ref(db, 'bookedDrivers/'+clickedData.username);
-                onValue(driverRef, (snapshot) => {
-                  let drvdata = snapshot.val();
-                  for(let i = 0; i < drvdata.length; i++){
-                    if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
-                      document.getElementById('contactDriver').style.display = 'block';
-                      document.getElementById('contactDriver').setAttribute('href', './bookdriver.html');
+                        let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
+                        onValue(likeRef, (snapshot) => {
+                            let likedata = snapshot.val();
+                            if(likedata == null){
+                                document.getElementById('likecount').innerText = '0';
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                    update(ref(db), updates);
+                                });
+                            } else {
+                                if(likedata > 1){
+                                    document.getElementById('likecount').innerText = likedata+' Likes';
+                                } else {
+                                    document.getElementById('likecount').innerText = likedata+' Like';
+                                }
+                                
+                                let likedcount = likedata + 1;
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                    update(ref(db), updates);
+                                });
+                            }
+                            
+                        });
+
                     }
+
                   }
+
+                  let commImg = document.createElement('img');
+                  let commNm = document.createElement('h3');
+                  let comm = document.createElement('h4');
+                  let commDiv = document.createElement('div');
+                  let picDiv = document.createElement('div');
+                  let mainCommDiv = document.createElement('div');
+                  let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData != null){
+                      for(let i = 0; i < commentData.length; i++){
+                          commImg.setAttribute('src', commentData[i].userImg);
+                          commImg.style.borderRadius = '120px';
+                          commImg.style.width = '100px';
+                          commImg.style.height = '100px';
+
+                          commNm.innerText = commentData[i].username+':';
+                          commNm.style.padding = '0.5em';
+                          commNm.style.fontStyle = 'italic';
+
+                          comm.innerText = commentData[i].comment;
+                          comm.style.padding = '1em';
+                          comm.style.display = 'flex';
+                          comm.style.alignItems = 'center';
+
+                          picDiv.appendChild(commImg);
+                          commDiv.appendChild(commNm);
+                          commDiv.appendChild(comm);
+                          mainCommDiv.appendChild(picDiv);
+                          mainCommDiv.appendChild(commDiv);
+
+                          mainCommDiv.style.display = 'flex';
+                          mainCommDiv.style.flexDirection = 'row';
+                          commDiv.style.display = 'flex';
+                          commDiv.style.flexDirection = 'row';
+                        
+                          document.getElementById('comments').appendChild(mainCommDiv);
+                    
+                    }
+                        
+                    }
+                    
+                  });
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData == null){
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                      // update(ref(db), updates);
+                    } else {
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        let commentLen = commentData.length;
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                      // update(ref(db), updates);
+                    }
+                  });
+
+                  let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
+                  onValue(driverData, (snapshot) => {
+                    let drdata = snapshot.val();
+                    let driverRef = ref(db, 'bookedDrivers/'+clickedData.username);
+                    onValue(driverRef, (snapshot) => {
+                      let drvdata = snapshot.val();
+                      for(let i = 0; i < drvdata.length; i++){
+                        if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
+                          document.getElementById('contactDriver').style.display = 'block';
+                          document.getElementById('contactDriver').setAttribute('href', './bookdriver.html');
+                        }
+                      }
+                    });
+                    
+                  });
+
                 });
+                  });
+                } else {
+                  let hostclickedRef = ref(db, 'hosts/hostAccount/'+userId+'/clicks');
+                  onValue(hostclickedRef, (snapshot) => {
+                    let clickedData = snapshot.val();
+
+                    driverProfImg = clickedData.profile_picture;
+                    driverName = clickedData.username;
+                    
+                    profimg.setAttribute('src', driverProfImg);
+                    profnm.innerText = driverName;
+                    profnm.style.paddingLeft = '1em';
+                    profimg.style.width = '150px';
+                    profimg.style.height = '150px';
+                    profimg.style.borderRadius = '120px';
+                    imgDiv.appendChild(profimg);
+                    profDiv.appendChild(profnm)
+                    document.getElementById('profile').appendChild(imgDiv);
                 
+
+                    let hostRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/status');
+                    onValue(hostRef, (snapshot) => {
+                        let statusdata = snapshot.val();
+                        profstat.innerText = statusdata;
+                        profstat.style.paddingLeft = '1em';
+                        profDiv.appendChild(profstat);
+                        
+                    });
+                    document.getElementById('profile').appendChild(profDiv);
+
+                    const profilesRef = ref(db, 'profiles/profiles/');
+                    onValue(profilesRef, (snapshot) => {
+                        const data = snapshot.val();
+                        for(let i = 0; i < data.length; i++){
+                        let newdata = data[i]; 
+                        if(newdata != null && newdata.listingImg != 'undefined' && newdata.userId === clickedData.clickedId){
+                            
+                        coordList[0] = newdata.location.lat;
+                        coordList[1] = newdata.location.lng;
+
+                        console.log(coordList[0]);
+                        console.log(coordList[1]);
+
+                        mapOptions = {
+                        center: {
+                            lat: parseFloat(coordList[0]),
+                            lng: parseFloat(coordList[1])
+                        },
+                        zoom: 7
+                        };
+
+                        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                        let licenseImg = document.createElement('img');
+                        licenseImg.setAttribute('src', newdata.licenseImg);
+                        licenseImg.style.width = '600px';
+                        licenseImg.style.height = '300px';
+                        document.getElementById('license').appendChild(licenseImg);
+                  
+
+                        let likeRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/likes');
+                        onValue(likeRef, (snapshot) => {
+                            let likedata = snapshot.val();
+                            if(likedata == null){
+                                document.getElementById('likecount').innerText = '0';
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                    update(ref(db), updates);
+                                });
+                            } else {
+                                if(likedata > 1){
+                                    document.getElementById('likecount').innerText = likedata+' Likes';
+                                } else {
+                                    document.getElementById('likecount').innerText = likedata+' Like';
+                                }
+                                
+                                let likedcount = likedata + 1;
+                                document.getElementById('likebtn').addEventListener('click', function(){
+                                    updates['hosts/hostAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                    update(ref(db), updates);
+                                });
+                            }
+                            
+                        });
+
+                    }
+
+                  }
+
+                  let commImg = document.createElement('img');
+                  let commNm = document.createElement('h3');
+                  let comm = document.createElement('h4');
+                  let commDiv = document.createElement('div');
+                  let picDiv = document.createElement('div');
+                  let mainCommDiv = document.createElement('div');
+                  let commentRef = ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments');
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData != null){
+                      for(let i = 0; i < commentData.length; i++){
+                          commImg.setAttribute('src', commentData[i].userImg);
+                          commImg.style.borderRadius = '120px';
+                          commImg.style.width = '100px';
+                          commImg.style.height = '100px';
+
+                          commNm.innerText = commentData[i].username+':';
+                          commNm.style.padding = '0.5em';
+                          commNm.style.fontStyle = 'italic';
+
+                          comm.innerText = commentData[i].comment;
+                          comm.style.padding = '1em';
+                          comm.style.display = 'flex';
+                          comm.style.alignItems = 'center';
+
+                          picDiv.appendChild(commImg);
+                          commDiv.appendChild(commNm);
+                          commDiv.appendChild(comm);
+                          mainCommDiv.appendChild(picDiv);
+                          mainCommDiv.appendChild(commDiv);
+
+                          mainCommDiv.style.display = 'flex';
+                          mainCommDiv.style.flexDirection = 'row';
+                          commDiv.style.display = 'flex';
+                          commDiv.style.flexDirection = 'row';
+                        
+                          document.getElementById('comments').appendChild(mainCommDiv);
+                    
+                    }
+                        
+                    }
+                    
+                  });
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData == null){
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                      // update(ref(db), updates);
+                    } else {
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        let commentLen = commentData.length;
+                        set(ref(db, 'hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                      // update(ref(db), updates);
+                    }
+                  });
+
+                  let driverData = ref(db, 'users/userAccount/'+userId+'/driverdata');
+                  onValue(driverData, (snapshot) => {
+                    let drdata = snapshot.val();
+                    let driverRef = ref(db, 'bookedDrivers/'+clickedData.username);
+                    onValue(driverRef, (snapshot) => {
+                      let drvdata = snapshot.val();
+                      for(let i = 0; i < drvdata.length; i++){
+                        if(drvdata[i].bookingId == drdata.bookingId && drvdata[i].driverId == clickedData.clickedId){
+                          document.getElementById('contactDriver').style.display = 'block';
+                          document.getElementById('contactDriver').setAttribute('href', './bookdriver.html');
+                        }
+                      }
+                    });
+                    
+                  });
+
+                });
+                  });
+                }
               });
 
-            });
-              });
+              
 
              
 

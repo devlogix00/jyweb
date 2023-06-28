@@ -132,241 +132,480 @@
 
               let updates = {};
 
-             
+              let userRef = ref(db, 'users/userAccount/'+userId);
+              onValue(userRef, (snapshot) => {
+                if(snapshot.val() != null){
+                  let userclickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
+                  onValue(userclickedRef, (snapshot) => {
+                    let clickedData = snapshot.val();
 
-              let clickedRef = ref(db, 'users/userAccount/'+userId+'/clicks');
-              onValue(clickedRef, (snapshot) => {
-                let clickedData = snapshot.val();
+                    guestProfImg = clickedData.profile_picture;
+                    guestName = clickedData.username;
+                    
+                    profimg.setAttribute('src', guestProfImg);
+                    profnm.innerText = guestName;
+                    profnm.style.paddingLeft = '1em';
+                    profimg.style.width = '150px';
+                    profimg.style.height = '150px';
+                    profimg.style.borderRadius = '120px';
+                    imgDiv.appendChild(profimg);
+                    profDiv.appendChild(profnm)
+                    document.getElementById('profile').appendChild(imgDiv);
 
-                guestProfImg = clickedData.profile_picture;
-                guestName = clickedData.username;
-                
-                profimg.setAttribute('src', guestProfImg);
-                profnm.innerText = guestName;
-                profnm.style.paddingLeft = '1em';
-                profimg.style.width = '150px';
-                profimg.style.height = '150px';
-                profimg.style.borderRadius = '120px';
-                imgDiv.appendChild(profimg);
-                profDiv.appendChild(profnm)
-                document.getElementById('profile').appendChild(imgDiv);
+                    let guestRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/status');
+                    onValue(guestRef, (snapshot) => {
+                        let statusdata = snapshot.val();
+                        profstat.innerText = statusdata;
+                        profstat.style.paddingLeft = '1em';
+                        profDiv.appendChild(profstat);
+                    });
+                    document.getElementById('profile').appendChild(profDiv);
 
-                let guestRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/status');
-                onValue(guestRef, (snapshot) => {
-                    let statusdata = snapshot.val();
-                    profstat.innerText = statusdata;
-                    profstat.style.paddingLeft = '1em';
-                    profDiv.appendChild(profstat);
-                });
-                document.getElementById('profile').appendChild(profDiv);
-
-                let experienceRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences');
-                onValue(experienceRef, (snapshot) => {
-                    let experienceData = snapshot.val();
-                    if(experienceData != null){
-                        for(let i = experienceData.length - 1; i >= 0; i--){
-                            let outerDiv = document.createElement('div');
-                            outerDiv.style.borderWidth = '0.1em';
-                            outerDiv.style.borderStyle = 'solid';
-                            outerDiv.style.width = '500px';
-                            outerDiv.style.height = 'auto';
-                            outerDiv.style.padding = '2em';
-                            let imgDiv = document.createElement('img');
-                            imgDiv.style.borderWidth = '1em';
-                            imgDiv.style.width = '100%';
-                            imgDiv.style.height = 'auto';
-                            imgDiv.setAttribute('src', experienceData[i].img);
-                            let likebtn = document.createElement('button');
-                            likebtn.innerHTML = `<span class="material-icons" style="font-size: xxx-large;">
-                                favorite
-                            </span>`;
-                            likebtn.style.borderWidth = '0em';
-                            let likeCount = document.createElement('h3');
-                            
-                            let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
-                            onValue(likeRef, (snapshot) => {
-                                let likeData = snapshot.val();
-                                if(likeData == null){
-                                    likeCount.innerText = '';
-                                    likebtn.addEventListener('click', function(){
-                                        updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
-                                        update(ref(db), updates);
-                                        onValue(likeRef, (snapshot) => {
-                                            let nwLike = snapshot.val();
-                                            if(likeData > 1){
-                                                likeCount.innerText = nwLike+' Likes';
-                                            } else {
-                                                likeCount.innerText = nwLike+' Like';
-                                            }
-                                        });
-                                    });
-                                } else {
-                                    onValue(likeRef, (snapshot) => {
-                                        let nwLike = snapshot.val();
-                                        if(likeData > 1){
-                                            likeCount.innerText = nwLike+' Likes';
-                                        } else {
-                                            likeCount.innerText = nwLike+' Like';
-                                        }
-                                    });
-                                    likebtn.addEventListener('click', function(){
-                                        
-                                        let likedcount = likeData + 1;
-                                        updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likedcount;
-                                        update(ref(db), updates);
-                                        onValue(likeRef, (snapshot) => {
-                                            let nwLike = snapshot.val();
-                                            if(likeData > 1){
-                                                likeCount.innerText = nwLike+' Likes';
-                                            } else {
-                                                likeCount.innerText = nwLike+' Like';
-                                            }
-                                        });
-                                    });
-                                }
-                                // likebtn.addEventListener('click', function(){
-                                //     if(likeData == null){
-                                //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
-                                //         update(ref(db), updates);
-                                //         likeCount.innerText = likeData+' Like';
-                                //     } else {
-                                //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
-                                //         update(ref(db), updates);
-                                //         likeCount.innerText = likeData+' Likes';
-                                //     }
-                                // });
-                               
+                    let experienceRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences');
+                    onValue(experienceRef, (snapshot) => {
+                        let experienceData = snapshot.val();
+                        if(experienceData != null){
+                            for(let i = experienceData.length - 1; i >= 0; i--){
+                                let outerDiv = document.createElement('div');
+                                outerDiv.style.borderWidth = '0.1em';
+                                outerDiv.style.borderStyle = 'solid';
+                                outerDiv.style.width = '500px';
+                                outerDiv.style.height = 'auto';
+                                outerDiv.style.padding = '2em';
+                                let imgDiv = document.createElement('img');
+                                imgDiv.style.borderWidth = '1em';
+                                imgDiv.style.width = '100%';
+                                imgDiv.style.height = 'auto';
+                                imgDiv.setAttribute('src', experienceData[i].img);
+                                let likebtn = document.createElement('button');
+                                likebtn.innerHTML = `<span class="material-icons" style="font-size: xxx-large;">
+                                    favorite
+                                </span>`;
+                                likebtn.style.borderWidth = '0em';
+                                let likeCount = document.createElement('h3');
                                 
-                            }, {
-                                onlyOnce: true
+                                let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
+                                onValue(likeRef, (snapshot) => {
+                                    let likeData = snapshot.val();
+                                    if(likeData == null){
+                                        likeCount.innerText = '';
+                                        likebtn.addEventListener('click', function(){
+                                            updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
+                                            update(ref(db), updates);
+                                            onValue(likeRef, (snapshot) => {
+                                                let nwLike = snapshot.val();
+                                                if(likeData > 1){
+                                                    likeCount.innerText = nwLike+' Likes';
+                                                } else {
+                                                    likeCount.innerText = nwLike+' Like';
+                                                }
+                                            });
+                                        });
+                                    } else {
+                                        onValue(likeRef, (snapshot) => {
+                                            let nwLike = snapshot.val();
+                                            if(likeData > 1){
+                                                likeCount.innerText = nwLike+' Likes';
+                                            } else {
+                                                likeCount.innerText = nwLike+' Like';
+                                            }
+                                        });
+                                        likebtn.addEventListener('click', function(){
+                                            
+                                            let likedcount = likeData + 1;
+                                            updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likedcount;
+                                            update(ref(db), updates);
+                                            onValue(likeRef, (snapshot) => {
+                                                let nwLike = snapshot.val();
+                                                if(likeData > 1){
+                                                    likeCount.innerText = nwLike+' Likes';
+                                                } else {
+                                                    likeCount.innerText = nwLike+' Like';
+                                                }
+                                            });
+                                        });
+                                    }
+                                    // likebtn.addEventListener('click', function(){
+                                    //     if(likeData == null){
+                                    //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
+                                    //         update(ref(db), updates);
+                                    //         likeCount.innerText = likeData+' Like';
+                                    //     } else {
+                                    //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
+                                    //         update(ref(db), updates);
+                                    //         likeCount.innerText = likeData+' Likes';
+                                    //     }
+                                    // });
+                                  
+                                    
+                                }, {
+                                    onlyOnce: true
+                                });
+                              
+                              
+                                let innerDiv = document.createElement('div');
+                                innerDiv.style.paddingTop = '2em';
+                                innerDiv.style.display = 'flex';
+                                innerDiv.style.justifyContent = 'space-between';
+                                outerDiv.appendChild(imgDiv);
+                                innerDiv.appendChild(likebtn);
+                                innerDiv.appendChild(likeCount);
+                                outerDiv.appendChild(innerDiv);
+                                let outerOuterDiv = document.createElement('div');
+                                outerOuterDiv.style.padding = '2em';
+                                outerOuterDiv.appendChild(outerDiv);
+                                document.getElementById('experiences').appendChild(outerOuterDiv);
+                            }
+                            
+                        }
+                    }, {
+                        onlyOnce: true
+                    });
+                      
+                    let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/likes');
+                    onValue(likeRef, (snapshot) => {
+                        let likedata = snapshot.val();
+                        if(likedata == null){
+                            document.getElementById('likecount').innerText = '0';
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['users/userAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                update(ref(db), updates);
                             });
-                           
-                           
-                            let innerDiv = document.createElement('div');
-                            innerDiv.style.paddingTop = '2em';
-                            innerDiv.style.display = 'flex';
-                            innerDiv.style.justifyContent = 'space-between';
-                            outerDiv.appendChild(imgDiv);
-                            innerDiv.appendChild(likebtn);
-                            innerDiv.appendChild(likeCount);
-                            outerDiv.appendChild(innerDiv);
-                            let outerOuterDiv = document.createElement('div');
-                            outerOuterDiv.style.padding = '2em';
-                            outerOuterDiv.appendChild(outerDiv);
-                            document.getElementById('experiences').appendChild(outerOuterDiv);
-                        }
-                        
-                    }
-                }, {
-                    onlyOnce: true
-                });
-                   
-                let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/likes');
-                onValue(likeRef, (snapshot) => {
-                    let likedata = snapshot.val();
-                    if(likedata == null){
-                        document.getElementById('likecount').innerText = '0';
-                        document.getElementById('likebtn').addEventListener('click', function(){
-                            updates['users/userAccount/'+clickedData.clickedId+'/likes'] = 1;
-                            update(ref(db), updates);
-                        });
-                    } else {
-                        if(likedata > 1){
-                            document.getElementById('likecount').innerText = likedata+' Likes';
                         } else {
-                            document.getElementById('likecount').innerText = likedata+' Like';
+                            if(likedata > 1){
+                                document.getElementById('likecount').innerText = likedata+' Likes';
+                            } else {
+                                document.getElementById('likecount').innerText = likedata+' Like';
+                            }
+                            
+                            let likedcount = likedata + 1;
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['users/userAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                update(ref(db), updates);
+                            });
                         }
                         
-                        let likedcount = likedata + 1;
-                        document.getElementById('likebtn').addEventListener('click', function(){
-                            updates['users/userAccount/'+clickedData.clickedId+'/likes'] = likedcount;
-                            update(ref(db), updates);
-                        });
+                    });
+
+                  let commImg = document.createElement('img');
+                  let commNm = document.createElement('h3');
+                  let comm = document.createElement('h4');
+                  let commDiv = document.createElement('div');
+                  let picDiv = document.createElement('div');
+                  let mainCommDiv = document.createElement('div');
+                  let commentRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments');
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData != null){
+                      for(let i = 0; i < commentData.length; i++){
+                          commImg.setAttribute('src', commentData[i].userImg);
+                          commImg.style.borderRadius = '120px';
+                          commImg.style.width = '100px';
+                          commImg.style.height = '100px';
+
+                          commNm.innerText = commentData[i].username+':';
+                          commNm.style.padding = '0.5em';
+                          commNm.style.fontStyle = 'italic';
+
+                          comm.innerText = commentData[i].comment;
+                          comm.style.padding = '1em';
+                          comm.style.display = 'flex';
+                          comm.style.alignItems = 'center';
+
+                          picDiv.appendChild(commImg);
+                          commDiv.appendChild(commNm);
+                          commDiv.appendChild(comm);
+                          mainCommDiv.appendChild(picDiv);
+                          mainCommDiv.appendChild(commDiv);
+
+                          mainCommDiv.style.display = 'flex';
+                          mainCommDiv.style.flexDirection = 'row';
+                          commDiv.style.display = 'flex';
+                          commDiv.style.flexDirection = 'row';
+                        
+                          document.getElementById('comments').appendChild(mainCommDiv);
+                    
                     }
-                    
-                });
-
-              let commImg = document.createElement('img');
-              let commNm = document.createElement('h3');
-              let comm = document.createElement('h4');
-              let commDiv = document.createElement('div');
-              let picDiv = document.createElement('div');
-              let mainCommDiv = document.createElement('div');
-              let commentRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments');
-
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData != null){
-                  for(let i = 0; i < commentData.length; i++){
-                      commImg.setAttribute('src', commentData[i].userImg);
-                      commImg.style.borderRadius = '120px';
-                      commImg.style.width = '100px';
-                      commImg.style.height = '100px';
-
-                      commNm.innerText = commentData[i].username+':';
-                      commNm.style.padding = '0.5em';
-                      commNm.style.fontStyle = 'italic';
-
-                      comm.innerText = commentData[i].comment;
-                      comm.style.padding = '1em';
-                      comm.style.display = 'flex';
-                      comm.style.alignItems = 'center';
-
-                      picDiv.appendChild(commImg);
-                      commDiv.appendChild(commNm);
-                      commDiv.appendChild(comm);
-                      mainCommDiv.appendChild(picDiv);
-                      mainCommDiv.appendChild(commDiv);
-
-                      mainCommDiv.style.display = 'flex';
-                      mainCommDiv.style.flexDirection = 'row';
-                      commDiv.style.display = 'flex';
-                      commDiv.style.flexDirection = 'row';
-                    
-                      document.getElementById('comments').appendChild(mainCommDiv);
-                 
-                }
-                    
-                }
-                
-              });
-
-              onValue(commentRef, (snapshot) => {
-                let commentData = snapshot.val();
-                if(commentData == null){
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
+                        
                     }
-                    set(ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
                     
                   });
-                  
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
-                  // update(ref(db), updates);
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData == null){
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        set(ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                      // update(ref(db), updates);
+                    } else {
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        let commentLen = commentData.length;
+                        set(ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                      // update(ref(db), updates);
+                    }
+                  });
+
+              
+                  });
                 } else {
-                  document.getElementById('commentbtn').addEventListener('click', function(){
-                    let comment = document.getElementById('comment').value;
-                    let commentObj = {
-                      userImg: user.photoURL,
-                      username: user.displayName,
-                      comment: comment
+                  let hostclickedRef = ref(db, 'hosts/hostAccount/'+userId+'/clicks');
+                  onValue(hostclickedRef, (snapshot) => {
+                    let clickedData = snapshot.val();
+
+                    guestProfImg = clickedData.profile_picture;
+                    guestName = clickedData.username;
+                    
+                    profimg.setAttribute('src', guestProfImg);
+                    profnm.innerText = guestName;
+                    profnm.style.paddingLeft = '1em';
+                    profimg.style.width = '150px';
+                    profimg.style.height = '150px';
+                    profimg.style.borderRadius = '120px';
+                    imgDiv.appendChild(profimg);
+                    profDiv.appendChild(profnm)
+                    document.getElementById('profile').appendChild(imgDiv);
+
+                    let guestRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/status');
+                    onValue(guestRef, (snapshot) => {
+                        let statusdata = snapshot.val();
+                        profstat.innerText = statusdata;
+                        profstat.style.paddingLeft = '1em';
+                        profDiv.appendChild(profstat);
+                    });
+                    document.getElementById('profile').appendChild(profDiv);
+
+                    let experienceRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences');
+                    onValue(experienceRef, (snapshot) => {
+                        let experienceData = snapshot.val();
+                        if(experienceData != null){
+                            for(let i = experienceData.length - 1; i >= 0; i--){
+                                let outerDiv = document.createElement('div');
+                                outerDiv.style.borderWidth = '0.1em';
+                                outerDiv.style.borderStyle = 'solid';
+                                outerDiv.style.width = '500px';
+                                outerDiv.style.height = 'auto';
+                                outerDiv.style.padding = '2em';
+                                let imgDiv = document.createElement('img');
+                                imgDiv.style.borderWidth = '1em';
+                                imgDiv.style.width = '100%';
+                                imgDiv.style.height = 'auto';
+                                imgDiv.setAttribute('src', experienceData[i].img);
+                                let likebtn = document.createElement('button');
+                                likebtn.innerHTML = `<span class="material-icons" style="font-size: xxx-large;">
+                                    favorite
+                                </span>`;
+                                likebtn.style.borderWidth = '0em';
+                                let likeCount = document.createElement('h3');
+                                
+                                let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');
+                                onValue(likeRef, (snapshot) => {
+                                    let likeData = snapshot.val();
+                                    if(likeData == null){
+                                        likeCount.innerText = '';
+                                        likebtn.addEventListener('click', function(){
+                                            updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
+                                            update(ref(db), updates);
+                                            onValue(likeRef, (snapshot) => {
+                                                let nwLike = snapshot.val();
+                                                if(likeData > 1){
+                                                    likeCount.innerText = nwLike+' Likes';
+                                                } else {
+                                                    likeCount.innerText = nwLike+' Like';
+                                                }
+                                            });
+                                        });
+                                    } else {
+                                        onValue(likeRef, (snapshot) => {
+                                            let nwLike = snapshot.val();
+                                            if(likeData > 1){
+                                                likeCount.innerText = nwLike+' Likes';
+                                            } else {
+                                                likeCount.innerText = nwLike+' Like';
+                                            }
+                                        });
+                                        likebtn.addEventListener('click', function(){
+                                            
+                                            let likedcount = likeData + 1;
+                                            updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likedcount;
+                                            update(ref(db), updates);
+                                            onValue(likeRef, (snapshot) => {
+                                                let nwLike = snapshot.val();
+                                                if(likeData > 1){
+                                                    likeCount.innerText = nwLike+' Likes';
+                                                } else {
+                                                    likeCount.innerText = nwLike+' Like';
+                                                }
+                                            });
+                                        });
+                                    }
+                                    // likebtn.addEventListener('click', function(){
+                                    //     if(likeData == null){
+                                    //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
+                                    //         update(ref(db), updates);
+                                    //         likeCount.innerText = likeData+' Like';
+                                    //     } else {
+                                    //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
+                                    //         update(ref(db), updates);
+                                    //         likeCount.innerText = likeData+' Likes';
+                                    //     }
+                                    // });
+                                  
+                                    
+                                }, {
+                                    onlyOnce: true
+                                });
+                              
+                              
+                                let innerDiv = document.createElement('div');
+                                innerDiv.style.paddingTop = '2em';
+                                innerDiv.style.display = 'flex';
+                                innerDiv.style.justifyContent = 'space-between';
+                                outerDiv.appendChild(imgDiv);
+                                innerDiv.appendChild(likebtn);
+                                innerDiv.appendChild(likeCount);
+                                outerDiv.appendChild(innerDiv);
+                                let outerOuterDiv = document.createElement('div');
+                                outerOuterDiv.style.padding = '2em';
+                                outerOuterDiv.appendChild(outerDiv);
+                                document.getElementById('experiences').appendChild(outerOuterDiv);
+                            }
+                            
+                        }
+                    }, {
+                        onlyOnce: true
+                    });
+                      
+                    let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/likes');
+                    onValue(likeRef, (snapshot) => {
+                        let likedata = snapshot.val();
+                        if(likedata == null){
+                            document.getElementById('likecount').innerText = '0';
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['users/userAccount/'+clickedData.clickedId+'/likes'] = 1;
+                                update(ref(db), updates);
+                            });
+                        } else {
+                            if(likedata > 1){
+                                document.getElementById('likecount').innerText = likedata+' Likes';
+                            } else {
+                                document.getElementById('likecount').innerText = likedata+' Like';
+                            }
+                            
+                            let likedcount = likedata + 1;
+                            document.getElementById('likebtn').addEventListener('click', function(){
+                                updates['users/userAccount/'+clickedData.clickedId+'/likes'] = likedcount;
+                                update(ref(db), updates);
+                            });
+                        }
+                        
+                    });
+
+                  let commImg = document.createElement('img');
+                  let commNm = document.createElement('h3');
+                  let comm = document.createElement('h4');
+                  let commDiv = document.createElement('div');
+                  let picDiv = document.createElement('div');
+                  let mainCommDiv = document.createElement('div');
+                  let commentRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments');
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData != null){
+                      for(let i = 0; i < commentData.length; i++){
+                          commImg.setAttribute('src', commentData[i].userImg);
+                          commImg.style.borderRadius = '120px';
+                          commImg.style.width = '100px';
+                          commImg.style.height = '100px';
+
+                          commNm.innerText = commentData[i].username+':';
+                          commNm.style.padding = '0.5em';
+                          commNm.style.fontStyle = 'italic';
+
+                          comm.innerText = commentData[i].comment;
+                          comm.style.padding = '1em';
+                          comm.style.display = 'flex';
+                          comm.style.alignItems = 'center';
+
+                          picDiv.appendChild(commImg);
+                          commDiv.appendChild(commNm);
+                          commDiv.appendChild(comm);
+                          mainCommDiv.appendChild(picDiv);
+                          mainCommDiv.appendChild(commDiv);
+
+                          mainCommDiv.style.display = 'flex';
+                          mainCommDiv.style.flexDirection = 'row';
+                          commDiv.style.display = 'flex';
+                          commDiv.style.flexDirection = 'row';
+                        
+                          document.getElementById('comments').appendChild(mainCommDiv);
+                    
                     }
-                    let commentLen = commentData.length;
-                    set(ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                    }
                     
                   });
-                  
-                  // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
-                  // update(ref(db), updates);
+
+                  onValue(commentRef, (snapshot) => {
+                    let commentData = snapshot.val();
+                    if(commentData == null){
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        set(ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments/0'), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/0'] = commentObj;
+                      // update(ref(db), updates);
+                    } else {
+                      document.getElementById('commentbtn').addEventListener('click', function(){
+                        let comment = document.getElementById('comment').value;
+                        let commentObj = {
+                          userImg: user.photoURL,
+                          username: user.displayName,
+                          comment: comment
+                        }
+                        let commentLen = commentData.length;
+                        set(ref(db, 'users/userAccount/'+clickedData.clickedId+'/comments/'+commentLen), commentObj);
+                        
+                      });
+                      
+                      // updates['hosts/hostAccount/'+clickedData.clickedId+'/comments/'+commentLen] = commentObj;
+                      // update(ref(db), updates);
+                    }
+                  });
+
+              
+                  });
                 }
               });
 
-          
-              });
+             
 
              
               
