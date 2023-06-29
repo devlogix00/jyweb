@@ -584,10 +584,10 @@
                                                 console.log(filter);
 
                                                 let filteredObj = [];
-
+                                                console.log(data);
                                                 for(let i = 0; i < data.length; i++){
                                                     if(!filter.includes(data[i].email)){
-                                                        filteredObj.push(data[i]);
+                                                        filteredObj[i] = data[i];
                                                     }
                                                 }
                                                 console.log(filteredObj);
