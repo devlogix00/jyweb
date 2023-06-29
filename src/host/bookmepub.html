@@ -543,7 +543,7 @@
                             
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
-                                            let dataSet = [Set(data)];
+                                            let dataSet = [new Set(data)];
                                         
                                             if(dataSet !== null){
                                                 let userDiv = document.createElement('div');
