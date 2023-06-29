@@ -586,10 +586,13 @@
                                                 let filteredObj = [];
                                                 console.log(data);
                                                 for(let i = 0; i < data.length; i++){
-                                                    console.log(data[i].email);
-                                                    // if(!filter.includes(data[i].email)){
-                                                    //     filteredObj[i] = data[i];
-                                                    // }
+                                                   for(let i = 0; i < filter.length; i++){
+                                                     for(let i = 0; i < filteredObj.length; i++){
+                                                        if(filteredObj[i].email != data[i].email){
+                                                            filteredObj.push(data[i]);
+                                                        }
+                                                     }
+                                                   }
                                                 }
                                                 console.log(filteredObj);
 
