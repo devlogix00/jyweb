@@ -543,9 +543,8 @@
                             
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
-                                            let dataSet = [new Set(data)];
-                                        
-                                            if(dataSet !== null){
+                                            console.log(data);
+                                            if(data !== null){
                                                 let userDiv = document.createElement('div');
                                                 let userPic = document.createElement('img');
                                                 let usernm = document.createElement('p');
@@ -553,12 +552,12 @@
                                                 let profImg;
                                                 let profNm;
                                                 
-                                                for(let i = 0; i < dataSet[0].size; i++){
-                                                    if(dataSet[0] !== null){
+                                                for(let i = 0; i < data.length; i++){
+                                                    if(data !== null){
                                                         userDiv.setAttribute('id', 'user'+i);
-                                                        userPic.setAttribute('src', dataSet[0][i].profile_picture);
+                                                        userPic.setAttribute('src', data[i].profile_picture);
                                                         userPic.style.borderRadius = '30%';
-                                                        usernm.innerText = dataSet[0][i].username;
+                                                        usernm.innerText = data[i].username;
 
                                                         userDiv.appendChild(userPic);
                                                         userDiv.appendChild(usernm);
