@@ -551,9 +551,18 @@
                                                 let clickedId;
                                                 let profImg;
                                                 let profNm;
-                                                
+                                                let filterList = [];
+
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data !== null){
+                                                        if(filterList.length != 0){
+                                                            for(let j = 0; j < filterList.length; j++){
+                                                                if(filterList[j] != data[i]){
+                                                                    filterList.push(data[i]);
+                                                                }
+                                                            }
+                                                        }
+                                                        
                                                         userDiv.setAttribute('id', 'user'+i);
                                                         userPic.setAttribute('src', data[i].profile_picture);
                                                         userPic.style.borderRadius = '30%';
@@ -571,6 +580,7 @@
                                                     }
                                                 
                                                 }
+                                                console.log(filterList);
 
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
