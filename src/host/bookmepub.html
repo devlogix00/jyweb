@@ -539,11 +539,9 @@
                                         },{
                                             onlyOnce: true
                                         });
-                                    
                             
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
-                                            console.log(data);
                                             if(data !== null){
                                                 let userDiv = document.createElement('div');
                                                 let userPic = document.createElement('img');
@@ -575,7 +573,7 @@
                                                     }
                                                 
                                                 }
-                                                console.log(filterList);
+                                               
                                                 for(let i = 0; i < filterList.length; i++){
                                                     if(!filter.includes(filterList[i])){
                                                         filter.push(filterList[i]);
