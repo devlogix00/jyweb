@@ -556,7 +556,7 @@
 
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data !== null){
-                                                        filterList.push(data[i].email);
+                                                        filterList.push(data[i].profile_picture+' '+data[i].username);
                                                         
                                                         userDiv.setAttribute('id', 'user'+i);
                                                         userPic.setAttribute('src', data[i].profile_picture);
@@ -582,19 +582,6 @@
                                                     }
                                                 }
                                                 console.log(filter);
-
-                                                let filteredObj = [];
-                                                console.log(data);
-                                                for(let i = 0; i < data.length; i++){
-                                                   for(let i = 0; i < filter.length; i++){
-                                                     for(let i = 0; i < filteredObj.length; i++){
-                                                        if(filteredObj[i].email != data[i].email){
-                                                            filteredObj.push(data[i]);
-                                                        }
-                                                     }
-                                                   }
-                                                }
-                                                console.log(filteredObj);
 
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
