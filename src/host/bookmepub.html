@@ -551,15 +551,12 @@
                                                 let clickedId;
                                                 let profImg;
                                                 let profNm;
-                                                let nameFilterList = [];
-                                                let nameFilter = [];
-                                                let picFilterList = [];
-                                                let picFilter = [];
+                                                let filterList = [];
+                                                let filter = [];
 
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data !== null){
-                                                        nameFilterList.push(data[i].username);
-                                                        picFilterList.push(data[i].profile_picture);
+                                                        filterList.push(data[i].email);
                                                         
                                                         userDiv.setAttribute('id', 'user'+i);
                                                         userPic.setAttribute('src', data[i].profile_picture);
@@ -578,21 +575,22 @@
                                                     }
                                                 
                                                 }
-                                                console.log(nameFilterList);
-                                                for(let i = 0; i < nameFilterList.length; i++){
-                                                    if(!nameFilter.includes(nameFilterList[i])){
-                                                        nameFilter.push(nameFilterList[i]);
+                                                console.log(filterList);
+                                                for(let i = 0; i < filterList.length; i++){
+                                                    if(!filter.includes(filterList[i])){
+                                                        filter.push(filterList[i]);
                                                     }
                                                 }
-                                                console.log(nameFilter);
+                                                console.log(filter);
 
-                                                console.log(picFilterList);
-                                                for(let i = 0; i < picFilterList.length; i++){
-                                                    if(!picFilter.includes(picFilterList[i])){
-                                                        picFilter.push(picFilterList[i]);
+                                                let filteredObj = [];
+
+                                                for(let i = 0; i < data.length; i++){
+                                                    if(!filter.includes(data[i].email)){
+                                                        filteredObj.push(data[i]);
                                                     }
                                                 }
-                                                console.log(picFilter);
+                                                console.log(filteredObj);
 
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
