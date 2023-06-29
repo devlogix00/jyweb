@@ -576,6 +576,11 @@
                                                 
                                                 }
                                                 console.log(filterList);
+                                                for(let i = 0; i < filterList.length; i++){
+                                                    if(!filter.includes(filterList[i])){
+                                                        filter.push(filterList[i]);
+                                                    }
+                                                }
 
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
