@@ -525,26 +525,7 @@
                                                     email: user.email,
                                                     userId: userId
                                                 });
-                                               
-                                            } else {
-                                               
-                                                set(sRef(db, 'pubusers/0'), {
-                                                    username: userName,
-                                                    profile_picture : profilePicUrl,
-                                                    email: user.email,
-                                                    userId: userId
-                                                });
-                                                
-                                            }
-                                        },{
-                                            onlyOnce: true
-                                        });
-                            
-                                        let newUsersRef = sRef(db, 'pubusers/');
-                                        onValue(newUsersRef, (snapshot) => {
-                                            const data = snapshot.val();
-                                            if(data !== null){
-                                                
+
                                                 let filterList = [];
                                                 let filter = [];
 
@@ -624,12 +605,20 @@
                                                         });
                                                     });
                                                 }
-
                                                
+                                            } else {
+                                               
+                                                set(sRef(db, 'pubusers/0'), {
+                                                    username: userName,
+                                                    profile_picture : profilePicUrl,
+                                                    email: user.email,
+                                                    userId: userId
+                                                });
+                                                
                                             }
+                                        },{
+                                            onlyOnce: true
                                         });
-
-                                       
 
                                     }else {
                                         // User is signed out!
