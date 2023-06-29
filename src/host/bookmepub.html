@@ -551,12 +551,15 @@
                                                 let clickedId;
                                                 let profImg;
                                                 let profNm;
-                                                let filterList = [];
-                                                let filter = [];
+                                                let nameFilterList = [];
+                                                let namefilter = [];
+                                                let picFilterList = [];
+                                                let picfilter = [];
 
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data !== null){
-                                                        filterList.push(data[i]);
+                                                        nameFilterList.push(data[i].username);
+                                                        picFilterList.push(data[i].profile_picture);
                                                         
                                                         userDiv.setAttribute('id', 'user'+i);
                                                         userPic.setAttribute('src', data[i].profile_picture);
@@ -575,13 +578,21 @@
                                                     }
                                                 
                                                 }
-                                                console.log(filterList);
-                                                for(let i = 0; i < filterList.length; i++){
-                                                    if(!filter.includes(filterList[i])){
-                                                        filter.push(filterList[i]);
+                                                console.log(nameFilterList);
+                                                for(let i = 0; i < nameFilterList.length; i++){
+                                                    if(!nameFilter.includes(nameFilterList[i])){
+                                                        nameFilter.push(nameFilterList[i]);
                                                     }
                                                 }
-                                                console.log(filter);
+                                                console.log(nameFilter);
+
+                                                console.log(picFilterList);
+                                                for(let i = 0; i < picFilterList.length; i++){
+                                                    if(!picFilter.includes(picFilterList[i])){
+                                                        picFilter.push(picFilterList[i]);
+                                                    }
+                                                }
+                                                console.log(picFilter);
 
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
