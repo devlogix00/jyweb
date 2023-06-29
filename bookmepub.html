@@ -543,6 +543,7 @@
                                         let newUsersRef = sRef(db, 'pubusers/');
                                         onValue(newUsersRef, (snapshot) => {
                                             const data = snapshot.val();
+                                            console.log(data);
                                             if(data !== null){
                                                 
                                                 let filterList = [];
