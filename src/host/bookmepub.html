@@ -543,9 +543,7 @@
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
                                             if(data !== null){
-                                                let userDiv = document.createElement('div');
-                                                let userPic = document.createElement('img');
-                                                let usernm = document.createElement('p');
+                                                
                                                 let clickedId;
                                                 let profImg;
                                                 let profNm;
@@ -555,8 +553,6 @@
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data !== null){
                                                         filterList.push(data[i].profile_picture+' # '+data[i].username);
-                                                        
-                                                        
 
                                                         clickedId = data[i].userId;
                                                         profImg = data[i].profile_picture;
@@ -574,6 +570,9 @@
                                                 
                                                 for(let i = 0; i < filter.length; i++){
                                                     let splitIndx = filter[i].split('#');
+                                                    let userDiv = document.createElement('div');
+                                                    let userPic = document.createElement('img');
+                                                    let usernm = document.createElement('p');
                                                     userDiv.setAttribute('id', 'user'+i);
                                                     userPic.setAttribute('src', splitIndx[0]);
                                                     userPic.style.borderRadius = '30%';
