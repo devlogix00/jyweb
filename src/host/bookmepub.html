@@ -579,7 +579,11 @@
                                                         filter.push(filterList[i]);
                                                     }
                                                 }
-                                                console.log(filter);
+                                                
+                                                for(let i = 0; i < filter.length; i++){
+                                                    let splitIndx = filter[i].split('#');
+                                                    console.log(splitIndx);
+                                                }
 
                                                 userDiv.addEventListener('click', function(){
                                                     set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
