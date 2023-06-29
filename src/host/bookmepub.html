@@ -556,15 +556,7 @@
                                                     if(data !== null){
                                                         filterList.push(data[i].profile_picture+' # '+data[i].username);
                                                         
-                                                        userDiv.setAttribute('id', 'user'+i);
-                                                        userPic.setAttribute('src', data[i].profile_picture);
-                                                        userPic.style.borderRadius = '30%';
-                                                        usernm.innerText = data[i].username;
-
-                                                        userDiv.appendChild(userPic);
-                                                        userDiv.appendChild(usernm);
-
-                                                        document.getElementById('userlist').appendChild(userDiv);
+                                                        
 
                                                         clickedId = data[i].userId;
                                                         profImg = data[i].profile_picture;
@@ -582,7 +574,15 @@
                                                 
                                                 for(let i = 0; i < filter.length; i++){
                                                     let splitIndx = filter[i].split('#');
-                                                    console.log(splitIndx);
+                                                    userDiv.setAttribute('id', 'user'+i);
+                                                    userPic.setAttribute('src', splitIndx[0]);
+                                                    userPic.style.borderRadius = '30%';
+                                                    usernm.innerText = splitIndx[1];
+
+                                                    userDiv.appendChild(userPic);
+                                                    userDiv.appendChild(usernm);
+
+                                                    document.getElementById('userlist').appendChild(userDiv);
                                                 }
 
                                                 userDiv.addEventListener('click', function(){
