@@ -517,6 +517,7 @@
                                         let usersRef = sRef(db, 'pubusers/');
                                         onValue(usersRef, (snapshot) => {
                                             let data = snapshot.val(); 
+                                            console.log(data);
                                             if(data != null){
                                                 let dataLen = data.length;
                                                 set(sRef(db, 'pubusers/'+dataLen), {
