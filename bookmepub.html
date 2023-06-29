@@ -543,15 +543,15 @@
                             
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
-                                        
-                                            if(data !== null){
+                                            let dataSet = [Set(data)];
+                                            if(dataSet !== null){
                                                 let userDiv = document.createElement('div');
                                                 let userPic = document.createElement('img');
                                                 let usernm = document.createElement('p');
                                                 let clickedId;
                                                 let profImg;
                                                 let profNm;
-                                                for(let i = 0; i < data.length; i++){
+                                                for(let i = 0; i < dataSet.length; i++){
                                                     if(data[i] !== null){
                                                         userDiv.setAttribute('id', 'user'+i);
                                                         userPic.setAttribute('src', data[i].profile_picture);
