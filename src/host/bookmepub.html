@@ -552,7 +552,7 @@
                                                 let clickedId;
                                                 let profImg;
                                                 let profNm;
-                                                
+                                                console.log(dataSet);
                                                 for(let i = 0; i < dataSet.length; i++){
                                                     if(data[i] !== null){
                                                         userDiv.setAttribute('id', 'user'+i);
@@ -563,14 +563,14 @@
                                                         userDiv.appendChild(userPic);
                                                         userDiv.appendChild(usernm);
 
-                                                        document.getElementById('userlist').appendChild(userDiv);
+                                                        
 
                                                         clickedId = data[i].userId;
                                                         profImg = data[i].profile_picture;
                                                         profNm = data[i].username;
                                                         
                                                     }
-                                                
+                                                    document.getElementById('userlist').appendChild(userDiv);
                                                 }
 
                                                 userDiv.addEventListener('click', function(){
