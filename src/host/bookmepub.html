@@ -543,8 +543,6 @@
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
                                             if(data !== null){
-                                                
-                                                let clickedId;
                                                 let profImg;
                                                 let profNm;
                                                 let filterList = [];
@@ -552,12 +550,7 @@
 
                                                 for(let i = 0; i < data.length; i++){
                                                     if(data !== null){
-                                                        filterList.push(data[i].profile_picture+' # '+data[i].username);
-
-                                                        clickedId = data[i].userId;
-                                                        profImg = data[i].profile_picture;
-                                                        profNm = data[i].username;
-                                                        
+                                                        filterList.push(data[i].profile_picture+' # '+data[i].username+' # '+data[i].userId);
                                                     }
                                                 
                                                 }
@@ -573,6 +566,7 @@
                                                     let userDiv = document.createElement('div');
                                                     let userPic = document.createElement('img');
                                                     let usernm = document.createElement('p');
+                                                    let clickedId = splitIndx[2];
                                                     userDiv.setAttribute('id', 'user'+i);
                                                     userPic.setAttribute('src', splitIndx[0]);
                                                     userPic.style.borderRadius = '30%';
