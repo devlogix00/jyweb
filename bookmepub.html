@@ -517,7 +517,6 @@
                                         let usersRef = sRef(db, 'pubusers/');
                                         onValue(usersRef, (snapshot) => {
                                             let data = snapshot.val(); 
-                                            console.log(data);
                                             if(data != null){
                                                 let dataLen = data.length;
                                                 set(sRef(db, 'pubusers/'+dataLen), {
@@ -542,6 +541,9 @@
                                                         filter.push(filterList[i]);
                                                     }
                                                 }
+                                                 
+                                                let filteredObj = {};
+                                                let newList = [];
                                                 
                                                 for(let i = 0; i < filter.length; i++){
                                                     let splitIndx = filter[i].split('#');
@@ -551,6 +553,10 @@
                                                     let profImg = splitIndx[0];
                                                     let profNm = splitIndx[1];
                                                     let clickedId = splitIndx[2];
+                                                    filteredObj.profile_picture = profImg;
+                                                    filteredObj.userId = clickedId;
+                                                    filteredObj.username = profNm;
+                                                    newList.push(filteredObj);
                                                     userDiv.setAttribute('id', 'user'+i);
                                                     userPic.setAttribute('src', splitIndx[0]);
                                                     userPic.style.borderRadius = '30%';
@@ -606,7 +612,11 @@
                                                         });
                                                     });
                                                 }
-                                               
+
+                                                let updates = {};
+                                                updates['pubusers/'] = newList;
+                                                update(sRef(db), updates);
+                                                
                                             } else {
                                                
                                                 set(sRef(db, 'pubusers/0'), {
