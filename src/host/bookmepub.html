@@ -543,8 +543,7 @@
                                         onValue(usersRef, (snapshot) => {
                                             const data = snapshot.val();
                                             if(data !== null){
-                                                let profImg;
-                                                let profNm;
+                                                
                                                 let filterList = [];
                                                 let filter = [];
 
@@ -566,6 +565,8 @@
                                                     let userDiv = document.createElement('div');
                                                     let userPic = document.createElement('img');
                                                     let usernm = document.createElement('p');
+                                                    let profImg = splitIndx[0];
+                                                    let profNm = splitIndx[1];
                                                     let clickedId = splitIndx[2];
                                                     userDiv.setAttribute('id', 'user'+i);
                                                     userPic.setAttribute('src', splitIndx[0]);
