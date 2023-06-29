@@ -582,52 +582,54 @@
                                                     userDiv.appendChild(usernm);
 
                                                     document.getElementById('userlist').appendChild(userDiv);
+
+                                                    userDiv.addEventListener('click', function(){
+                                                        set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
+                                                            clickedId: clickedId,
+                                                            profile_picture: profImg,
+                                                            username: profNm
+                                                        });
+                                                        let hostrmRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/rooms');
+                                                        let hostcrRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/cars');
+                                                        let hosttrRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/tours')
+                                                        onValue(hostrmRef, (snapshot) => {
+                                                            let clickedData = snapshot.val();
+                                                            if(clickedData != null){
+                                                                window.location = 'https://www.buorgoldengreenresorts.homes/hostpage.html';
+                                                            }
+                                                        });
+                                                        onValue(hostcrRef, (snapshot) => {
+                                                            let clickedData = snapshot.val();
+                                                            if(clickedData != null){
+                                                                window.location = 'https://www.buorgoldengreenresorts.homes/hostpage.html';
+                                                            }
+                                                        });
+                                                        onValue(hosttrRef, (snapshot) => {
+                                                            let clickedData = snapshot.val();
+                                                            if(clickedData != null){
+                                                                window.location = 'https://www.buorgoldengreenresorts.homes/hostpage.html';
+                                                            }
+                                                        });
+
+                                                        let hostdrRef = sRef(db, 'drivers/driverAccount/'+clickedId+'/profile');
+                                                        onValue(hostdrRef, (snapshot) => {
+                                                            let clickedData = snapshot.val();
+                                                            if(clickedData != null){
+                                                                window.location = 'https://www.buorgoldengreenresorts.homes/driverpage.html';
+                                                            }
+                                                        });
+
+                                                        let guestRef = sRef(db, 'users/userAccount/'+clickedId);
+                                                        onValue(guestRef, (snapshot) => {
+                                                            let clickedData = snapshot.val();
+                                                            if(clickedData != null){
+                                                                window.location = 'https://www.buorgoldengreenresorts.homes/guestpage.html';
+                                                            }
+                                                        });
+                                                    });
                                                 }
 
-                                                userDiv.addEventListener('click', function(){
-                                                    set(sRef(db, 'hosts/hostAccount/'+userId+'/clicks'),{
-                                                        clickedId: clickedId,
-                                                        profile_picture: profImg,
-                                                        username: profNm
-                                                    });
-                                                    let hostrmRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/rooms');
-                                                    let hostcrRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/cars');
-                                                    let hosttrRef = sRef(db, 'hosts/hostAccount/'+clickedId+'/tours')
-                                                    onValue(hostrmRef, (snapshot) => {
-                                                        let clickedData = snapshot.val();
-                                                        if(clickedData != null){
-                                                            window.location = 'https://www.buorgoldengreenresorts.homes/hostpage.html';
-                                                        }
-                                                    });
-                                                    onValue(hostcrRef, (snapshot) => {
-                                                        let clickedData = snapshot.val();
-                                                        if(clickedData != null){
-                                                            window.location = 'https://www.buorgoldengreenresorts.homes/hostpage.html';
-                                                        }
-                                                    });
-                                                    onValue(hosttrRef, (snapshot) => {
-                                                        let clickedData = snapshot.val();
-                                                        if(clickedData != null){
-                                                            window.location = 'https://www.buorgoldengreenresorts.homes/hostpage.html';
-                                                        }
-                                                    });
-
-                                                    let hostdrRef = sRef(db, 'drivers/driverAccount/'+clickedId+'/profile');
-                                                    onValue(hostdrRef, (snapshot) => {
-                                                        let clickedData = snapshot.val();
-                                                        if(clickedData != null){
-                                                            window.location = 'https://www.buorgoldengreenresorts.homes/driverpage.html';
-                                                        }
-                                                    });
-
-                                                    let guestRef = sRef(db, 'users/userAccount/'+clickedId);
-                                                    onValue(guestRef, (snapshot) => {
-                                                        let clickedData = snapshot.val();
-                                                        if(clickedData != null){
-                                                            window.location = 'https://www.buorgoldengreenresorts.homes/guestpage.html';
-                                                        }
-                                                    });
-                                                });
+                                               
                                             }
                                         });
 
