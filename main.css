@@ -188,6 +188,9 @@
       height: 33px;
       background-size: 33px;
     }
+    .guest{
+      width: 50%;
+    }
   }
   .mdl-textfield__label:after {
     background-color: #0288D1;
