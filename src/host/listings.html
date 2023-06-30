@@ -180,8 +180,6 @@
                 listingImg: ''
             }
 
-           
-
             function getType(){
                 let type = document.getElementById('type').value;
                 listing.listingType = type;
@@ -395,6 +393,7 @@
               let userName = user.displayName;
               let userId = user.uid;
               let updates = {};
+              let listingimg;
 
 
               document.getElementById('statusbtn').addEventListener('click', e => {
@@ -454,7 +453,27 @@
                   },
                   () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                      listing.listingImg = downloadURL;
+                      listingimg = downloadURL;
+                      // updates['hosts/hostAccount/'+userId+'/listing/listingImg'] = downloadURL;
+                      // updates['hosts/hostAccount/'+userId+'/tours/'+listing.listingName+'/listingImg'] = downloadURL;
+                      // updates['listing/listingImg'] = downloadURL;
+                      // updates['tours/'+listing.listingName+'/listingImg'] = downloadURL;
+                      // updates['tours/listing/listingImg'] = downloadURL;
+                      // update(ref(db), updates);
+                      // const listingRef = ref(db, 'listings/listings/');
+                      // onValue(listingRef, (snapshot) => {
+                      //   const data = snapshot.val();
+                      //   if(data != null){
+                      //     let dataLen = data.length;
+                      //     updates['listings/listings/'+dataLen+'/listingImg'] = downloadURL;
+                      //     update(ref(db), updates);
+                      //   } else {
+                      //     updates['listings/listings/0/listingImg'] = downloadURL;
+                      //     update(ref(db), updates);
+                      //   }
+                      // },{
+                      //       onlyOnce: true
+                      //   });
                     })
                   }
                 )
@@ -478,6 +497,7 @@
                 //let newListing = JSON.parse(localStorage.getItem('newListing'));
                 let type = document.getElementById('type').value;
                 listing.listingType = type;
+                listing.listingImg = listingimg;
 
                  if(listing.listingType == 'tour'){
             
