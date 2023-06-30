@@ -193,7 +193,7 @@
     }
   }
   @media screen and (max-width: 410px) {
-    .guest{
+    #profile{
       width: 375px;
     }
   }
