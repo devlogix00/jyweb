@@ -192,6 +192,11 @@
       width: 20%;
     }
   }
+  @media screen and (max-width: 410px) {
+    .guest{
+      width: 375px;
+    }
+  }
   .mdl-textfield__label:after {
     background-color: #0288D1;
   }
