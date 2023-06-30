@@ -170,7 +170,7 @@
   #mediaCapture {
     display: none;
   }
-  @media screen and (max-width: 610px) {
+  @media screen and (max-width: 410px) {
     header {
       height: 113px;
       padding-bottom: 80px !important;
