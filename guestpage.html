@@ -144,13 +144,16 @@
                     guestName = clickedData.username;
                     
                     profimg.setAttribute('src', guestProfImg);
+                    profimg.setAttribute('id', 'profImg');
                     profnm.innerText = guestName;
                     profnm.style.paddingLeft = '1em';
                     profimg.style.width = '150px';
                     profimg.style.height = '150px';
                     profimg.style.borderRadius = '120px';
                     imgDiv.appendChild(profimg);
-                    profDiv.appendChild(profnm)
+                    profDiv.appendChild(profnm);
+                    profDiv.setAttribute('id', 'profNm');
+
                     document.getElementById('profile').appendChild(imgDiv);
 
                     let guestRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/status');
@@ -158,6 +161,7 @@
                         let statusdata = snapshot.val();
                         profstat.innerText = statusdata;
                         profstat.style.paddingLeft = '1em';
+                        profstat.setAttribute('id', 'status');
                         profDiv.appendChild(profstat);
                     });
                     document.getElementById('profile').appendChild(profDiv);
@@ -178,11 +182,13 @@
                                 imgDiv.style.width = '100%';
                                 imgDiv.style.height = 'auto';
                                 imgDiv.setAttribute('src', experienceData[i].img);
+                                imgDiv.setAttribute('class', 'expImg');
                                 let likebtn = document.createElement('button');
                                 likebtn.innerHTML = `<span class="material-icons" style="font-size: xxx-large;">
                                     favorite
                                 </span>`;
                                 likebtn.style.borderWidth = '0em';
+                                likebtn.setAttribute('id', 'likebtn');
                                 let likeCount = document.createElement('h3');
                                 
                                 let likeRef = ref(db, 'users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount');

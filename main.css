@@ -188,15 +188,27 @@
       height: 33px;
       background-size: 33px;
     }
-    .guest{
-      width: 20%;
+    #profImg {
+      width: 96px;
+      height: 96px;
     }
-  }
-  @media screen and (max-width: 410px) {
+    #profNm {
+      font-size: 1rem;
+      line-height: 1em;
+    }
+    #status {
+      font-size: 1rem;
+      line-height: 1.2em;
+    }
+    #likebtn {
+      padding: 1em;
+    }
     #profile{
-      width: 375px;
+      padding: 3em;
+      padding-top: 5em;
     }
   }
+  
   .mdl-textfield__label:after {
     background-color: #0288D1;
   }
