@@ -147,8 +147,8 @@
                     profimg.setAttribute('id', 'profImg');
                     profnm.innerText = guestName;
                     profnm.style.paddingLeft = '1em';
-                    profimg.style.width = '150px';
-                    profimg.style.height = '150px';
+                    // profimg.style.width = '150px';
+                    // profimg.style.height = '150px';
                     profimg.style.borderRadius = '120px';
                     imgDiv.appendChild(profimg);
                     profDiv.appendChild(profnm);
@@ -232,19 +232,7 @@
                                             });
                                         });
                                     }
-                                    // likebtn.addEventListener('click', function(){
-                                    //     if(likeData == null){
-                                    //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = 1;
-                                    //         update(ref(db), updates);
-                                    //         likeCount.innerText = likeData+' Like';
-                                    //     } else {
-                                    //         updates['users/userAccount/'+clickedData.clickedId+'/experiences/'+i+'/likeCount'] = likeData+1;
-                                    //         update(ref(db), updates);
-                                    //         likeCount.innerText = likeData+' Likes';
-                                    //     }
-                                    // });
-                                  
-                                    
+
                                 }, {
                                     onlyOnce: true
                                 });
