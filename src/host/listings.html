@@ -459,6 +459,7 @@
                      // updates['listing/listingImg'] = downloadURL;
                       updates['tours/'+listing.listingName+'/listingImg'] = downloadURL;
                       updates['tours/listing/listingImg'] = downloadURL;
+                      console.log(downloadURL);
                       update(ref(db), updates);
                       const listingRef = ref(db, 'listings/listings/');
                       onValue(listingRef, (snapshot) => {
