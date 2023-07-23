@@ -454,7 +454,7 @@
                   () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                       listingimg = downloadURL;
-                      updates['hosts/hostAccount/'+userId+'/listing/listingImg'] = downloadURL;
+                      //updates['hosts/hostAccount/'+userId+'/listing/listingImg'] = downloadURL;
                       updates['hosts/hostAccount/'+userId+'/tours/'+listing.listingName+'/listingImg'] = downloadURL;
                       updates['listing/listingImg'] = downloadURL;
                       updates['tours/'+listing.listingName+'/listingImg'] = downloadURL;
@@ -515,7 +515,7 @@
 
                   listing.host = userId;
 
-                  updates['hosts/hostAccount/'+userId+'/listing'] = listing;
+                  updates['hosts/hostAccount/'+userId+'/listing/'] = listing;
                   updates['hosts/hostAccount/'+userId+'/tours/'+listing.listingName] = listing;
                   updates['listing/'] = listing;
                   updates['tours/'+listing.listingName] = listing;
