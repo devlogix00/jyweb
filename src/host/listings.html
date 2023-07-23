@@ -453,7 +453,7 @@
                   },
                   () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                     // listingimg = downloadURL;
+                      listingimg = downloadURL;
                       updates['hosts/hostAccount/'+userId+'/listing/listingImg'] = downloadURL;
                       updates['hosts/hostAccount/'+userId+'/tours/'+listing.listingName+'/listingImg'] = downloadURL;
                       updates['listing/listingImg'] = downloadURL;
