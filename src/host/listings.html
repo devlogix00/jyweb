@@ -460,20 +460,20 @@
                       updates['tours/'+listing.listingName+'/listingImg'] = downloadURL;
                       updates['tours/listing/listingImg'] = downloadURL;
                       update(ref(db), updates);
-                      const listingRef = ref(db, 'listings/listings/');
-                      onValue(listingRef, (snapshot) => {
-                        const data = snapshot.val();
-                        if(data != null){
-                          let dataLen = data.length;
-                          updates['listings/listings/'+dataLen+'/listingImg'] = downloadURL;
-                          update(ref(db), updates);
-                        } else {
-                          updates['listings/listings/0/listingImg'] = downloadURL;
-                          update(ref(db), updates);
-                        }
-                      },{
-                            onlyOnce: true
-                        });
+                      // const listingRef = ref(db, 'listings/listings/');
+                      // onValue(listingRef, (snapshot) => {
+                      //   const data = snapshot.val();
+                      //   if(data != null){
+                      //     let dataLen = data.length;
+                      //     updates['listings/listings/'+dataLen+'/listingImg'] = downloadURL;
+                      //     update(ref(db), updates);
+                      //   } else {
+                      //     updates['listings/listings/0/listingImg'] = downloadURL;
+                      //     update(ref(db), updates);
+                      //   }
+                      // },{
+                      //       onlyOnce: true
+                      //   });
                     })
                   }
                 )
