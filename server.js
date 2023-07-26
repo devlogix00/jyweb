@@ -9,7 +9,7 @@ const { getAuth, onAuthStateChanged, currentUser } = require('firebase/auth');
 //const { addDoc, collection, getFirestore, Timestamp, fromDate, orderBy, limit, onSnapshot, query, serverTimestamp, setDoc } = require('firebase/firestore');
 const app = express();
 const port = process.env.PORT;
-
+const stripe = require('stripe')('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');
 const multer = require("multer");
 const { v4: uuidv4 } = require('uuid');
 const upload = multer({dest: "uploads/"});
