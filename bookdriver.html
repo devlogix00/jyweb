@@ -34,7 +34,7 @@
                     <main class="mdl-layout__content mdl-color--grey-100">
                     <div>
                         <div id="img" style="display: flex; flex-direction: row;">
-                            <div id="bookingInfo" style="padding-left: 2em;">
+                            <div id="bookingInfo" style="padding-left: 2em; display: flex;">
                               
                                 <button id="ridestarted" style="display: none;">Driver Present</button>
                             </div>
@@ -523,7 +523,7 @@
                                         let regList = sRef(db, 'users/userAccount/'+user.uid+'/driverdata');
                                         onValue(regList, (snapshot) => {
                                             const newData = snapshot.val();
-                                            console.log(newData);
+                                            
                                             if(newData != null){
                                                 
                                                 let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
@@ -551,7 +551,7 @@
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(drNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
-                                                            console.log(drNme);
+                                                           
 
                                                             onValue(driverRef, (snapshot) => {
                                                                 let data = snapshot.val();
