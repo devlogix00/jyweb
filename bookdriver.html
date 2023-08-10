@@ -525,6 +525,7 @@
                                             const newData = snapshot.val();
                                             //console.log(newData);
                                             if(newData != null){
+                                                
                                                 let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
@@ -550,6 +551,7 @@
                                                             }
                                                             document.getElementById('bookingInfo').appendChild(drNme);
                                                             document.getElementById('bookingInfo').appendChild(bookingDates);
+                                                            console.log(drNme);
 
                                                             onValue(driverRef, (snapshot) => {
                                                                 let data = snapshot.val();
