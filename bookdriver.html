@@ -523,7 +523,7 @@
                                         let regList = sRef(db, 'users/userAccount/'+user.uid+'/driverdata');
                                         onValue(regList, (snapshot) => {
                                             const newData = snapshot.val();
-                                            //console.log(newData);
+                                            console.log(newData);
                                             if(newData != null){
                                                 
                                                 let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
