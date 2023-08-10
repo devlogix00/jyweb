@@ -529,9 +529,10 @@
                                                 let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
-                                                    console.log(drsearchData);
+                                                    
                                                     driverRef = sRef(db, 'bookedDrivers/'+newData.driver);
                                                     if(drsearchData != null ){
+                                                        console.log(drsearchData);
                                                         for(let i = 0; i < drsearchData.length; i++){
                                                             if(drsearchData[i].currentUser === user.uid){
                                                                 console.log('true');
