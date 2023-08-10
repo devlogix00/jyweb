@@ -542,7 +542,10 @@
                                                             drImg.style.paddingLeft = '1em';
                                                             document.getElementById('img').appendChild(drImg);
                                                             let drNme = document.createElement('h1');
-                                                            drNme.innerText = drsearchData[i].driverName;
+                                                            if(drsearchData[i].driverName != null){
+                                                                drNme.innerText = drsearchData[i].driverName;
+                                                                console.log(drsearchData[i].driverName);
+                                                            }
                                                             let bookingDates = document.createElement('h3');
                                                             if(drsearchData[i].driverDates.length === 2){
                                                                 bookingDates.innerText = 'Booking Dates: '+drsearchData[i].driverDates[0]+' - '+drsearchData[i].driverDates[1];
