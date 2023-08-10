@@ -534,10 +534,9 @@
                                                     if(drsearchData != null ){
                                                         
                                                         for(let i = 0; i < drsearchData.length; i++){
-                                                            console.log(drsearchData[0]);
+                                                            
                                                             if(drsearchData[i].currentUser === user.uid){
-                                                                console.log('true');
-                                                                console.log(drsearchData[i].img);
+                                                               
                                                             let drImg = document.createElement('img');
                                                             drImg.setAttribute('src', drsearchData[i].img);
                                                             drImg.style.width = '400px';
