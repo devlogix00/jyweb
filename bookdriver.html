@@ -529,6 +529,7 @@
                                                 let drSearchUrl = sRef(db, 'bookedDrivers/'+newData.driver);
                                                 onValue(drSearchUrl, (snapshot) => {
                                                     let drsearchData = snapshot.val();
+                                                    console.log(drsearchData);
                                                     driverRef = sRef(db, 'bookedDrivers/'+newData.driver);
                                                     if(drsearchData != null ){
                                                         for(let i = 0; i < drsearchData.length; i++){
@@ -544,7 +545,7 @@
                                                             let drNme = document.createElement('h1');
                                                             if(drsearchData[i].driverName != null){
                                                                 drNme.innerText = drsearchData[i].driverName;
-                                                                console.log(drsearchData[i]);
+                                                                
                                                             }
                                                             let bookingDates = document.createElement('h3');
                                                             if(drsearchData[i].driverDates.length === 2){
