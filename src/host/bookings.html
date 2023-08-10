@@ -174,17 +174,8 @@
                     let cardHeader = document.createElement('h6');
                     cardHeader.setAttribute('class', "card-category text-info");
                     cardHeader.innerText = data.listingName;
-                    let cardTitle = document.createElement('h4');
-                    cardTitle.setAttribute('class', 'card-title');
-                    cardTitle.style.paddingBottom = '3em';
-                    if(data.roomDates.length == 1){
-                      cardTitle.innerText = data.userName;
-                    } else {
-                      cardTitle.innerText = data.userName;
-                    }
                     
                     cardBody.appendChild(cardHeader);
-                    cardHeader.appendChild(cardTitle);
                     cardInnerInner.appendChild(cardImg);
                     cardInnerInner.appendChild(cardBody);
                     cardOuterInner.appendChild(cardInnerInner);
@@ -223,17 +214,8 @@
                     let cardHeader = document.createElement('h6');
                     cardHeader.setAttribute('class', "card-category text-info");
                     cardHeader.innerText = data.listingName;
-                    let cardTitle = document.createElement('h4');
-                    cardTitle.setAttribute('class', 'card-title');
-                    cardTitle.style.paddingBottom = '3em';
-                    if(data.carDates.length == 1){
-                      cardTitle.innerText = data.userName;
-                    } else {
-                      cardTitle.innerText = data.userName;
-                    }
                     
                     cardBody.appendChild(cardHeader);
-                    cardHeader.appendChild(cardTitle);
                     cardInnerInner.appendChild(cardImg);
                     cardInnerInner.appendChild(cardBody);
                     cardOuterInner.appendChild(cardInnerInner);
@@ -272,20 +254,10 @@
                     let cardHeader = document.createElement('h6');
                     cardHeader.setAttribute('class', "card-category text-info");
                     cardHeader.innerText = data.listingName;
-                    let cardTitle = document.createElement('h4');
                     let cardImg = document.createElement('img');
                     cardImg.setAttribute('src', img);
-                    cardTitle.setAttribute('class', 'card-title');
-                    cardTitle.style.paddingBottom = '3em';
-                    if(data.tourDates.length == 1){
-                      cardTitle.innerText = data.userName;
-                    } else {
-                      cardTitle.innerText = data.userName;
-                    }
-                  
 
                     cardBody.appendChild(cardHeader);
-                    cardHeader.appendChild(cardTitle);
                     cardInnerInner.appendChild(cardImg);
                     cardInnerInner.appendChild(cardBody);
                     cardOuterInner.appendChild(cardInnerInner);
@@ -332,17 +304,8 @@
                     let cardHeader = document.createElement('h6');
                     cardHeader.setAttribute('class', "card-category text-info");
                     cardHeader.innerText = userName;
-                    let cardTitle = document.createElement('h4');
-                    cardTitle.setAttribute('class', 'card-title');
-                    cardTitle.style.paddingBottom = '3em';
-                    if(data[i].driverDates.length == 1){
-                    cardTitle.innerText = data[i].userName;
-                    } else {
-                    cardTitle.innerText = data[i].userName;
-                    }
                     
                     cardBody.appendChild(cardHeader);
-                    cardHeader.appendChild(cardTitle);
                     cardInnerInner.appendChild(cardImg);
                     cardInnerInner.appendChild(cardBody);
                     cardOuterInner.appendChild(cardInnerInner);
