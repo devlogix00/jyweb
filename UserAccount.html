@@ -473,17 +473,17 @@
                       // Handle unsuccessful uploads
                     },
                     () => {
-                      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                      getDownloadURL(uploadTask.snapshot.ref).then((imgURL) => {
                         let experienceRef = ref(db, 'users/userAccount/'+userId+'/experiences');
                         let updates = {};
                         onValue(experienceRef, (snapshot) => {
                           let experienceData = snapshot.val();
                           if(experienceData == null){
-                            updates['users/userAccount/'+userId+'/experiences/0/img'] = downloadURL;
+                            updates['users/userAccount/'+userId+'/experiences/0/img'] = imgURL;
                             update(ref(db), updates);
                           } else {
                             let dataLen = experienceData.length;
-                            updates['users/userAccount/'+userId+'/experiences/'+dataLen+'/img'] = downloadURL;
+                            updates['users/userAccount/'+userId+'/experiences/'+dataLen+'/img'] = imgURL;
                             update(ref(db), updates);
                           }
                         }, {
